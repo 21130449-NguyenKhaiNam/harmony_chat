@@ -3,10 +3,10 @@
 - Đồ án cuối kỳ môn Lập trình trên thiết bị di động - Ứng dụng trò chuyện trực tuyến Harmony
 - Đồ án là một yêu cầu bắt buộc hoàn thành của môn học
 - Tổ chức nhóm gồm: 5 thành viên
-- Các công nghệ chính sử dụng: Spring Boot (Sẽ có sẵn khung), Hibernate (Tích hợp trong spring), MySQL (Lựa chọn tùy ý), Android (Bản mới nhất), Java (JDK 17),  
+- Các công nghệ chính sử dụng: Spring Boot (Sẽ có sẵn khung), Hibernate (Tích hợp trong spring), MySQL (Lựa chọn tùy ý), Android (8.1), Java (JDK 17),  
 ## 2. Phân chia
 - Thư viện icon: 
-- Giao diện:  Sử dụng chuyển đổi từng phần tử figma sang android
+- Giao diện: Sử dụng chuyển đổi từng phần tử figma sang android
 - Xử lý: sử dụng Java (cụ thể Spring Boot làm API)
 - Cơ sở dữ liệu: MySQL
 ## 3. Yêu cầu
@@ -14,6 +14,7 @@
 - Xử lý đầy đủ chức năng
 - Tối ưu cho hệ thống
 - Phải có mô hình rõ ràng
+- Ngôn ngữ chính trên ứng dụng là tiếng Việt
 ## 4. Quy tắc
 - Yêu cầu chú thích cơ bản bằng tiếng việt
 - Ngôn ngữ sử dụng để viết code là tiếng anh, commmit là tiếng việt
