@@ -10,10 +10,12 @@ public class BlackList {
     private Long id;
 
     @Column(name = "user_id")
-    @ManyToMany
+    @OneToMany
     private User user;
 
     @Column(name = "block_other")
     @ManyToMany
     private User blockUser;
+
+    public BlackList() {}
 }
