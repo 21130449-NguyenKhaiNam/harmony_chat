@@ -1,4 +1,4 @@
-package com.app.harmony_chat.model;
+package com.app.harmony_chat.models;
 
 import jakarta.persistence.*;
 
@@ -9,11 +9,11 @@ public class BlockList {
     @Column
     private int id;
 
-    @ManyToMany
+    @OneToOne
     @Column(name = "room_id")
     private Room room;
 
-    @ManyToMany
+    @OneToOne
     @Column(name = "user_id")
     private User user;
 }

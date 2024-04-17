@@ -1,4 +1,4 @@
-package com.app.harmony_chat.model;
+package com.app.harmony_chat.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

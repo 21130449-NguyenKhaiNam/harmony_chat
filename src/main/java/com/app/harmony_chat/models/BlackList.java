@@ -1,20 +1,20 @@
-package com.app.harmony_chat.model;
+package com.app.harmony_chat.models;
 
-import com.google.api.client.util.Key;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "black_list")
 public class BlackList {
     @Id
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
 
     @Column(name = "user_id")
-    @OneToMany
+    @OneToOne
     private User user;
 
     @Column(name = "block_other")
-    @ManyToMany
+    @OneToOne
     private User blockUser;
 
     public BlackList() {}
