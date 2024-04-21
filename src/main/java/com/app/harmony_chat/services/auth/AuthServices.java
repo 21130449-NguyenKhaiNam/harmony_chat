@@ -1,6 +1,5 @@
 package com.app.harmony_chat.services.auth;
 
-import com.app.harmony_chat.daos.account.AuthAccountDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
