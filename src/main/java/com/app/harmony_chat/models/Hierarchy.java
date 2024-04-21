@@ -12,21 +12,21 @@ import lombok.Setter;
 @Data
 @NoArgsConstructor
 @Table(name = "vice_leaders")
-public class ViceLeader {
+public class Hierarchy {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long  id;
 
     @OneToOne
-    @JoinColumn(name = "room_id")
+    @JoinColumn(name = "room_id", referencedColumnName = "id")
     private Room room;
 
     @OneToOne
-    @JoinColumn(name = "leader_id")
+    @JoinColumn(name = "leader_id", referencedColumnName = "id")
     private User leader;
 
     @ManyToOne
-    @JoinColumn(name = "deputy_id")
+    @JoinColumn(name = "deputy_id", referencedColumnName = "id")
     private User deputy;
 }

@@ -19,10 +19,10 @@ public class BlackList {
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "block_other")
+    @JoinColumn(name = "block_other", referencedColumnName = "id")
     private User blockUser;
 }

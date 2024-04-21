@@ -14,14 +14,17 @@ import lombok.Setter;
 @Table(name = "countries")
 public class Country {
     @Id
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-    @Column(name =  "streetNumber")
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
+    @Column(name =  "street_number")
     private String streetNumber;
 
-    @Column(name =  "streetName")
+    @Column(name =  "street_name")
     private String streetName;
 
     @Column

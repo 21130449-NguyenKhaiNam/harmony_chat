@@ -18,6 +18,6 @@ public class Gender {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "name")
+    @Column
     private String name;
 }

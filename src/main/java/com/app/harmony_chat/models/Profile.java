@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.checkerframework.common.aliasing.qual.Unique;
 
 import java.time.LocalDate;
 
@@ -17,9 +16,8 @@ import java.time.LocalDate;
 @Table(name = "profiles")
 public class Profile {
     @Id
-    @Unique
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     // Lưu đường dẫn
@@ -31,11 +29,11 @@ public class Profile {
     private LocalDate dob;
 
     @OneToOne
-    @JoinColumn(name = "gender_id")
+    @JoinColumn(name = "gender_id", referencedColumnName = "id")
     private Gender gender;
 
     @OneToOne
-    @JoinColumn(name = "coutries_id")
+    @JoinColumn(name = "coutries_id", referencedColumnName = "id")
     private Country country;
 
     @Column
