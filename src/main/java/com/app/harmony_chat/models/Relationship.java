@@ -6,15 +6,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.util.List;
+
+
 @Entity
 @Getter
 @Setter
 @Data
 @NoArgsConstructor
-@Table(name = "black_list")
-public class BlackList {
+@Table(name = "relationships")
+public class Relationship {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private long id;
 
@@ -23,6 +26,13 @@ public class BlackList {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "block_other")
-    private User blockUser;
+    @JoinColumn(name = "friend_id")
+    private User friend;
+
+    @Column
+    @Temporal(TemporalType.DATE)
+    private LocalDate established;
+
+    @Column
+    private String nickname;
 }

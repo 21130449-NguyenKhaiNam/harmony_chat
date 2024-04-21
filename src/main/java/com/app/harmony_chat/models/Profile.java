@@ -1,18 +1,25 @@
 package com.app.harmony_chat.models;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.checkerframework.common.aliasing.qual.Unique;
 
 import java.time.LocalDate;
 
 @Entity
+@Getter
+@Setter
+@Data
+@NoArgsConstructor
 @Table(name = "profiles")
 public class Profile {
     @Id
-    @Column
-    private String id;
-
+    @Unique
     @OneToOne
-    @Column(name = "user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     // Lưu đường dẫn
@@ -20,19 +27,17 @@ public class Profile {
     private String avatar;
 
     @Column
+    @Temporal(TemporalType.DATE)
     private LocalDate dob;
 
-    @Column(name = "sex")
     @OneToOne
+    @JoinColumn(name = "gender_id")
     private Gender gender;
 
-    @Column
     @OneToOne
+    @JoinColumn(name = "coutries_id")
     private Country country;
 
     @Column
     private String phone;
-
-    public Profile() {
-    }
 }

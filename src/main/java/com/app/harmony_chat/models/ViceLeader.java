@@ -1,18 +1,32 @@
 package com.app.harmony_chat.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
+@Data
+@NoArgsConstructor
 @Table(name = "vice_leaders")
 public class ViceLeader {
-    @ManyToMany
-    @Column(name = "room_id")
+    @Id
+    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long  id;
+
+    @OneToOne
+    @JoinColumn(name = "room_id")
     private Room room;
 
-    @ManyToMany
-    @Column(name = "user_id")
-    private User user;
+    @OneToOne
+    @JoinColumn(name = "leader_id")
+    private User leader;
+
+    @ManyToOne
+    @JoinColumn(name = "deputy_id")
+    private User deputy;
 }
