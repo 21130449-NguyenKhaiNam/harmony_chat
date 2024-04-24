@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">harmony-chat</string>
-    <string name="a" formatted="true" translatable="false" >hello</string>
+
+    <string name="sign_in">Đăng nhập</string>
+    <string name="register">Đăng ký</string>
+    <string name="forget">Quên mật khẩu?</string>
+    <string name="login_other">Hoặc đăng nhập bằng mạng xã hội khác</string>
+    <string name="facebook">Facebook</string>
+    <string name="google">Google</string>
 </resources>

@@ -8,4 +8,5 @@
     <color name="pink_0">#C14D7C</color>
     <color name="blue_0">#91BBE5</color>
     <color name="blue_1">#3376BC</color>
+    <color name="transparent">#00ffffff</color>
 </resources>
