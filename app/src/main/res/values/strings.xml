@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">harmony-chat</string>
+    <string name="a" formatted="true" translatable="false" >hello</string>
+</resources>
