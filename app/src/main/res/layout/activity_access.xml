@@ -14,7 +14,7 @@
         android:layout_width="@dimen/width_logo"
         android:layout_height="@dimen/height_logo"
         android:scaleType="fitCenter"
-        android:layout_marginTop="@dimen/access_top_logo"
+        android:layout_marginTop="@dimen/access_logo_margin_top"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
