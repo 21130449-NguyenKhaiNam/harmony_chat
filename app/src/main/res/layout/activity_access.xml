@@ -36,6 +36,7 @@
             android:layout_width="@dimen/width_button"
             android:layout_height="@dimen/height_button"
             android:text="@string/sign_in"
+            android:background="@drawable/button"
             android:contentDescription="@string/sign_in"/>
 
         <Button
@@ -44,6 +45,7 @@
             android:layout_width="@dimen/width_button"
             android:layout_height="@dimen/height_button"
             android:text="@string/register"
+            android:background="@drawable/button"
             android:contentDescription="@string/register"/>
     </LinearLayout>
 

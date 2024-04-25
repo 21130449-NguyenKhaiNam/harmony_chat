@@ -58,9 +58,7 @@
 
     <!-- Màn hình thông tin cá nhân -->
     <dimen name="profile_header_margin_top">57dp</dimen>
-    <dimen name="profile_height_header_before">70dp</dimen>
     <dimen name="profile_height_header_before_margin_bottom">10dp</dimen>
-    <dimen name="profile_height_header_after">25dp</dimen>
     <dimen name="profile_width_back">25dp</dimen>
     <dimen name="profile_height_back">25dp</dimen>
     <dimen name="profile_width_edit">25dp</dimen>
