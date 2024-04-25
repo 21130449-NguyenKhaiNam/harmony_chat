@@ -14,7 +14,7 @@
         android:layout_width="@dimen/width_logo"
         android:layout_height="@dimen/height_logo"
         android:scaleType="fitCenter"
-        android:layout_marginTop="@dimen/login_top_logo"
+        android:layout_marginTop="@dimen/access_top_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -25,7 +25,7 @@
         android:id="@+id/con_auth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/login_margin_top"
+        android:layout_marginTop="@dimen/access_margin_top"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +40,7 @@
 
         <Button
             android:id="@+id/btn_register"
-            android:layout_marginTop="@dimen/login_margin_top"
+            android:layout_marginTop="@dimen/access_margin_top"
             android:layout_width="@dimen/width_button"
             android:layout_height="@dimen/height_button"
             android:text="@string/register"
@@ -60,11 +60,11 @@
         app:layout_constraintTop_toBottomOf="@+id/con_auth"/>
 
     <TextView
-        android:id="@+id/label_login_other"
+        android:id="@+id/label_access_other"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/login_other"
-        android:layout_marginTop="@dimen/login_margin_top"
+        android:layout_marginTop="@dimen/access_margin_top"
         app:layout_constraintTop_toBottomOf="@+id/btn_forget"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -73,17 +73,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="@dimen/login_margin_top"
+        android:layout_marginTop="@dimen/access_margin_top"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/label_login_other">
+        app:layout_constraintTop_toBottomOf="@+id/label_access_other">
 
         <ImageButton
             android:id="@+id/imageButton"
             android:scaleType="fitCenter"
             android:layout_width="@dimen/width_logo_other"
             android:layout_height="@dimen/height_logo_other"
-            android:layout_marginEnd="@dimen/login_margin_right"
+            android:layout_marginEnd="@dimen/access_margin_right"
             android:background="@color/transparent"
             android:layout_weight="1"
             android:contentDescription="@string/google"

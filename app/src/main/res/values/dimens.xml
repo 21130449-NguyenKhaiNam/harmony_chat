@@ -30,9 +30,11 @@
     <dimen name="height_logo_other">50dp</dimen>
 
     <!-- Màn hình truy cập -->
-    <dimen name="login_top_logo">100dp</dimen>
-    <dimen name="login_margin_top">25dp</dimen>
-    <dimen name="login_margin_right">40dp</dimen>
+    <dimen name="access_top_logo">100dp</dimen>
+    <dimen name="access_margin_top">25dp</dimen>
+    <dimen name="access_margin_right">40dp</dimen>
+
+    <!-- Màn hình thông tin cá nhân -->
 
     <!-- Tham số khác -->
     <dimen name="corner_radius">40dp</dimen>
