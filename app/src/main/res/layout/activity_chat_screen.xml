@@ -6,12 +6,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Chat_Screen">
+    tools:context=".Chat_Screen"
+    android:weightSum="8">
 
     <!--    Header-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:gravity="center_vertical"
         android:paddingHorizontal="10dp"
         android:paddingVertical="16dp">
@@ -56,7 +58,8 @@
     <!--    Hiển thị nội dung tin nhắn-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="512dp"
+        android:layout_height="0dp"
+        android:layout_weight="6"
         android:background="@color/white_0"
         android:orientation="vertical"
         android:paddingHorizontal="20dp"
@@ -116,10 +119,34 @@
     <!--    Footer-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="horizontal"
         android:padding="10dp"
-        >
+        android:weightSum="8"
+        android:gravity="center_vertical">
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="6"
+            android:hint="Type your message..."
+            android:maxHeight="40dp"
+            android:textSize="16dp" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#00F6F6F6"
+            android:drawableEnd="@drawable/vector" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#00F6F6F6"
+            android:drawableRight="@drawable/outline" />
 
     </LinearLayout>
 
