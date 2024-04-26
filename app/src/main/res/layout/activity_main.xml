@@ -7,11 +7,11 @@
     tools:context=".MainActivity">
 
     <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/user"
-        android:layout_width="40dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="52dp"
+        android:id="@+id/user_avatar"
+        android:layout_width="@dimen/width_avatar"
+        android:layout_height="@dimen/height_avatar"
+        android:layout_marginStart="@dimen/avatar_margin_start"
+        android:layout_marginTop="@dimen/avatar_margin_top"
         android:src="@drawable/avatar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -20,35 +20,35 @@
         app:riv_corner_radius="100dp" />
 
     <ImageView
-        android:id="@+id/find"
-        android:layout_width="30dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="52dp"
-        android:layout_marginEnd="36dp"
+        android:id="@+id/search_icon"
+        android:layout_width="@dimen/width_search"
+        android:layout_height="@dimen/height_search"
+        android:layout_marginTop="@dimen/search_margin_start"
+        android:layout_marginEnd="@dimen/search_margin_top"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/find" />
 
     <HorizontalScrollView
-        android:id="@+id/horizontalScrollView"
-        android:layout_width="0dp"
+        android:id="@+id/button_scroll_view"
+        android:layout_width="@dimen/width_scroll_view"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/scroll_view_margon_top"
         android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user">
+        app:layout_constraintTop_toBottomOf="@+id/user_avatar">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/allBtn"
-                android:layout_width="80dp"
-                android:layout_height="45dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
+                android:id="@+id/all_button"
+                android:layout_width="@dimen/width_button"
+                android:layout_height="@dimen/height_button"
+                android:layout_marginStart="@dimen/button_margin_start"
+                android:layout_marginEnd="@dimen/button_margin_end"
                 android:background="@drawable/selected_button"
                 android:textColor="@color/white_0"
                 android:text="All"
@@ -56,13 +56,11 @@
                 android:textStyle="bold"
                 />
 
-                />
-
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/unreadBtn"
-                android:layout_width="80dp"
-                android:layout_height="45dp"
-                android:layout_marginEnd="10dp"
+                android:id="@+id/unread_button"
+                android:layout_width="@dimen/width_button"
+                android:layout_height="@dimen/height_button"
+                android:layout_marginEnd="@dimen/button_margin_end"
                 android:background="@drawable/unselected_button"
                 android:text="unread"
                 android:textColor="@color/black_0"
@@ -70,10 +68,10 @@
                 />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/readBtn"
-                android:layout_width="80dp"
-                android:layout_height="45dp"
-                android:layout_marginEnd="10dp"
+                android:id="@+id/read_button"
+                android:layout_width="@dimen/width_button"
+                android:layout_height="@dimen/height_button"
+                android:layout_marginEnd="@dimen/button_margin_end"
                 android:background="@drawable/unselected_button"
                 android:text="read"
                 android:textColor="@color/black_0"
@@ -81,10 +79,10 @@
                 />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/pinnedBtn"
-                android:layout_width="80dp"
-                android:layout_height="45dp"
-                android:layout_marginEnd="10dp"
+                android:id="@+id/pinned_button"
+                android:layout_width="@dimen/width_button"
+                android:layout_height="@dimen/height_button"
+                android:layout_marginEnd="@dimen/button_margin_end"
                 android:background="@drawable/unselected_button"
                 android:text="pinned"
                 android:textColor="@color/black_0"
@@ -92,10 +90,10 @@
                 />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/requestBtn"
-                android:layout_width="80dp"
-                android:layout_height="45dp"
-                android:layout_marginEnd="10dp"
+                android:id="@+id/request_button"
+                android:layout_width="@dimen/width_button"
+                android:layout_height="@dimen/height_button"
+                android:layout_marginEnd="@dimen/button_margin_end"
                 android:background="@drawable/unselected_button"
                 android:text="request"
                 android:textColor="@color/black_0"
@@ -106,14 +104,14 @@
 
     </HorizontalScrollView>
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView"
+        android:id="@+id/chat_recycler_view"
+        android:layout_width="@dimen/width_layout"
+        android:layout_height="@dimen/height_layout"
+        android:layout_marginTop="@dimen/layout_margin_top"
+        app:layout_constraintTop_toBottomOf="@+id/button_scroll_view"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:listitem="@layout/chatlist_layout" />
+        tools:listitem="@layout/item_chat" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
