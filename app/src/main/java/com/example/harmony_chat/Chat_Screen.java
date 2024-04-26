@@ -1,13 +1,25 @@
 package com.example.harmony_chat;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.squareup.picasso.Picasso;
 
 public class Chat_Screen extends AppCompatActivity {
+
+    private boolean isFragmentDisplayed = false;
+    private Fragment reactsFragment, messageOptionsFragment;
+    private View options, reacts;
+    private TextView txtMessage;
+
     @Override
     protected void onCreate(Bundle savedInstancestate) {
         super.onCreate(savedInstancestate);
@@ -19,5 +31,62 @@ public class Chat_Screen extends AppCompatActivity {
         Picasso.get()
                 .load(img_url)
                 .into(imageView);
+
+        txtMessage = findViewById(R.id.message);
+        reactsFragment = getSupportFragmentManager().findFragmentById(R.id.reacts);
+        messageOptionsFragment = getSupportFragmentManager().findFragmentById(R.id.message_options_fragment);
+
+        txtMessage.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showFragments();
+                return true;
+            }
+        });
+
+    }
+
+    private void showFragments() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        if (reactsFragment != null) {
+            transaction.show(reactsFragment);
+        }
+
+        if (messageOptionsFragment != null) {
+            transaction.show(messageOptionsFragment);
+        }
+
+        transaction.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isFragmentsVisible()) {
+            hideFragments();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    private boolean isFragmentsVisible() {
+        return reactsFragment != null && reactsFragment.isVisible() ||
+                messageOptionsFragment != null && messageOptionsFragment.isVisible();
+    }
+
+    private void hideFragments() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        if (reactsFragment != null) {
+            transaction.hide(reactsFragment);
+        }
+
+        if (messageOptionsFragment != null) {
+            transaction.hide(messageOptionsFragment);
+        }
+
+        transaction.commit();
     }
 }

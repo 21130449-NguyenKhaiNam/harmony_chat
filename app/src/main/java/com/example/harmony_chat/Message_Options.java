@@ -23,4 +23,10 @@ public class Message_Options extends Fragment {
 
         return view;
     }
+
+    public void changeVisible(boolean hide) {
+        if (hide) {
+            view.setVisibility(View.GONE);
+        } else view.setVisibility(View.VISIBLE);
+    }
 }
