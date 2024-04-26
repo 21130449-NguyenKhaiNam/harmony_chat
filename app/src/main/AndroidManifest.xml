@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,8 +14,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Harmonychat"
         tools:targetApi="33">
+        <!--        <activity-->
+        <!--            android:name=".Chat_Screen"-->
+        <!--            android:exported="false" />-->
+        <!--        <activity-->
+        <!--            android:name=".MainActivity"-->
+        <!--            android:exported="true">-->
+        <!--            <intent-filter>-->
+        <!--                <action android:name="android.intent.action.MAIN" />-->
+
+        <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+        <!--            </intent-filter>-->
+        <!--        </activity>-->
+
+        <!--        File khởi chạy cho giao diện của 21130407-->
         <activity
-            android:name=".MainActivity"
+            android:name=".Chat_Screen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,6 +37,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--        Kết thúc file khởi chạy giao diện của 21130407-->
+
     </application>
 
 </manifest>
