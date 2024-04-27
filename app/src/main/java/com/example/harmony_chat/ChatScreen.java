@@ -6,14 +6,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.squareup.picasso.Picasso;
 
-public class Chat_Screen extends AppCompatActivity {
+public class ChatScreen extends AppCompatActivity {
 
     private boolean isFragmentDisplayed = false;
     private Fragment reactsFragment, messageOptionsFragment;

@@ -29,7 +29,7 @@
 
         <!--        File khởi chạy cho giao diện của 21130407-->
         <activity
-            android:name=".Chat_Screen"
+            android:name=".ChatScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

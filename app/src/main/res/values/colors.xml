@@ -8,4 +8,13 @@
     <color name="pink_0">#C14D7C</color>
     <color name="blue_0">#91BBE5</color>
     <color name="blue_1">#3376BC</color>
+
+    <color name="primary_white">#FFFFFF</color>
+    <color name="primary_yellow">#F4A82C</color>
+    <color name="primary_pink">#C14D7C</color>
+    <color name="primary_sky">#91BBE5</color>
+    <color name="primary_blue">#3376BC</color>
+    <color name="primary_dark">#0C2333</color>
+    <color name="hide">#00FFFFFF</color>
+
 </resources>
