@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:gravity="center"
+    android:padding="16dp"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="40dp">
+    <ImageView
+        android:id="@+id/avatarImg"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:scaleType="centerCrop"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    </androidx.cardview.widget.CardView>
+
+    <EditText
+
+        android:id="@+id/editEmail"
+        style="@style/input_style"
+        android:drawableLeft="@drawable/baseline_email_24"
+        android:drawablePadding="5dp"
+        android:ems="10"
+        android:inputType="text"
+        android:layout_marginTop="60dp"
+        android:textColorHint="@color/white"
+        android:hint="Địa chỉ email" />
+
+    <EditText
+    android:id="@+id/editUsername"
+    style="@style/input_style"
+    android:drawableLeft="@drawable/baseline_account_circle_24"
+    android:drawablePadding="5dp"
+    android:ems="10"
+    android:inputType="text"
+    android:layout_marginTop="10dp"
+    android:textColorHint="@color/white"
+    android:hint="Tên đăng nhập" />
+
+    <EditText
+        android:id="@+id/editPassword"
+        style="@style/input_style"
+        android:drawableLeft="@drawable/baseline_app_registration_24"
+        android:drawablePadding="5dp"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:layout_marginTop="10dp"
+        android:textColorHint="#fff"
+        android:hint="Mật khẩu" />
+
+    <EditText
+        android:id="@+id/editRePassword"
+        style="@style/input_style"
+        android:drawableLeft="@drawable/baseline_app_registration_24"
+        android:drawablePadding="5dp"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:layout_marginTop="10dp"
+        android:textColorHint="#fff"
+        android:hint="Nhập lại mật khẩu" />
+
+    <Button
+        android:id="@+id/signupBtn"
+        style="@style/long_input_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="Đăng ký" />
+
+    <Button
+        android:id="@+id/gotoLoginBtn"
+        style="@style/second_long_input_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="Đăng nhập" />
+
+</LinearLayout>

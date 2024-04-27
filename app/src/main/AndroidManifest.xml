@@ -31,13 +31,39 @@
         <activity
             android:name=".ChatScreen"
             android:exported="true">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
+        <!--        Kết thúc file khởi chạy giao diện của 21130407-->
+
+        <!--        File khởi chạy cho giao diện đăng ký 21130463-->
+        <activity
+            android:name=".SignupActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--        Kết thúc file khởi chạy giao diện của 21130407-->
+        <!--        Kết thúc-->
+
+        <!--        File khởi chạy cho giao diện đăng nhập 21130463-->
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true">
+        </activity>
+        <!--        Kết thúc-->
+
+        <!--        File khởi chạy cho giao diện quên mật khẩu 21130463-->
+        <activity
+            android:name=".ForgetPasswordActivity"
+            android:exported="true">
+        </activity>
+        <!--        Kết thúc-->
 
     </application>
 
