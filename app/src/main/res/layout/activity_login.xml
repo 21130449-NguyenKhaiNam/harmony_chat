@@ -7,7 +7,8 @@
     android:gravity="center"
     android:padding="16dp"
     android:background="@color/primary_blue"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:ignore="ExtraText">
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
@@ -30,9 +31,9 @@
     android:drawablePadding="5dp"
     android:ems="10"
     android:inputType="text"
-    android:layout_marginTop="60dp"
+    android:layout_marginTop="0dp"
     android:textColorHint="@color/white"
-    android:hint="Tên đăng nhập" />
+    android:hint="Tên đăng nhập"/>
 
     <EditText
         android:id="@+id/editPassword"
@@ -49,7 +50,7 @@
         android:id="@+id/txtForgetPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_gravity="right"
         android:layout_marginBottom="10dp"
         android:textColor="#fff"
@@ -60,7 +61,7 @@
         style="@style/long_input_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="0dp"
         android:text="Đăng nhập" />
 
 
@@ -68,7 +69,7 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="10dp"
         android:gravity="center"
         android:layout_marginBottom="10dp"
         android:textColor="#fff"
@@ -107,7 +108,7 @@
         style="@style/second_long_input_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="10dp"
         android:text="Đăng ký" />
 
 

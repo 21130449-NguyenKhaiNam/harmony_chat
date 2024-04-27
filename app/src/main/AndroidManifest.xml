@@ -27,27 +27,24 @@
         <!--            </intent-filter>-->
         <!--        </activity>-->
 
-        <!--        File khởi chạy cho giao diện của 21130407-->
         <activity
-            android:name=".ChatScreen"
+            android:name=".MainActivity"
             android:exported="true">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
         </activity>
-        <!--        Kết thúc file khởi chạy giao diện của 21130407-->
+
+        <activity
+            android:name=".Access"
+            android:exported="true">
+
+        </activity>
+
 
         <!--        File khởi chạy cho giao diện đăng ký 21130463-->
         <activity
             android:name=".SignupActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <!--        Kết thúc-->
 
@@ -55,6 +52,8 @@
         <activity
             android:name=".LoginActivity"
             android:exported="true">
+
+
         </activity>
         <!--        Kết thúc-->
 
@@ -64,6 +63,41 @@
             android:exported="true">
         </activity>
         <!--        Kết thúc-->
+
+        <activity
+            android:name=".ProfileOther"
+            android:exported="true">
+
+        </activity>
+
+        <activity
+            android:name=".MainActivity1"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
+        <activity
+            android:name=".Profile"
+            android:exported="true">
+
+        </activity>
+
+
+        <!--        File khởi chạy cho giao diện của 21130407-->
+        <activity
+            android:name=".ChatScreen"
+            android:exported="true">
+        </activity>
+
+        <!--        Kết thúc file khởi chạy giao diện của 21130407-->
+
+
+
+
 
     </application>
 

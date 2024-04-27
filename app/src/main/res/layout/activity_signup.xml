@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:gravity="center"
     android:padding="16dp"
+    android:background="@color/primary_blue"
     android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
@@ -29,7 +30,7 @@
         android:drawablePadding="5dp"
         android:ems="10"
         android:inputType="text"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="20dp"
         android:textColorHint="@color/white"
         android:hint="Địa chỉ email" />
 
