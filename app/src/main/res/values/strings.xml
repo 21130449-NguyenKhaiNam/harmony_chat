@@ -8,9 +8,6 @@
     -->
 
     <string name="app_name">harmony-chat</string>
-    <string name="a" formatted="true" translatable="false">hello</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="sign_in">Đăng nhập</string>
     <string name="register">Đăng ký</string>
