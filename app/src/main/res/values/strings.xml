@@ -32,7 +32,6 @@
     <string name="edit">Điều chỉnh</string>
     <string name="forgetpwdBtn">Quên mật khẩu</string>
 
-
     <!-- Mẫu nội dung -->
     <string name="example_username">Tên người dùng</string>
     <string name="example_description">Mô tả</string>
@@ -66,4 +65,6 @@
     <string name="reenterpwd">Nhập lại mật khẩu</string>
     <string name="hadaccount">Đã có tài khoản?</string>
 
+    <string name="all">All</string>
+    <string name="unread">unread</string>
 </resources>

@@ -32,5 +32,4 @@
 
     <!--    Sử dụng khi muốn thể hiện màu đỏ cho sự nguy hiểm của hành động người dùng, hoặc báo lỗi-->
     <color name="danger">#FF0000</color>
-
 </resources>

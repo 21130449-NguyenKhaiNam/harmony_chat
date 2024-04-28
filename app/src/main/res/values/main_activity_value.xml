@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Màn hình chính -->
+    <dimen name="width_avatar">40dp</dimen>
+    <dimen name="height_avatar">40dp</dimen>
+    <dimen name="avatar_margin_start">36dp</dimen>
+    <dimen name="avatar_margin_top">52dp</dimen>
+
+    <!-- Icon search -->
+    <dimen name="width_search">30dp</dimen>
+    <dimen name="height_search">50dp</dimen>
+    <dimen name="search_margin_start">52dp</dimen>
+    <dimen name="search_margin_top">36dp</dimen>
+
+    <!--Button Scroll View -->
+    <dimen name="width_scroll_view">0dp</dimen>
+    <dimen name="scroll_view_margon_top">16dp</dimen>
+
+    <!--Button-->
+    <dimen name="width_button">80dp</dimen>
+    <dimen name="height_button">45dp</dimen>
+    <dimen name="button_margin_start">10dp</dimen>
+    <dimen name="button_margin_end">10dp</dimen>
+
+    <!--Recycle View-->
+    <dimen name="width_layout">0dp</dimen>
+    <dimen name="height_layout">0dp</dimen>
+    <dimen name="layout_margin_top">16dp</dimen>
+</resources>
