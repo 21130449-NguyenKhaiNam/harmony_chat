@@ -48,4 +48,6 @@ dependencies {
 
 //    implement loading library
     implementation ("com.squareup.picasso:picasso:2.71828")
+//    thư viện thêm - 21130463
+    implementation("androidx.cardview:cardview:1.0.0")
 }

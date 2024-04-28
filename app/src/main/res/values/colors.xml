@@ -26,6 +26,7 @@
     <color name="primary_blue">#3376BC</color>
     <color name="primary_dark">#0C2333</color>
 
+    <color name="white">@color/primary_white</color>
     <!--    Được sử dụng khi cần set màu nền của chủ thể thành trong suốt (alpha = 0)-->
     <color name="transparent">#00ffffff</color>
 

@@ -26,9 +26,12 @@
     <string name="save">Lưu lại</string>
     <string name="send_message">Gửi tin nhắn</string>
 
+
     <!-- Nội dung cho các nút -->
     <string name="back">Trở về</string>
     <string name="edit">Điều chỉnh</string>
+    <string name="forgetpwdBtn">Quên mật khẩu</string>
+
 
     <!-- Mẫu nội dung -->
     <string name="example_username">Tên người dùng</string>
@@ -56,5 +59,11 @@
     <string name="options_forward">Chuyển tiếp</string>
     <string name="options_copy">Sao chép</string>
     <string name="options_recall">Thu hồi</string>
+
+    <!--    nôi dung cho ô input - 21130463-->
+    <string name="password">Mật khẩu</string>
+    <string name="username">Tên đăng nhập</string>
+    <string name="reenterpwd">Nhập lại mật khẩu</string>
+    <string name="hadaccount">Đã có tài khoản?</string>
 
 </resources>
