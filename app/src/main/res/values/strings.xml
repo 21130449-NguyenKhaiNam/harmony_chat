@@ -26,9 +26,13 @@
     <string name="save">Lưu lại</string>
     <string name="send_message">Gửi tin nhắn</string>
 
+
+
     <!-- Nội dung cho các nút -->
     <string name="back">Trở về</string>
     <string name="edit">Điều chỉnh</string>
+    <string name="forgetpwdBtn">Quên mật khẩu</string>
+
 
     <!-- Mẫu nội dung -->
     <string name="example_username">Tên người dùng</string>
@@ -39,4 +43,12 @@
     <string name="example_sex">Nam</string>
     <string name="example_address">58 Tân Lập 1, Đường số 9</string>
     <string name="example_relationship">Mối quan hệ</string>
+
+<!--    nôi dung cho ô input-->
+    <string name="password">Mật khẩu</string>
+    <string name="username">Tên đăng nhập</string>
+    <string name="reenterpwd">Nhập lại mật khẩu</string>
+    <string name="hadaccount">Đã có tài khoản? Đăng nhập</string>
+
+
 </resources>

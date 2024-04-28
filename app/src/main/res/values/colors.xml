@@ -16,5 +16,10 @@
     <color name="blue_0">#91BBE5</color>
     <color name="blue_1">#3376BC</color>
 
+    <color name="white">#FFFFFFFF</color>
+    <color name="primary_blue">#3376BC</color>
+    <color name="primary_sky">#91BBE5</color>
+    <color name="primary_pink">#C14D7C</color>
+
     <color name="transparent">#00ffffff</color>
 </resources>
