@@ -10,7 +10,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Nhấn và giữ để thả cảm xúc"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center_horizontal"
+        android:textSize="@dimen/text_2"
+        android:textStyle="normal"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,55 +21,55 @@
             android:id="@+id/react_heart"
             android:layout_width="43dp"
             android:layout_height="wrap_content"
-            android:backgroundTint="#00F6F6F6"
+            android:backgroundTint="@color/transparent"
             android:paddingHorizontal="0dp"
             android:text="❤️"
-            android:textSize="26dp" />
+            android:textSize="@dimen/reacts_size_0" />
 
         <Button
             android:id="@+id/react_haha"
             android:layout_width="43dp"
             android:layout_height="wrap_content"
-            android:backgroundTint="#00F6F6F6"
+            android:backgroundTint="@color/transparent"
             android:paddingHorizontal="0dp"
             android:text="😂"
-            android:textSize="26dp" />
+            android:textSize="@dimen/reacts_size_0" />
 
         <Button
             android:id="@+id/react_wow"
             android:layout_width="43dp"
             android:layout_height="wrap_content"
-            android:backgroundTint="#00F6F6F6"
+            android:backgroundTint="@color/transparent"
             android:paddingHorizontal="0dp"
             android:text="😮"
-            android:textSize="26dp" />
+            android:textSize="@dimen/reacts_size_0" />
 
         <Button
             android:id="@+id/react_sad"
             android:layout_width="43dp"
             android:layout_height="wrap_content"
-            android:backgroundTint="#00F6F6F6"
+            android:backgroundTint="@color/transparent"
             android:paddingHorizontal="0dp"
             android:text="😢"
-            android:textSize="26dp" />
+            android:textSize="@dimen/reacts_size_0" />
 
         <Button
             android:id="@+id/react_angry"
             android:layout_width="43dp"
             android:layout_height="wrap_content"
-            android:backgroundTint="#00F6F6F6"
+            android:backgroundTint="@color/transparent"
             android:paddingHorizontal="0dp"
             android:text="😡"
-            android:textSize="26dp" />
+            android:textSize="@dimen/reacts_size_0" />
 
         <Button
             android:id="@+id/react_like"
             android:layout_width="43dp"
             android:layout_height="wrap_content"
-            android:backgroundTint="#00F6F6F6"
+            android:backgroundTint="@color/transparent"
             android:paddingHorizontal="0dp"
             android:text="👍"
-            android:textSize="26dp" />
+            android:textSize="@dimen/reacts_size_0" />
 
     </LinearLayout>
 

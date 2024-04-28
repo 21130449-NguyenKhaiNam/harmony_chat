@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--
+        Quy tắc đặt tên:
+            + Tên dài cũng không sao miễn thể hiện đúng chức năng
+            + Đặt tên:
+                - màu_thứtự
+                - loại : Đối với biến màu đặc biệt
+    -->
     <color name="black_0">#0F1419</color>
     <color name="black_1">#0C2333</color>
     <color name="white_0">#FFFFFFFF</color>
@@ -9,12 +16,20 @@
     <color name="blue_0">#91BBE5</color>
     <color name="blue_1">#3376BC</color>
 
+    <!--    Bộ màu cơ sở cho ứng dụng (Được quy định theo bản màu trong thiết kế figma tại:
+    https://www.figma.com/file/YUzdfWjmV2r2Fhb6jjO7s4/Giao-di%E1%BB%87n?type=design&node-id=0%3A1&mode=design&t=hVnrLO90EC1snB0G-1
+    -->
     <color name="primary_white">#FFFFFF</color>
     <color name="primary_yellow">#F4A82C</color>
     <color name="primary_pink">#C14D7C</color>
     <color name="primary_sky">#91BBE5</color>
     <color name="primary_blue">#3376BC</color>
     <color name="primary_dark">#0C2333</color>
-    <color name="hide">#00FFFFFF</color>
+
+    <!--    Được sử dụng khi cần set màu nền của chủ thể thành trong suốt (alpha = 0)-->
+    <color name="transparent">#00ffffff</color>
+
+    <!--    Sử dụng khi muốn thể hiện màu đỏ cho sự nguy hiểm của hành động người dùng, hoặc báo lỗi-->
+    <color name="danger">#FF0000</color>
 
 </resources>

@@ -22,7 +22,7 @@
             android:id="@+id/imageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/hide"
+            android:backgroundTint="@color/transparent"
             android:src="@drawable/arrow_back_ios" />
 
         <!--Hien thi avatar cua nguoi dung-->
@@ -41,15 +41,15 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="6dp"
-            android:text="Username"
-            android:textSize="18dp"
+            android:text="@string/conversation_name"
+            android:textSize="@dimen/text_0"
             android:textStyle="bold" />
 
         <ImageButton
             android:id="@+id/calling"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/hide"
+            android:backgroundTint="@color/transparent"
             android:scaleType="fitCenter"
             android:src="@drawable/baseline_call_24" />
 
@@ -98,8 +98,8 @@
                         android:layout_height="wrap_content"
                         android:background="@color/primary_sky"
                         android:padding="10dp"
-                        android:text="Đây là tin nhắn chat được nhận"
-                        android:textSize="18dp"
+                        android:text="@string/message_has_been_received"
+                        android:textSize="@dimen/text_0"
                         android:textStyle="normal" />
                 </androidx.cardview.widget.CardView>
 
@@ -131,22 +131,22 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="6"
-            android:hint="Type your message..."
+            android:hint="@string/message_hint"
             android:maxHeight="40dp"
-            android:textSize="16dp" />
+            android:textSize="@dimen/text_1" />
 
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:backgroundTint="@color/hide"
+            android:backgroundTint="@color/transparent"
             android:drawableEnd="@drawable/vector" />
 
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:backgroundTint="@color/hide"
+            android:backgroundTint="@color/transparent"
             android:drawableRight="@drawable/outline" />
 
     </LinearLayout>
