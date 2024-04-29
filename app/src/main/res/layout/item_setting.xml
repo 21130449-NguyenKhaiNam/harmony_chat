@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="@dimen/profile_height_header_before_margin_bottom"
+    android:padding="7dp"
     >
     <ImageButton
         android:id="@+id/icon"
@@ -27,7 +27,7 @@
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="50dp"
+        android:layout_marginLeft="40dp"
         android:layout_weight="1"
         android:text="public"
         android:textColor="#999999"

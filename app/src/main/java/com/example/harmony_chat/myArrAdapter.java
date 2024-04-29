@@ -31,17 +31,18 @@ public class myArrAdapter extends ArrayAdapter<setting> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        LayoutInflater myflater=context.getLayoutInflater();
-        convertView=myflater.inflate(id_layout,null);
-        setting my_setting=myList.get(position);
-        ImageView ic_setting=convertView.findViewById(R.id.icon);
-        ic_setting.setImageResource(my_setting.getIcon());
-        TextView text=convertView.findViewById(R.id.name);
-        text.setText(my_setting.getName());
-        TextView amount=convertView.findViewById(R.id.amount);
-        amount.setText(my_setting.getThong_so());
-        ImageView ic_greater_than=convertView.findViewById(R.id.greater_than);
-        ic_greater_than.setImageResource(my_setting.getIc_greater());
-return convertView;
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        convertView = inflater.inflate(id_layout, parent, false);
+        setting currentSetting = myList.get(position);
+
+        ImageView ic_setting = convertView.findViewById(R.id.icon);
+        ic_setting.setImageResource(currentSetting.getIcon());
+        TextView text = convertView.findViewById(R.id.name);
+        text.setText(currentSetting.getName());
+        TextView amount = convertView.findViewById(R.id.amount);
+        amount.setText(currentSetting.getThong_so());
+        ImageView ic_greater_than = convertView.findViewById(R.id.greater_than);
+        ic_greater_than.setImageResource(currentSetting.getIc_greater());
+        return convertView;
     }
 }

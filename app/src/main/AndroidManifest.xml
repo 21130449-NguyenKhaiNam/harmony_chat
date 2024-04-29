@@ -41,14 +41,14 @@
 
 
         <!--        File khởi chạy cho giao diện của 23130438-->
-        <!--        <activity-->
-        <!--            android:name=".SettingScreen"-->
-        <!--            android:exported="true">-->
-        <!--            <intent-filter>-->
-        <!--                <action android:name="android.intent.action.MAIN" />-->
-        <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-        <!--            </intent-filter>-->
-        <!--        </activity>-->
+        <activity
+            android:name=".SettingScreen"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <!--        Kết thúc file khởi chạy cho giao diện của 23130438-->
 
         <!--        File khởi chạy cho giao diện của 23130463-->
@@ -80,15 +80,16 @@
         <!--        Kết thúc file khởi chạy cho giao diện của 23130463-->
 
         <!--        File khởi chạy cho giao diện của 23130467-->
-                <activity
-                    android:name=".MainActivity"
-                    android:exported="true">
-                    <intent-filter>
-                        <action android:name="android.intent.action.MAIN" />
-                        <category android:name="android.intent.category.LAUNCHER" />
-                    </intent-filter>
-                </activity>
+        <!--        <activity-->
+        <!--            android:name=".MainActivity"-->
+        <!--            android:exported="true">-->
+        <!--            <intent-filter>-->
+        <!--                <action android:name="android.intent.action.MAIN" />-->
+        <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+        <!--            </intent-filter>-->
+        <!--        </activity>-->
         <!--        Kết thúc file khởi chạy cho giao diện của 23130467-->
+
     </application>
 
 </manifest>
