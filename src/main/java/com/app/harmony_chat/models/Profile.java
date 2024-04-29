@@ -1,5 +1,6 @@
 package com.app.harmony_chat.models;
 
+import com.app.harmony_chat.configs.DefineTableDatabase;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 @Setter
 @Data
 @NoArgsConstructor
-@Table(name = "profiles")
+@Table(name = DefineTableDatabase.PROFILE)
 public class Profile {
     @Id
     @OneToOne

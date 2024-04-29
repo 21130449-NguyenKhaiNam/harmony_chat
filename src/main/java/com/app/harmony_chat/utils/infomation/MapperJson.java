@@ -3,6 +3,7 @@ package com.app.harmony_chat.utils.infomation;
 import com.app.harmony_chat.configs.DefineInfomation;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -34,18 +35,8 @@ public class MapperJson {
         }
     }
 
-    /**
-     * Nếu có bất cứ giá trị của json không thuộc kiểu json được truyền xem như không đúng chuẩn
-     *
-     * @param json
-     * @param names
-     * @return
-     */
-    public boolean isNotSyntaxJsonCorrect(Map<String, String> json, String... names) {
-        return Arrays.stream(names).filter(name -> !json.containsKey(name)).findAny().isEmpty();
-    }
-
-    public List<String> getParam(Map<String, String> json, String... names) {
+    // Trả về một mảng liên tiếp tuân theo quy tắc nhận được ở names
+    public List<String> getParam(@NotNull Map<String, String> json, @NotNull String... names) {
         return Arrays.stream(names).map(name -> {
             String param = json.get(name);
             return param == null ? DefineInfomation.EMPTY : param;

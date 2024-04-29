@@ -11,14 +11,14 @@ public interface DefineInfomation {
     int ERROR_SERVER = 500;
 
     // Nội dung mặc định
-    String DEFAULT_SUCCESS = "Thực hiện thành công";
-    String DEFAULT_WARNING = "Có cảnh báo";
-    String DEFAULT_ERROR = "Thực hiện không thành công";
     String DEFAULT_ERROR_ACCOUNT = "Xuất hiện nhiều hơn 1 tài khoản!!!";
     String DEFAULT_NOT_CORRECT_ACCOUNT = "Tài khoản không đúng";
     String DEFAULT_NOT_ACCOUNT = "Tài khoản không tồn tại";
     String DEFAULT_HAS_ACCOUNT = "Tài khoản đã tồn tại";
     String DEFAULT_NOT_CORRECT_FILEDS = "Có trường nhập không đủ thông tin";
+    String DEFAULT_HAS_FRIEND = "Đã kết bạn";
+    String DEFAULT_UN_FRIEND_SUCCESS = "Hủy kết bạn thành công";
+    String DEFAULT_RENAME_NICKNAME_FRIEND = "Đổi biệt danh thành công";
 
     String EMPTY = "empty";
 }

@@ -1,6 +1,7 @@
 package com.app.harmony_chat.models;
 
 import com.app.harmony_chat.configs.DefinePropertyJson;
+import com.app.harmony_chat.configs.DefineTableDatabase;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -13,7 +14,7 @@ import java.util.UUID;
 @Setter
 @Data
 @NoArgsConstructor
-@Table(name = "users")
+@Table(name = DefineTableDatabase.USER)
 public class User {
     @Id
     @GeneratedValue
@@ -24,5 +25,9 @@ public class User {
     public User(String email, String password) {
         this.email = email;
         this.password = password;
+    }
+
+    public User(String id) {
+        this.id = UUID.fromString(id);
     }
 }

@@ -1,5 +1,6 @@
 package com.app.harmony_chat.models;
 
+import com.app.harmony_chat.configs.DefineTableDatabase;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import lombok.Setter;
 @Setter
 @Data
 @NoArgsConstructor
-@Table(name = "block_list")
+@Table(name = DefineTableDatabase.BLOCK_LIST)
 public class BlockList {
     @Id
     @Column

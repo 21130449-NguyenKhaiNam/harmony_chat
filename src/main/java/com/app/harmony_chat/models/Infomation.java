@@ -12,8 +12,9 @@ import lombok.experimental.Accessors;
 @Setter
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Accessors(chain = true)
 public class Infomation {
     private int code;
-    private String content;
+    private Object content;
 }

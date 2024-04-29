@@ -17,7 +17,16 @@
 - configs: Thông tin cho dự án
 
 # Giải thích api:
+
 - Liên quan đến truy cập
 	+ /api/v1/account/login: Đăng nhập -> JSON {'email':'?', 'password': '?'}
 	+ /api/v1/account/register: Đăng ký -> JSON {'email':'?', 'password': '?'}
 	+ /api/v1/account/forget: Quên mật khẩu -> JSON {'email':'?'}
+
+- Liên quan đến mối quan hệ:
+	+ /api/v1/relationship/friend/add: Thêm mối quan hệ bạn bè -> JSON {'user-id':'?', 'other-id': '?'}
+	+ /api/v1/relationship/friend/unfriend: Hủy kết bạn -> JSON {'user-id':'?', 'other-id': '?'}
+	+ /api/v1/relationship/friend/rename: Đổi biệt danh bạn bè -> JSON {'user-id':'?', 'other-id': '?', 'nickname': '?'}
+	+ /api/v1/relationship/friend/list: Lấy ra danh sách bạn bè -> JSON {'user-id':'?'}
+	+ /api/v1/relationship/other/profile: Xem thông tin của người dùng khác -> JSON {'other-id': '?'}
+	+ /api/v1/relationship/other/friends: Xem bạn bè của người khác -> JSON {'other-id': '?'}

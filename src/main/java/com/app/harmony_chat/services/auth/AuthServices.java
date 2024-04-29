@@ -7,6 +7,7 @@ import com.app.harmony_chat.utils.auths.PasswordEncoder;
 import com.app.harmony_chat.models.Infomation;
 import com.app.harmony_chat.utils.infomation.CheckInfomation;
 import org.antlr.v4.runtime.misc.NotNull;
+import org.antlr.v4.runtime.misc.ObjectEqualityComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -84,13 +85,14 @@ public class AuthServices {
         Infomation info = selectUser(email, null);
         // Nếu được xác nhận là thành công truy xuất
         if (info.getCode() == DefineInfomation.SUCCESS) {
-            String content = info.getContent();
+            Object content = info.getContent();
             // Nếu chưa tồn tại tài khoản thì tạo
             if (content.equals(DefineInfomation.DEFAULT_NOT_ACCOUNT)) {
-                newUser.setId(UUID.randomUUID());
-                newUser.setPassword(encoder.hashPass(newUser.getPassword()));
-                User user = dao.save(newUser);
-                info.setContent(user.getId().toString());
+                // Gửi mail tới tài khoản
+//                newUser.setId(UUID.randomUUID());
+//                newUser.setPassword(encoder.hashPass(newUser.getPassword()));
+//                User user = dao.save(newUser);
+//                info.setContent(user.getId().toString());
             } else {
                 info.setContent(DefineInfomation.DEFAULT_HAS_ACCOUNT);
             }
@@ -101,7 +103,7 @@ public class AuthServices {
     public Infomation getAccountBack(String email) {
         Infomation info = selectUser(email, null);
         if(info.getCode() == DefineInfomation.SUCCESS) {
-            String content = info.getContent();
+            Object content = info.getContent();
             if (content.equals(DefineInfomation.DEFAULT_NOT_ACCOUNT)) {
                 info.setContent(DefineInfomation.DEFAULT_NOT_ACCOUNT);
             } else {
