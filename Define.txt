@@ -1,0 +1,32 @@
+@Người tạo: Nguyễn Khải Nam - 21130449
+@Ngày tạo: 29 / 04/ 2024
+
+@Phiên bản: 1.0
+
+# Tổng quan
+- File được dùng để mô tả tổng thể mô hình backend được xây dựng.
+- Kiến thức: Spring Boot Web, JPA, Lombok, Hibernate, Mô hình MVC Spring
+
+# Cấu trúc
+- Gồm 3 tầng (tự custom lại theo ý thích của người sáng tạo):
+	+ API (apis): Cung cấp đường dẫn cho các chương trình gọi tới
+	+ Xử lý (services): Xử lý nội dung được trả về
+	+ Lấy dữ liệu (repossitories): Lấy dữ liệu dưới Database
+- utils: Cung cấp các công cụ mà cả hệ thống có thể sử dụng
+- models: Cung cấp mô hình và dùng để khởi tạo entity dưới database
+- configs: Thông tin cho dự án
+
+# Giải thích api:
+
+- Liên quan đến truy cập
+	+ /api/v1/account/login: Đăng nhập -> JSON {'email':'?', 'password': '?'}
+	+ /api/v1/account/register: Đăng ký -> JSON {'email':'?', 'password': '?'}
+	+ /api/v1/account/forget: Quên mật khẩu -> JSON {'email':'?'}
+
+- Liên quan đến mối quan hệ:
+	+ /api/v1/relationship/friend/add: Thêm mối quan hệ bạn bè -> JSON {'user-id':'?', 'other-id': '?'}
+	+ /api/v1/relationship/friend/unfriend: Hủy kết bạn -> JSON {'user-id':'?', 'other-id': '?'}
+	+ /api/v1/relationship/friend/rename: Đổi biệt danh bạn bè -> JSON {'user-id':'?', 'other-id': '?', 'nickname': '?'}
+	+ /api/v1/relationship/friend/list: Lấy ra danh sách bạn bè -> JSON {'user-id':'?'}
+	+ /api/v1/relationship/other/profile: Xem thông tin của người dùng khác -> JSON {'other-id': '?'}
+	+ /api/v1/relationship/other/friends: Xem bạn bè của người khác -> JSON {'other-id': '?'}
