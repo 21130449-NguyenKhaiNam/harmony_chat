@@ -1,10 +1,10 @@
 package com.app.harmony_chat.models;
 
+import com.app.harmony_chat.configs.DefinePropertyJson;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -17,13 +17,12 @@ import java.util.UUID;
 public class User {
     @Id
     @GeneratedValue
-    @Column
     private UUID id;
-
-    @Column
-    private String username;
-
-    @Column
+    private String email;
     private String password;
 
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 }

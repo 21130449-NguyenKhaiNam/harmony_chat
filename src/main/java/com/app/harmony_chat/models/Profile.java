@@ -20,11 +20,11 @@ public class Profile {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
+    private String username;
+
     // Lưu đường dẫn
-    @Column
     private String avatar;
 
-    @Column
     @Temporal(TemporalType.DATE)
     private LocalDate dob;
 
@@ -36,6 +36,5 @@ public class Profile {
     @JoinColumn(name = "coutries_id", referencedColumnName = "id")
     private Country country;
 
-    @Column
     private String phone;
 }
