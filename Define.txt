@@ -20,3 +20,4 @@
 - Liên quan đến truy cập
 	+ /api/v1/account/login: Đăng nhập -> JSON {'email':'?', 'password': '?'}
 	+ /api/v1/account/register: Đăng ký -> JSON {'email':'?', 'password': '?'}
+	+ /api/v1/account/forget: Quên mật khẩu -> JSON {'email':'?'}
