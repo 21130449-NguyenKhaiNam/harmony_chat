@@ -1,0 +1,42 @@
+<resources>
+    <!--
+        Quy tắc đặt tên:
+            + Tên dài cũng không sao miễn thể hiện đúng chức năng
+            + Đặt tên:
+                - phầntử (sử dụng snack_case nếu tên dài)
+                - Sử dụng các từ: count, sum, total cho các chuỗi có chứa số bên trong
+    -->
+
+    <string name="app_name">harmony-chat</string>
+
+    <string name="sign_in">Đăng nhập</string>
+    <string name="register">Đăng ký</string>
+    <string name="forget">Quên mật khẩu?</string>
+    <string name="login_other">Hoặc đăng nhập bằng mạng xã hội khác</string>
+    <string name="facebook">Facebook</string>
+    <string name="google">Google</string>
+    <string name="friends">Bạn bè</string>
+    <string name="count_friends">* người bạn</string>
+    <string name="email">Email</string>
+    <string name="phone">Số điện thoại</string>
+    <string name="birth_date">Ngày sinh</string>
+    <string name="sex">Giới tính</string>
+    <string name="address">Địa chỉ</string>
+    <string name="more">Xem thêm</string>
+    <string name="save">Lưu lại</string>
+    <string name="send_message">Gửi tin nhắn</string>
+
+    <!-- Nội dung cho các nút -->
+    <string name="back">Trở về</string>
+    <string name="edit">Điều chỉnh</string>
+
+    <!-- Mẫu nội dung -->
+    <string name="example_username">Tên người dùng</string>
+    <string name="example_description">Mô tả</string>
+    <string name="example_email">example@gmail.com</string>
+    <string name="example_phone">(+84) 915 87 06 83</string>
+    <string name="example_birth_date">1 / 01 / 2003</string>
+    <string name="example_sex">Nam</string>
+    <string name="example_address">58 Tân Lập 1, Đường số 9</string>
+    <string name="example_relationship">Mối quan hệ</string>
+</resources>
