@@ -27,7 +27,7 @@
 
         android:id="@+id/editEmail"
         style="@style/input_style"
-        android:drawableLeft="@drawable/baseline_email_24"
+        android:drawableLeft="@drawable/email"
         android:drawablePadding="5dp"
         android:ems="10"
         android:inputType="text"
@@ -38,7 +38,7 @@
     <EditText
     android:id="@+id/editUsername"
     style="@style/input_style"
-    android:drawableLeft="@drawable/baseline_account_circle_24"
+    android:drawableLeft="@drawable/account"
     android:drawablePadding="5dp"
     android:ems="10"
     android:inputType="text"
@@ -49,24 +49,26 @@
     <EditText
         android:id="@+id/editPassword"
         style="@style/input_style"
-        android:drawableLeft="@drawable/baseline_app_registration_24"
+        android:drawableLeft="@drawable/password"
         android:drawablePadding="5dp"
         android:ems="10"
         android:inputType="textPassword"
         android:layout_marginTop="10dp"
         android:textColorHint="#fff"
-        android:hint="@string/password" />
+        android:hint="@string/password"
+        android:drawableRight="@drawable/eye"/>
 
     <EditText
         android:id="@+id/editRePassword"
         style="@style/input_style"
-        android:drawableLeft="@drawable/baseline_app_registration_24"
+        android:drawableLeft="@drawable/password"
         android:drawablePadding="5dp"
         android:ems="10"
         android:inputType="textPassword"
         android:layout_marginTop="10dp"
         android:textColorHint="#fff"
-        android:hint="@string/reenterpwd" />
+        android:hint="@string/reenterpwd"
+        android:drawableRight="@drawable/eye"/>
 
     <Button
         android:id="@+id/signupBtn"
