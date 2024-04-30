@@ -37,7 +37,7 @@
                 android:background="@color/transparent"
                 android:contentDescription="@string/back"
                 android:scaleType="fitCenter"
-                android:src="@drawable/less_than" />
+                android:src="@drawable/arrow_back_ios" />
 
             <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/avatar"

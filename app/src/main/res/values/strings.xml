@@ -29,6 +29,7 @@
     <!-- Nội dung cho các nút -->
     <string name="back">Trở về</string>
     <string name="edit">Điều chỉnh</string>
+    <string name="forgetpwdBtn">Quên mật khẩu</string>
 
     <!-- Mẫu nội dung -->
     <string name="example_username">Tên người dùng</string>
@@ -39,4 +40,31 @@
     <string name="example_sex">Nam</string>
     <string name="example_address">58 Tân Lập 1, Đường số 9</string>
     <string name="example_relationship">Mối quan hệ</string>
+
+    <!--    activity_chat_screen - 21130407 -->
+    <string name="conversation_name">Tôi là KhươngVõ2105</string>
+    <!--    message_has_been_received: là tin nhắn mà client nhận được từ người khác
+    Phân biệt với
+    message_is_sent: là tin nhắn được client gửi đi
+    -->
+    <string name="message_has_been_received">Đây là tin nhắn chat được nhận</string>
+    <string name="message_is_sent">Đây là tin nhắn chat được gửi đi</string>
+    <string name="message_hint">Type your message...</string>
+
+    <!--    fragment_message_options - 21130407-->
+    <string name="message_detail">17 Apr 6:12 AM</string>
+    <string name="options_reply">Trả lời</string>
+    <string name="options_forward">Chuyển tiếp</string>
+    <string name="options_copy">Sao chép</string>
+    <string name="options_recall">Thu hồi</string>
+
+    <!--    nôi dung cho ô input - 21130463-->
+    <string name="password">Mật khẩu</string>
+    <string name="username">Tên đăng nhập</string>
+    <string name="reenterpwd">Nhập lại mật khẩu</string>
+    <string name="hadaccount">Đã có tài khoản?</string>
+
+    <string name="all">All</string>
+    <string name="unread">unread</string>
+
 </resources>
