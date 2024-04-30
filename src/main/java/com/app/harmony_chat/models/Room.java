@@ -19,19 +19,15 @@ import java.util.UUID;
 public class Room {
     @Id
     private UUID id;
-
-    @Column
+    
     @Temporal(TemporalType.DATE)
     private LocalDate published;
 
-    @Column
     private boolean visible;
 
     // Đường dẫn
-    @Column
     private String image;
 
     // Đường dẫn
-    @Column
     private String background;
 }

@@ -13,6 +13,12 @@ public interface DefinePath {
     String FRIEND_DELETE = "/api/v1/relationship/friend/unfriend";
     String FRIEND_RENAME_NICKNAME = "/api/v1/relationship/friend/rename";
     String FRIEND_LIST = "/api/v1/relationship/friend/list";
+
+    // Other
     String OTHER_PROFILE = "/api/v1/relationship/other/profile";
     String OTHER_FRIEND = "/api/v1/relationship/other/friends";
+
+    // View
+    String SEARCH = "/api/v1/search";
+    String SEARCH_FRIEND_MESS = "/api/v1/search/friend/mess";
 }

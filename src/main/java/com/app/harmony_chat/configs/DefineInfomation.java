@@ -19,6 +19,7 @@ public interface DefineInfomation {
     String DEFAULT_HAS_FRIEND = "Đã kết bạn";
     String DEFAULT_UN_FRIEND_SUCCESS = "Hủy kết bạn thành công";
     String DEFAULT_RENAME_NICKNAME_FRIEND = "Đổi biệt danh thành công";
+    String DEFAULT_NO_FRIEND = "Danh sách bạn bè trống";
 
     String EMPTY = "empty";
 }

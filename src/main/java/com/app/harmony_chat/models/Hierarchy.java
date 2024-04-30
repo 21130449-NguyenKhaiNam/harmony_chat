@@ -15,7 +15,6 @@ import lombok.Setter;
 @Table(name = DefineTableDatabase.VICE_LEADER)
 public class Hierarchy {
     @Id
-    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long  id;
 

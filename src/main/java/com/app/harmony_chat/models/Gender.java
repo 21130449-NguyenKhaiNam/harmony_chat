@@ -15,10 +15,8 @@ import lombok.Setter;
 @Table(name = DefineTableDatabase.GENDER)
 public class Gender {
     @Id
-    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column
     private String name;
 }

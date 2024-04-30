@@ -21,6 +21,12 @@ public class FriendService {
     @Autowired
     private CheckInfomation checkInfomation;
 
+    /**
+     * Trả về mã mối quan hệ nếu có của 2 người
+     * @param userID
+     * @param otherID
+     * @return
+     */
     private long selectRelationship(String userID, String otherID) {
         List<Relationship> relationships = dao.findByUserAndFriend(UUID.fromString(userID), UUID.fromString(otherID));
         if (relationships.size() > 1) {
@@ -35,6 +41,12 @@ public class FriendService {
         }
     }
 
+    /**
+     * Thêm bạn với nhau
+     * @param userID
+     * @param otherID
+     * @return
+     */
     public Infomation addFriend(String userID, String otherID) {
         User user = new User(userID);
         User otherUser = new User(otherID);
@@ -46,6 +58,12 @@ public class FriendService {
         return info;
     }
 
+    /**
+     * Xóa một người bạn
+     * @param userID
+     * @param otherID
+     * @return
+     */
     public Infomation deleteFriend(String userID, String otherID) {
         User user = new User(userID);
         User otherUser = new User(otherID);
@@ -56,6 +74,13 @@ public class FriendService {
         return info;
     }
 
+    /**
+     * Cập nhật biệt danh cho người bạn
+     * @param userID
+     * @param otherID
+     * @param nickname
+     * @return
+     */
     public Infomation updateNickName(String userID, String otherID, String nickname) {
         long relaId = selectRelationship(userID, otherID);
         dao.updateNickNameForFirend(relaId, nickname);
@@ -65,6 +90,11 @@ public class FriendService {
         return info;
     }
 
+    /**
+     * Lấy ra danh sách bạn của chính mình
+     * @param userID
+     * @return
+     */
     public Infomation getListFriends(String userID) {
         List<Relationship> relationships = dao.findByUser(UUID.fromString(userID));
         List<User> friends = relationships.stream()

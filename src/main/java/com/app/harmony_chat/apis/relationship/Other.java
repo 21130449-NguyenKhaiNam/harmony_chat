@@ -20,6 +20,7 @@ public class Other {
     private MapperJson mapper;
     @Autowired
     private OtherUserService service;
+
     @GetMapping(path = DefinePath.OTHER_PROFILE)
     public String viewProfileOtherUser(@RequestBody Map<String, String> json) {
         List<String> params = mapper.getParam(json, DefinePropertyJson.OTHER_ID);

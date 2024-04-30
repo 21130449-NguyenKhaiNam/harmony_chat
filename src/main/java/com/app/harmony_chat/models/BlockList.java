@@ -15,7 +15,6 @@ import lombok.Setter;
 @Table(name = DefineTableDatabase.BLOCK_LIST)
 public class BlockList {
     @Id
-    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 

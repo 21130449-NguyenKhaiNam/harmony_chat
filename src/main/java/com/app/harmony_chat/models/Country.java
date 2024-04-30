@@ -28,15 +28,11 @@ public class Country {
     @Column(name =  "street_name")
     private String streetName;
 
-    @Column
     private String district;
 
-    @Column
     private String city;
 
-    @Column
     private String state;
 
-    @Column
     private String country;
 }

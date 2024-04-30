@@ -16,7 +16,6 @@ import lombok.Setter;
 public class BlackList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
     private long id;
 
     @ManyToOne
