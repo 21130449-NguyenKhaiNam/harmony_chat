@@ -6,10 +6,11 @@ import com.app.harmony_chat.repositories.view.SearchRepository;
 import com.app.harmony_chat.utils.infomation.CheckInfomation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component
+@Service
 public class SearchService {
     @Autowired
     private SearchRepository dao;

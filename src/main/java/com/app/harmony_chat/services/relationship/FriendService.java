@@ -6,20 +6,27 @@ import com.app.harmony_chat.models.Relationship;
 import com.app.harmony_chat.models.User;
 import com.app.harmony_chat.repositories.relationship.FriendRepository;
 import com.app.harmony_chat.utils.infomation.CheckInfomation;
+import com.app.harmony_chat.utils.infomation.FilterInfomation;
+import com.app.harmony_chat.utils.infomation.MapperJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Component
+@Service
 public class FriendService {
     @Autowired
     private FriendRepository dao;
     @Autowired
     private CheckInfomation checkInfomation;
+    @Autowired
+    private FilterInfomation filterInfomation;
+    @Autowired
+    private MapperJson mapper;
 
     /**
      * Trả về mã mối quan hệ nếu có của 2 người
@@ -27,18 +34,9 @@ public class FriendService {
      * @param otherID
      * @return
      */
-    private long selectRelationship(String userID, String otherID) {
+    private Infomation selectRelationship(String userID, String otherID) {
         List<Relationship> relationships = dao.findByUserAndFriend(UUID.fromString(userID), UUID.fromString(otherID));
-        if (relationships.size() > 1) {
-            return -1;
-        } else {
-            if (relationships.isEmpty()) {
-                return -1;
-            } else {
-                Relationship relationship = relationships.get(0);
-                return relationship.getId();
-            }
-        }
+        return filterInfomation.filterListGetOne(relationships);
     }
 
     /**
@@ -82,10 +80,10 @@ public class FriendService {
      * @return
      */
     public Infomation updateNickName(String userID, String otherID, String nickname) {
-        long relaId = selectRelationship(userID, otherID);
-        dao.updateNickNameForFirend(relaId, nickname);
-        Infomation info = new Infomation()
-                .setCode(DefineInfomation.SUCCESS)
+        Infomation info = selectRelationship(userID, otherID);
+        Relationship relationship = mapper.convertObject((String) info.getContent(), Relationship.class);
+        dao.setNickNameForFriend(relationship.getId(), nickname);
+        info.setCode(DefineInfomation.SUCCESS)
                 .setContent(DefineInfomation.DEFAULT_RENAME_NICKNAME_FRIEND);
         return info;
     }

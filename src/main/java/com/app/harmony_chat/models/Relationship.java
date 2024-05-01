@@ -17,6 +17,7 @@ import java.util.List;
 @Table(name = DefineTableDatabase.RELATIONSHIP)
 public class Relationship {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne

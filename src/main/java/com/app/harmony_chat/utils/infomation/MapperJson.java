@@ -35,6 +35,17 @@ public class MapperJson {
         }
     }
 
+    /**
+     * Chuyển đổi json lại về đối tượng
+     * @param json
+     * @param obj
+     * @return
+     * @param <T>
+     */
+    public <T> T convertObject(String json, Class<T> obj) {
+        return mapper.convertValue(json, obj);
+    }
+
     // Trả về một mảng liên tiếp tuân theo quy tắc nhận được ở names
     public List<String> getParam(@NotNull Map<String, String> json, @NotNull String... names) {
         return Arrays.stream(names).map(name -> {

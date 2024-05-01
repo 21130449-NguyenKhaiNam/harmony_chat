@@ -16,9 +16,13 @@ import java.util.UUID;
 
 @Repository
 public interface FriendRepository extends JpaRepository<Relationship, Long> {
-    List<Relationship> findByUserAndFriend(UUID userID, UUID friendID);
+    @Query("SELECT r FROM Relationship r WHERE r.user = :user AND r.friend = :friend")
+    List<Relationship> findByUserAndFriend(@Param("user") UUID user, @Param("friend") UUID friend);
+
     @Modifying
-    @Query("UPDATE " + DefineTableDatabase.RELATIONSHIP + " r SET r.nickname = :nickname WHERE r.id = :relationshipID")
-    void updateNickNameForFirend(@Param("relationshipID") long id, @Param("nickname") String nickname);
-    List<Relationship> findByUser(UUID userID);
+    @Query("UPDATE Relationship r SET r.nickname = :nickname WHERE r.id = :relationshipId")
+    void setNickNameForFriend(@Param("relationshipId") long id, @Param("nickname") String nickname);
+
+    @Query("SELECT r FROM Relationship r WHERE r.user = :userId")
+    List<Relationship> findByUser(@Param("userId") UUID userId);
 }

@@ -19,4 +19,8 @@ public class Gender {
     private long id;
 
     private String name;
+
+    public Gender(String name) {
+        this.name = name;
+    }
 }

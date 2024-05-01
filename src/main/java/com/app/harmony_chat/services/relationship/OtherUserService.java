@@ -9,11 +9,12 @@ import com.app.harmony_chat.repositories.relationship.OtherUserRepository;
 import com.app.harmony_chat.utils.infomation.FilterInfomation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
-@Component
+@Service
 public class OtherUserService {
     @Autowired
     private OtherUserRepository dao;
@@ -29,7 +30,7 @@ public class OtherUserService {
      * @return
      */
     public Infomation getProfile(String otherUserId) {
-        List<Profile> profileList = dao.findById(UUID.fromString(otherUserId)).stream().toList();
+        List<Profile> profileList = dao.findByUserId(UUID.fromString(otherUserId)).stream().toList();
         return filterInfomation.filterListGetOne(profileList);
     }
 

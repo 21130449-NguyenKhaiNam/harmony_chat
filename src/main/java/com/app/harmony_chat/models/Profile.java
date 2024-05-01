@@ -17,6 +17,9 @@ import java.time.LocalDate;
 @Table(name = DefineTableDatabase.PROFILE)
 public class Profile {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
@@ -29,13 +32,23 @@ public class Profile {
     @Temporal(TemporalType.DATE)
     private LocalDate dob;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "gender_id", referencedColumnName = "id")
     private Gender gender;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "coutries_id", referencedColumnName = "id")
     private Country country;
 
     private String phone;
+
+    public Profile(User user, String username, String avatar, LocalDate dob, Gender gender, Country country, String phone) {
+        this.user = user;
+        this.username = username;
+        this.avatar = avatar;
+        this.dob = dob;
+        this.gender = gender;
+        this.country = country;
+        this.phone = phone;
+    }
 }

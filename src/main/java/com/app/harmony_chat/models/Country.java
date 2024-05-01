@@ -35,4 +35,13 @@ public class Country {
     private String state;
 
     private String country;
+
+    public Country(String streetNumber, String streetName, String district, String city, String state, String country) {
+        this.streetNumber = streetNumber;
+        this.streetName = streetName;
+        this.district = district;
+        this.city = city;
+        this.state = state;
+        this.country = country;
+    }
 }
