@@ -1,5 +1,8 @@
 package com.app.harmony_chat.configs;
 
+/**
+ * Các đường dẫn được phân theo cấp, cách nhau 1 dấu cách và sẽ được chú thích
+ */
 public interface DefinePath {
     // Account
     String ACCOUNT = "/api/v1/account";
@@ -23,4 +26,7 @@ public interface DefinePath {
     // View
     String SEARCH = "/api/v1/search";
     String SEARCH_FRIEND_MESS = "/friend/mess";
+
+    // Chat
+    String CHAT = "/api/v1/chat";
 }

@@ -18,15 +18,39 @@
 
 # Giải thích api:
 
-- Liên quan đến truy cập
-	+ /api/v1/account/login: Đăng nhập -> JSON {'email':'?', 'password': '?'}
-	+ /api/v1/account/register: Đăng ký -> JSON {'email':'?', 'password': '?'}
-	+ /api/v1/account/forget: Quên mật khẩu -> JSON {'email':'?'}
+- Liên quan đến truy cập:
+	+ /api/v1/account/login: Đăng nhập POST -> JSON {'email':'?', 'password': '?'}
+	+ /api/v1/account/register: Đăng ký POST -> JSON {'email':'?', 'password': '?'}
+	+ /api/v1/account/forget: Quên mật khẩu POST -> JSON {'email':'?'}
+
+	+ /api/v1/account/profile: Xem trang cá nhân của mình POST -> JSON {'user-id': ?}
+	+ /api/v1/account/profile/update: Cập nhật thông tin trang cá nhân của mình
+	    POST -> JSON {
+	        'email': '?',
+	        'password': '?',
+	        'gender': '?',
+	        'username': '?',
+	        'avatar': '?',
+	        'dob': '?',
+	        'country-street-number': '?',
+	        'country-street-name': '?',
+	        'city': '?',
+	        'district': '?',
+	        'state': '?',
+	        'phone': '?'
+	    }
 
 - Liên quan đến mối quan hệ:
-	+ /api/v1/relationship/friend/add: Thêm mối quan hệ bạn bè -> JSON {'user-id':'?', 'other-id': '?'}
-	+ /api/v1/relationship/friend/unfriend: Hủy kết bạn -> JSON {'user-id':'?', 'other-id': '?'}
-	+ /api/v1/relationship/friend/rename: Đổi biệt danh bạn bè -> JSON {'user-id':'?', 'other-id': '?', 'nickname': '?'}
-	+ /api/v1/relationship/friend/list: Lấy ra danh sách bạn bè -> JSON {'user-id':'?'}
-	+ /api/v1/relationship/other/profile: Xem thông tin của người dùng khác -> JSON {'other-id': '?'}
-	+ /api/v1/relationship/other/friends: Xem bạn bè của người khác -> JSON {'other-id': '?'}
+	+ /api/v1/relationship/friend/add: Thêm mối quan hệ bạn bè POST -> JSON {'user-id':'?', 'other-id': '?'}
+	+ /api/v1/relationship/friend/unfriend: Hủy kết bạn POST -> JSON {'user-id':'?', 'other-id': '?'}
+	+ /api/v1/relationship/friend/rename: Đổi biệt danh bạn bè POST -> JSON {'user-id':'?', 'other-id': '?', 'nickname': '?'}
+	+ /api/v1/relationship/friend/list: Lấy ra danh sách bạn bè POST -> JSON {'user-id':'?'}
+
+	+ /api/v1/relationship/other/profile: Xem thông tin của người dùng khác GET -> JSON {'other-id': '?'}
+	+ /api/v1/relationship/other/friends: Xem bạn bè của người khác GET -> JSON {'other-id': '?'}
+
+- Liên quan đến việc xem dữ liệu trên màn hình:
+    + /api/v1/search/friend/mess: Tìm kiếm bạn bè trong danh sách tin nhắn GET > JSON {'name': '?'}
+
+- Liên quan đến gửi tin nhắn:
+    + /api/v1/chat: Chuyển tin nhắn tới người dùng khác GET -> JSON {'userId': '?', 'otherId'': '?', 'message'': '?'}

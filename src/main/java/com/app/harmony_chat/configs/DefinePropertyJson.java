@@ -17,4 +17,5 @@ public interface DefinePropertyJson {
     String NICKNAME = "nickname";
     String PHONE = "phone";
     String AVATAR = "avatar";
+    String MESSAGE = "message";
 }
