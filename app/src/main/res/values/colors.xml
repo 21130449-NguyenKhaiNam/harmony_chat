@@ -15,6 +15,7 @@
     <color name="pink_0">#C14D7C</color>
     <color name="blue_0">#91BBE5</color>
     <color name="blue_1">#3376BC</color>
+    <color name="background_color">#F5F5F5</color>
 
     <!--    Bộ màu cơ sở cho ứng dụng (Được quy định theo bản màu trong thiết kế figma tại:
     https://www.figma.com/file/YUzdfWjmV2r2Fhb6jjO7s4/Giao-di%E1%BB%87n?type=design&node-id=0%3A1&mode=design&t=hVnrLO90EC1snB0G-1

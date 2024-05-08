@@ -103,12 +103,33 @@
         </LinearLayout>
 
     </HorizontalScrollView>
+    <FrameLayout
+    android:id="@+id/fragment_container1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintBottom_toTopOf="@id/chat_recycler_view"
+    app:layout_constraintVertical_bias="0.2"/>
+    <FrameLayout
+        android:id="@+id/fragment_container2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/chat_recycler_view"
+        app:layout_constraintVertical_bias="0.4"
+        app:layout_constraintHorizontal_bias="1" />
+
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chat_recycler_view"
-        android:layout_width="@dimen/main_activity_width_layout"
-        android:layout_height="@dimen/main_activity_height_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="@dimen/main_activity_layout_margin_top"
-        app:layout_constraintTop_toBottomOf="@+id/button_scroll_view"
+        app:layout_constraintTop_toBottomOf="@id/button_scroll_view"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
