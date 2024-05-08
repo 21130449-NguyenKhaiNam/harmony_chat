@@ -2,6 +2,7 @@ package com.example.harmony_chat;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,6 +20,8 @@ public class ChatScreen extends AppCompatActivity {
     private View options, reacts;
     private TextView txtMessage;
 
+    ImageButton backBtn;
+
     @Override
     protected void onCreate(Bundle savedInstancestate) {
         super.onCreate(savedInstancestate);
@@ -32,6 +35,7 @@ public class ChatScreen extends AppCompatActivity {
                 .into(imageView);
 
         txtMessage = findViewById(R.id.message);
+        backBtn = findViewById(R.id.backBtn);
         reactsFragment = getSupportFragmentManager().findFragmentById(R.id.reacts);
         messageOptionsFragment = getSupportFragmentManager().findFragmentById(R.id.message_options_fragment);
 
@@ -40,6 +44,13 @@ public class ChatScreen extends AppCompatActivity {
             public boolean onLongClick(View v) {
                 showFragments();
                 return true;
+            }
+        });
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                back();
             }
         });
 
@@ -87,5 +98,9 @@ public class ChatScreen extends AppCompatActivity {
         }
 
         transaction.commit();
+    }
+
+    public void back() {
+        finish();
     }
 }

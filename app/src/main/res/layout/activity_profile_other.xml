@@ -85,7 +85,7 @@
                 android:layout_weight="5"
                 android:layout_marginRight="@dimen/profile_margin_right"
                 android:background="@drawable/button"
-                android:text="@string/example_relationship">
+                android:text="@string/friend">
             </Button>
 
             <Button

@@ -37,6 +37,13 @@ public class LoginActivity extends AppCompatActivity {
 
         isPasswordVisible =false;
 
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotoMain();
+            }
+        });
+
 
         gotoSignupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +92,11 @@ public class LoginActivity extends AppCompatActivity {
 
     public void gotoForgetPassword() {
         Intent intent = new Intent(this, ForgetPasswordActivity.class);
+        startActivity(intent);
+    }
+
+    public void gotoMain() {
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 }
