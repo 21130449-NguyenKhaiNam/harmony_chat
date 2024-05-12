@@ -45,7 +45,7 @@
         android:layout_marginTop="10dp"
         android:textColorHint="#fff"
         android:hint="@string/password"
-        android:drawableRight="@drawable/eye" />
+        android:drawableRight="@drawable/unhide" />
 
     <TextView
         android:id="@+id/forgetPasswordBtn"

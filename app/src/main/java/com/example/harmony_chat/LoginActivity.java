@@ -2,6 +2,7 @@ package com.example.harmony_chat;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.method.HideReturnsTransformationMethod;
@@ -72,9 +73,11 @@ public class LoginActivity extends AppCompatActivity {
                     if(event.getRawX() >= (editPassword.getRight() - editPassword.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                         if (isPasswordVisible) {
                             editPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                            editPassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.password, 0, R.drawable.unhide, 0);
                             isPasswordVisible = false;
                         } else {
                             editPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                            editPassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.password, 0, R.drawable.hide, 0);
                             isPasswordVisible = true;
                         }
                         return true;

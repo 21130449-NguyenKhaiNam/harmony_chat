@@ -54,9 +54,11 @@ public class SignupActivity extends AppCompatActivity {
                     if(event.getRawX() >= (editPassword.getRight() - editPassword.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                         if (isPasswordVisible) {
                             editPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                            editPassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.password, 0, R.drawable.unhide, 0);
                             isPasswordVisible = false;
                         } else {
                             editPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                            editPassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.password, 0, R.drawable.hide, 0);
                             isPasswordVisible = true;
                         }
                         return true;
@@ -73,12 +75,13 @@ public class SignupActivity extends AppCompatActivity {
                 final int DRAWABLE_RIGHT = 2;
                 if(event.getAction() == MotionEvent.ACTION_UP) {
                     if(event.getRawX() >= (editRepassword.getRight() - editRepassword.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-
                         if (isRePasswordVisible) {
                             editRepassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                            editRepassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.password, 0, R.drawable.unhide, 0);
                             isRePasswordVisible = false;
                         } else {
                             editRepassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                            editRepassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.password, 0, R.drawable.hide, 0);
                             isRePasswordVisible = true;
                         }
                         return true;

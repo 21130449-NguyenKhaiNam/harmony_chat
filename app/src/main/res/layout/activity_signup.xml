@@ -56,7 +56,7 @@
         android:layout_marginTop="10dp"
         android:textColorHint="#fff"
         android:hint="@string/password"
-        android:drawableRight="@drawable/eye"/>
+        android:drawableRight="@drawable/unhide"/>
 
     <EditText
         android:id="@+id/editRePassword"
@@ -68,7 +68,7 @@
         android:layout_marginTop="10dp"
         android:textColorHint="#fff"
         android:hint="@string/reenterpwd"
-        android:drawableRight="@drawable/eye"/>
+        android:drawableRight="@drawable/unhide"/>
 
     <Button
         android:id="@+id/signupBtn"
