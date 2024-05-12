@@ -10,8 +10,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,7 +21,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText editUsername, editPassword;
     ImageView avatar;
     Button loginBtn, gotoSignupBtn;
-
+    private ImageButton btn_facebook, btn_github,btn_google;
     TextView forgetPasswordBtn;
     boolean isPasswordVisible;
     @SuppressLint("ClickableViewAccessibility")
@@ -35,6 +37,10 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn = findViewById(R.id.loginBtn);
         gotoSignupBtn = findViewById(R.id.gotoSignupBtn);
 
+        btn_facebook = findViewById(R.id.facebookBtn);
+        btn_github = findViewById(R.id.githubBtn);
+        btn_google = findViewById(R.id.googleBtn);
+
         isPasswordVisible =false;
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
@@ -43,7 +49,6 @@ public class LoginActivity extends AppCompatActivity {
                 gotoMain();
             }
         });
-
 
         gotoSignupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,7 +63,6 @@ public class LoginActivity extends AppCompatActivity {
                 gotoForgetPassword();
             }
         });
-
 
         editPassword.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -81,8 +85,19 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        btn_facebook.setOnClickListener(e->{
+            futureFeatures();
+        });
+        btn_google.setOnClickListener(e->{
+            futureFeatures();
+        });
+        btn_github.setOnClickListener(e->{
+            futureFeatures();
+        });
+    }
 
-
+    private void futureFeatures() {
+        Toast.makeText(this,"Tính năng sẽ được cập nhật trong phiên bản sau", Toast.LENGTH_SHORT).show();
     }
 
     public void gotoSignup() {
