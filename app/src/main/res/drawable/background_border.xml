@@ -6,7 +6,7 @@
         android:color="@color/transparent"/>
 
     <stroke
-        android:color="@color/blue_0"
+        android:color="@color/primary_sky"
         android:width="@dimen/width_stroke"/>
 
     <corners
