@@ -32,7 +32,7 @@
         android:ems="10"
         android:inputType="text"
         android:layout_marginTop="60dp"
-        android:textColorHint="@color/white"
+        android:textColorHint="@color/primary_white"
         android:hint="@string/email" />
 
     <EditText
@@ -43,7 +43,7 @@
     android:ems="10"
     android:inputType="text"
     android:layout_marginTop="10dp"
-    android:textColorHint="@color/white"
+    android:textColorHint="@color/primary_white"
     android:hint="@string/username" />
 
     <EditText
@@ -82,7 +82,7 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
+        android:textColor="@color/primary_white"
         android:layout_marginTop="50dp"
         android:gravity="center"
         android:text="@string/hadaccount" />
