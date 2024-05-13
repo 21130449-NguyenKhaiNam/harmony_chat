@@ -76,7 +76,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:text="@string/register" />
+        android:text="@string/register"
+        android:textAllCaps="false"/>
 
     <TextView
         android:id="@+id/textView2"
@@ -84,6 +85,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/primary_white"
         android:layout_marginTop="50dp"
+        android:textSize="@dimen/text_2"
         android:gravity="center"
         android:text="@string/hadaccount" />
 
@@ -93,6 +95,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="@string/sign_in" />
+        android:text="@string/sign_in"
+        android:textAllCaps="false"/>
 
 </LinearLayout>

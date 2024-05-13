@@ -2,7 +2,7 @@
 <resources>
     <style name="input_style">
         <item name="android:background">@drawable/input_container</item>
-        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textColor">@color/primary_white</item>
         <item name="android:textSize">18dp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -13,8 +13,8 @@
     </style>
 
     <style name="long_input_style">
-        <item name="android:textColor">#FFFFFF</item>
-        <item name="android:textSize">24dp</item>
+        <item name="android:textColor">@color/primary_white</item>
+        <item name="android:textSize">@dimen/heading_0</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
@@ -22,7 +22,7 @@
     </style>
 
     <style name="input_search_style">
-        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textColor">@color/primary_white</item>
         <item name="android:textSize">20dp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -49,6 +49,5 @@
         <item name="android:padding">2dp</item>
 
     </style>
-
 
 </resources>

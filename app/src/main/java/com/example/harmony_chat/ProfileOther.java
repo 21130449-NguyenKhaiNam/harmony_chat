@@ -28,7 +28,7 @@ public class ProfileOther extends AppCompatActivity {
         setContentView(R.layout.activity_profile_other);
 
         colorPrimarySky = ContextCompat.getColor(this, R.color.primary_sky);
-        colorWhite = ContextCompat.getColor(this, R.color.white);
+        colorWhite = ContextCompat.getColor(this, R.color.primary_white);
 
         backBtn = findViewById(R.id.btn_back_other);
         relationshipBtn = findViewById(R.id.btn_relationship_other);

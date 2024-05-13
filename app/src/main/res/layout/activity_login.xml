@@ -32,7 +32,7 @@
     android:ems="10"
     android:inputType="text"
     android:layout_marginTop="60dp"
-    android:textColorHint="@color/white"
+    android:textColorHint="@color/primary_white"
     android:hint="@string/username" />
 
     <EditText
@@ -43,7 +43,7 @@
         android:ems="10"
         android:inputType="textPassword"
         android:layout_marginTop="10dp"
-        android:textColorHint="#fff"
+        android:textColorHint="@color/primary_white"
         android:hint="@string/password"
         android:drawableRight="@drawable/unhide" />
 
@@ -51,29 +51,30 @@
         android:id="@+id/forgetPasswordBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
         android:layout_gravity="right"
+        android:textSize="@dimen/text_2"
         android:layout_marginBottom="10dp"
-        android:textColor="#fff"
+        android:textColor="@color/primary_white"
         android:text="@string/forget" />
 
     <Button
         android:id="@+id/loginBtn"
         style="@style/long_input_style"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="@string/sign_in" />
-
+        android:text="@string/sign_in"
+        android:textAllCaps="false"/>
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
+        android:textSize="@dimen/text_2"
         android:gravity="center"
         android:layout_marginBottom="10dp"
-        android:textColor="#fff"
+        android:textColor="@color/primary_white"
         android:text="@string/login_other" />
 
     <LinearLayout
@@ -111,10 +112,9 @@
     <Button
         android:id="@+id/gotoSignupBtn"
         style="@style/second_long_input_style"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
-        android:text="@string/register" />
+        android:text="@string/register"
+        android:textAllCaps="false"/>
 
 
 

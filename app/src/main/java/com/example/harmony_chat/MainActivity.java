@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        hideSystemUI();
+
 //        userAvatar = findViewById(R.id.user_avatar);
         fragmentContainer1 = findViewById(R.id.fragment_container1);
 //        fragmentContainer2 = findViewById(R.id.fragment_container2);
@@ -112,5 +114,18 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.fragment_container1, profileFragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    private void hideSystemUI() {
+        // Ẩn thanh trạng thái và thanh điều hướng
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        );
     }
 }
