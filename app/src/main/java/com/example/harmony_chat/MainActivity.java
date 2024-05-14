@@ -2,6 +2,7 @@ package com.example.harmony_chat;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -20,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
 
     private CardView avatar;
     private ImageView find;
+
+    private TextView setting, profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +64,24 @@ public class MainActivity extends AppCompatActivity {
                 popupWindow.showAsDropDown(avatar, Gravity.AXIS_X_SHIFT, 5, 0);
             }
         });
+
+// Sử dụng các phương thức gọi hàm xử lý trong class ProfileFragment.java ở đây để đơn giản.
+        setting = popupView.findViewById(R.id.text_setting);
+        profile = popupView.findViewById(R.id.text_profile);
+
+        setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotoSetting();
+            }
+        });
+
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotoMyProfile();
+            }
+        });
     }
 
     public void gotoSearchUser() {
@@ -69,6 +91,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void gotoMyProfile() {
         Intent intent = new Intent(this, Profile.class);
+        startActivity(intent);
+    }
+
+    public void gotoSetting() {
+        Intent intent = new Intent(this, SettingScreen.class);
         startActivity(intent);
     }
 

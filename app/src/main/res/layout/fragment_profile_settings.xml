@@ -7,7 +7,8 @@
     android:background="@drawable/rounded_corner"
     android:elevation="20dp"
     android:orientation="vertical"
-    tools:context=".ProfileSettingsFragment">
+    tools:context=".ProfileSettingsFragment"
+    android:id="@+id/popup_options">
 
     <TextView
         android:id="@+id/text_setting"
