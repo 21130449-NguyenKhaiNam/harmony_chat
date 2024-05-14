@@ -22,7 +22,7 @@
 
     <dimen name="reacts_size_0">26sp</dimen>
     <!-- Chữ cái -->
-    <dimen name="text_0">18sp</dimen>
+    <dimen name="text_0">@dimen/heading_1</dimen>
     <dimen name="text_1">16sp</dimen>
     <dimen name="text_2">14sp</dimen>
     <dimen name="text_3">12sp</dimen>

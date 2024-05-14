@@ -2,76 +2,38 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="242dp"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:elevation="70dp"
-    tools:context=".ProfileSettingsFragment">
-    <LinearLayout
-        android:id="@+id/settingBtn"
-        android:layout_width="240dp"
+    android:orientation="vertical"
+    tools:context=".ProfileSettingsFragment"
+    android:background="@color/primary_white">
+
+    <TextView
+        android:id="@+id/text_setting"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:clickable="true"
-        android:focusable="true">
+        android:background="?android:attr/selectableItemBackground"
+        android:drawableLeft="@drawable/setting"
+        android:drawableRight="@drawable/greater_than"
+        android:gravity="start"
+        android:onClick="onSettingClicked"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:text="   Settings"
+        android:textSize="@dimen/text_0" />
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/setting"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="8dp"/>
-
-        <TextView
-            android:id="@+id/text_setting"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:text="Settings"
-            android:textSize="18dp"
-            android:padding="12dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:onClick="onSettingClicked"/>
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/greater_than"
-            android:background="@color/transparent"
-            android:layout_marginEnd="16dp"/>
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/profileBtn"
-        android:layout_width="240dp"
+    <TextView
+        android:id="@+id/text_profile"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="3dp"
-        android:gravity="center_vertical"
-        android:clickable="true"
-        android:focusable="true">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/user"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="8dp"/>
-
-        <TextView
-            android:id="@+id/text_profile"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:text="My Profile"
-            android:textSize="18dp"
-            android:padding="12dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:onClick="onMyProfileClicked"/>
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/greater_than"
-            android:background="@color/transparent"
-            android:layout_marginEnd="16dp"/>
-    </LinearLayout>
+        android:background="?android:attr/selectableItemBackground"
+        android:drawableLeft="@drawable/user"
+        android:drawableRight="@drawable/greater_than"
+        android:gravity="start"
+        android:onClick="onMyProfileClicked"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:text="   My Profile"
+        android:textSize="@dimen/text_0" />
 </LinearLayout>
