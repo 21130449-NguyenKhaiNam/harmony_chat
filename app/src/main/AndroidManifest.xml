@@ -14,82 +14,41 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Harmonychat"
         tools:targetApi="33">
-
-        <!--        File khởi chạy cho giao diện của 23130449-->
-        <!--        <activity-->
-        <!--            android:name=".MainActivity"-->
-        <!--            android:exported="true">-->
-        <!--            <intent-filter>-->
-        <!--                <action android:name="android.intent.action.MAIN" />-->
-
-        <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-        <!--            </intent-filter>-->
-        <!--        </activity>-->
-        <!--        Kết thúc file khởi chạy cho giao diện của 23130449-->
-
-        <!--        File khởi chạy cho giao diện của 21130407-->
-        <!--        <activity-->
-        <!--            android:name=".ChatScreen"-->
-        <!--            android:exported="true">-->
-        <!--            <intent-filter>-->
-        <!--                <action android:name="android.intent.action.MAIN" />-->
-
-        <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-        <!--            </intent-filter>-->
-        <!--        </activity>-->
-        <!--        Kết thúc file khởi chạy giao diện của 21130407-->
-
-
-        <!--        File khởi chạy cho giao diện của 23130438-->
-        <!--        <activity-->
-        <!--            android:name=".SettingScreen"-->
-        <!--            android:exported="true">-->
-        <!--            <intent-filter>-->
-        <!--                <action android:name="android.intent.action.MAIN" />-->
-        <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-        <!--            </intent-filter>-->
-        <!--        </activity>-->
-        <!--        Kết thúc file khởi chạy cho giao diện của 23130438-->
-
-        <!--        File khởi chạy cho giao diện của 23130463-->
-                <activity
-                    android:name=".ProfileOther"
-                    android:exported="true" />
-                <activity
-                    android:name=".Profile"
-                    android:exported="true" />
-                <activity
-                    android:name=".Access"
-                    android:exported="true" />
-                <activity
-                    android:name=".MainActivity"
-                    android:exported="true">
-                    <intent-filter>
-                        <action android:name="android.intent.action.MAIN" />
-                        <category android:name="android.intent.category.LAUNCHER" />
-                    </intent-filter>
-                </activity>
-
-                <activity
-                    android:name=".LoginActivity"
-                    android:exported="true"></activity>
-
-                <activity
-                    android:name=".ForgetPasswordActivity"
-                    android:exported="true"></activity>
-        <!--        Kết thúc file khởi chạy cho giao diện của 23130463-->
-
-        <!--        File khởi chạy cho giao diện của 23130467-->
-        <!--        <activity-->
-        <!--            android:name=".MainActivity"-->
-        <!--            android:exported="true">-->
-        <!--            <intent-filter>-->
-        <!--                <action android:name="android.intent.action.MAIN" />-->
-        <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-        <!--            </intent-filter>-->
-        <!--        </activity>-->
-        <!--        Kết thúc file khởi chạy cho giao diện của 23130467-->
-
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ForgetPasswordActivity"
+            android:exported="true" />
+        <activity
+            android:name=".SignupActivity"
+            android:exported="true" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ChatScreen"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".SearchUserActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".ProfileOther"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".SettingScreen"
+            android:exported="true" />
+        <activity
+            android:name=".Profile"
+            android:exported="true" />
     </application>
 
 </manifest>
