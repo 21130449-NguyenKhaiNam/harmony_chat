@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="242dp"
+    android:layout_width="@dimen/popup_options"
     android:layout_height="wrap_content"
-    android:elevation="70dp"
+    android:background="@drawable/rounded_corner"
+    android:elevation="20dp"
     android:orientation="vertical"
-    tools:context=".ProfileSettingsFragment"
-    android:background="@color/primary_white">
+    tools:context=".ProfileSettingsFragment">
 
     <TextView
         android:id="@+id/text_setting"
@@ -22,6 +22,11 @@
         android:paddingVertical="8dp"
         android:text="   Settings"
         android:textSize="@dimen/text_0" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/primary_grey" />
 
     <TextView
         android:id="@+id/text_profile"

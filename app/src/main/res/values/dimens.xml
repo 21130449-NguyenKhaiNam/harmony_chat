@@ -84,8 +84,7 @@
 
     <!--    21130467-->
     <!-- Màn hình chính -->
-    <dimen name="main_activity_width_avatar">40dp</dimen>
-    <dimen name="main_activity_height_avatar">40dp</dimen>
+    <dimen name="main_activity_avatar_size">40dp</dimen>
     <dimen name="main_activity_avatar_margin_start">36dp</dimen>
     <dimen name="main_activity_avatar_margin_top">52dp</dimen>
 
@@ -111,4 +110,5 @@
     <dimen name="main_activity_layout_margin_top">16dp</dimen>
     <!--    End 21130467-->
 
+    <dimen name="popup_options">180dp</dimen>
 </resources>

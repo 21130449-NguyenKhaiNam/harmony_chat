@@ -1,54 +1,41 @@
 package com.example.harmony_chat;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 
 import com.makeramen.roundedimageview.RoundedImageView;
 
 public class MainActivity extends AppCompatActivity {
+
+    private CardView avatar;
+    private ImageView find;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         hideSystemUI();
-
-        final RoundedImageView userAvatar = findViewById(R.id.user_avatar);
-        final LinearLayout avatarMenu = findViewById(R.id.avatar_menu);
         boolean isSearchVisible = false;
 
-        userAvatar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (avatarMenu.getVisibility() == View.GONE) {
-                    avatarMenu.setVisibility(View.VISIBLE);
-                } else {
-                    avatarMenu.setVisibility(View.GONE);
-                }
-            }
-        });
-
-        findViewById(R.id.main_layout).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    if (avatarMenu.getVisibility() == View.VISIBLE) {
-                        avatarMenu.setVisibility(View.GONE);
-                        return true;
-                    }
-                }
-                return false;
-            }
+        avatar = findViewById(R.id.user_avatar);
+        avatar.setOnClickListener(e -> {
+            createPopUpWindow();
         });
 
         // Hiển thị hoặc ẩn button tìm kiếm tùy thuộc vào trạng thái của thanh tìm kiếm
-        ImageView find = findViewById(R.id.search_icon);
+        find = findViewById(R.id.search_icon);
         find.setVisibility(isSearchVisible ? View.GONE : View.VISIBLE);
 
         find.setOnClickListener(new View.OnClickListener() {
@@ -59,7 +46,23 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void gotoSearchUser(){
+    private void createPopUpWindow() {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.fragment_profile_settings, null);
+
+        int width = getResources().getDimensionPixelSize(R.dimen.popup_options),
+                heigth = ViewGroup.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true;
+        PopupWindow popupWindow = new PopupWindow(popupView, width, heigth, focusable);
+        avatar.post(new Runnable() {
+            @Override
+            public void run() {
+                popupWindow.showAsDropDown(avatar, Gravity.AXIS_X_SHIFT, 5, 0);
+            }
+        });
+    }
+
+    public void gotoSearchUser() {
         Intent intent = new Intent(this, SearchUserActivity.class);
         startActivity(intent);
     }
