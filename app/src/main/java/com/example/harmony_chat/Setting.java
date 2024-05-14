@@ -1,6 +1,6 @@
 package com.example.harmony_chat;
 
-public class setting {
+public class Setting {
     private int icon;
     private String name;
     private String thong_so;
@@ -22,7 +22,7 @@ public class setting {
         return ic_greater;
     }
 
-    public setting(int icon, String name, String thong_so, int ic_greater) {
+    public Setting(int icon, String name, String thong_so, int ic_greater) {
         this.icon = icon;
         this.name = name;
         this.thong_so = thong_so;

@@ -9,19 +9,17 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.ContentView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class myArrAdapter extends ArrayAdapter<setting> {
+public class myArrAdapter extends ArrayAdapter<Setting> {
     Activity context;
     int id_layout;
-    ArrayList<setting> myList;
+    ArrayList<Setting> myList;
 
-    public myArrAdapter(  Activity context, int id_layout, ArrayList<setting> myList) {
+    public myArrAdapter(  Activity context, int id_layout, ArrayList<Setting> myList) {
         super(context, id_layout,myList);
         this.context = context;
         this.id_layout = id_layout;
@@ -33,7 +31,7 @@ public class myArrAdapter extends ArrayAdapter<setting> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(id_layout, parent, false);
-        setting currentSetting = myList.get(position);
+        Setting currentSetting = myList.get(position);
 
         ImageView ic_setting = convertView.findViewById(R.id.icon);
         ic_setting.setImageResource(currentSetting.getIcon());

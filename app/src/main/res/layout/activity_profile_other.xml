@@ -85,7 +85,7 @@
                 android:layout_weight="5"
                 android:layout_marginRight="@dimen/profile_margin_right"
                 android:background="@drawable/button"
-                android:text="@string/example_relationship">
+                android:text="@string/friend">
             </Button>
 
             <Button
@@ -93,7 +93,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="5"
-                android:textColor="@color/blue_0"
+                android:textColor="@color/primary_sky"
                 android:background="@drawable/background_border"
                 android:text="@string/send_message">
             </Button>
@@ -142,7 +142,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/more"
-            android:textColor="@color/blue_0" />
+            android:textColor="@color/primary_sky" />
 
     </LinearLayout>
 
