@@ -6,6 +6,9 @@ package com.app.harmony_chat.configs;
 public interface DefineInfomation {
     // Mã thông báo
     int SUCCESS = 200;
+    int SUCCESS_BUT_NOT_CORRECT = 201;
+    int SUCCESS_BUT_NOT_FOUND = 202;
+    int SUCCESS_BUT_HAS_ACCOUNT = 203;
     int WARNING = 300;
     int ERROR_CLIENT = 400;
     int ERROR_SERVER = 500;

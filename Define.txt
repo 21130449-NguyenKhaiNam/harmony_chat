@@ -2,16 +2,19 @@
 @Ngày tạo: 29 / 04/ 2024
 
 @Phiên bản: 1.0
+    + Chưa có gửi mail -> Các chức năng liên quan đến email sẽ chưa có
+    + Chưa có ghi nhớ đăng nhập -> Chỉ có ghi nhớ bằng session bên fontend
+    + Chưa có phản hồi bằng token -> Chưa được bảo mật tốt
 
 # Tổng quan
 - File được dùng để mô tả tổng thể mô hình backend được xây dựng.
-- Kiến thức: Spring Boot Web, JPA, Lombok, Hibernate, Mô hình MVC Spring
+- Kiến thức: Spring Boot Web, JPA, JQPL, Lombok, Hibernate, Mô hình MVC Spring, MySQL
 
 # Cấu trúc
 - Gồm 3 tầng (tự custom lại theo ý thích của người sáng tạo):
 	+ API (apis): Cung cấp đường dẫn cho các chương trình gọi tới
 	+ Xử lý (services): Xử lý nội dung được trả về
-	+ Lấy dữ liệu (repossitories): Lấy dữ liệu dưới Database
+	+ Lấy dữ liệu (repositories): Lấy dữ liệu dưới Database
 - utils: Cung cấp các công cụ mà cả hệ thống có thể sử dụng
 - models: Cung cấp mô hình và dùng để khởi tạo entity dưới database
 - configs: Thông tin cho dự án
@@ -23,14 +26,17 @@
 
 - Liên quan đến truy cập:
 	+ /api/v1/account/login: Đăng nhập POST -> JSON {'email':'?', 'password': '?'} -> Phản hồi
-	    . Tài khoản không tồn tại: {"code":200,"content":"Tài khoản không tồn tại"}
-	    . Sai tài khoản: {"code":200,"content":"Tài khoản không đúng"}
-	    . Đăng nhập thành công: {"code":200,"content":"5a8e43b0-a76b-4455-a8e6-41e44bfc24e5"}
+	    . Tài khoản không tồn tại: {"code":202,"content":"Tài khoản không tồn tại"}
+	    . Sai tài khoản: {"code":201,"content":"Tài khoản không đúng"}
+	    . Đăng nhập thành công: {"code":200,"content":"--token--"}
 	+ /api/v1/account/register: Đăng ký POST -> JSON {'email':'?', 'password': '?'} -> Phản hồi
-	    . Đăng ký thành công: {"code":200,"content":"5a8e43b0-a76b-4455-a8e6-41e44bfc24e5"}
+	    . Đăng ký thành công: {"code":200,"content":"--token--"}
+        . Tài khoản đã tồn tại: {"code":203,"content":"Tài khoản đã tồn tại"}
 	+ /api/v1/account/forget: Quên mật khẩu POST -> JSON {'email':'?'}
-
+        . Tài khoản không có trong hệ thống: {"code":202,"content":"Tài khoản không tồn tại"}
 	+ /api/v1/account/profile: Xem trang cá nhân của mình POST -> JSON {'user-id': ?}
+        . Lỗi không tồn tại: {"code":400,"content":"Tài khoản không tồn tại"}
+
 	+ /api/v1/account/profile/update: Cập nhật thông tin trang cá nhân của mình
 	    POST -> JSON {
 	        'email': '?',

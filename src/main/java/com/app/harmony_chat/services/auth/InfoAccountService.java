@@ -1,5 +1,6 @@
 package com.app.harmony_chat.services.auth;
 
+import com.app.harmony_chat.configs.DefineInfomation;
 import com.app.harmony_chat.models.Infomation;
 import com.app.harmony_chat.models.Profile;
 import com.app.harmony_chat.models.User;
@@ -17,8 +18,6 @@ public class InfoAccountService {
     @Autowired
     private InfoAccountRepository dao;
     @Autowired
-    private FilterInfomation filterInfomation;
-    @Autowired
     private CheckInfomation checkInfomation;
 
     /**
@@ -27,8 +26,18 @@ public class InfoAccountService {
      * @return
      */
     public Infomation viewProfile(String id) {
-        List<User> users = dao.findById(UUID.fromString(id)).stream().toList();
-        return filterInfomation.filterListGetOne(users);
+        System.out.println(id);
+        Profile profile = dao.findByUserId(UUID.fromString(id)).orElse(null);
+        Infomation info = new Infomation();
+        if(profile == null) {
+            // Xử lý lưu trữ để không cần xét
+            info.setCode(DefineInfomation.ERROR_CLIENT);
+            info.setContent(DefineInfomation.DEFAULT_NOT_ACCOUNT);
+        } else {
+            info.setContent(DefineInfomation.SUCCESS);
+            info.setContent(profile);
+        }
+        return info;
     }
 
     public Infomation updateProfile(Profile profile) {

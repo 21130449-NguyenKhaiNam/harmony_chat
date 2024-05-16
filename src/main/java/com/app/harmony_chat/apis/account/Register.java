@@ -2,6 +2,7 @@ package com.app.harmony_chat.apis.account;
 
 import com.app.harmony_chat.configs.DefinePath;
 import com.app.harmony_chat.configs.DefinePropertyJson;
+import com.app.harmony_chat.models.Profile;
 import com.app.harmony_chat.models.User;
 import com.app.harmony_chat.services.auth.AuthServices;
 import com.app.harmony_chat.utils.infomation.MapperJson;
@@ -25,8 +26,9 @@ public class Register {
     private MapperJson mapper;
     @PostMapping(path = DefinePath.ACCOUNT_REGISTER)
     public String register(@RequestBody Map<String, String> json) {
-        List<String> params = mapper.getParam(json,DefinePropertyJson.EMAIL, DefinePropertyJson.PASSWORD);
+        List<String> params = mapper.getParam(json,DefinePropertyJson.EMAIL,DefinePropertyJson.PASSWORD , DefinePropertyJson.USERNAME );
         User newUser = new User(params.get(0), params.get(1));
-        return mapper.mapToJson(services.addUser(newUser));
+        Profile newProfile = new Profile(newUser, params.get(2));
+        return mapper.mapToJson(services.addUser(newProfile));
     }
 }

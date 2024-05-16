@@ -1,8 +1,10 @@
 package com.app.harmony_chat.services.auth;
 
 import com.app.harmony_chat.configs.DefineInfomation;
+import com.app.harmony_chat.models.Profile;
 import com.app.harmony_chat.models.User;
 import com.app.harmony_chat.repositories.account.AccountRepository;
+import com.app.harmony_chat.repositories.account.InfoAccountRepository;
 import com.app.harmony_chat.utils.auths.PasswordEncoder;
 import com.app.harmony_chat.models.Infomation;
 import com.app.harmony_chat.utils.infomation.CheckInfomation;
@@ -21,6 +23,8 @@ import java.util.UUID;
 public class AuthServices {
     @Autowired
     private AccountRepository dao;
+    @Autowired
+    private InfoAccountRepository profileDao;
     @Autowired
     private PasswordEncoder encoder;
     @Autowired
@@ -77,10 +81,11 @@ public class AuthServices {
 
     /**
      * Thêm một người dùng mới vào hệ thống
-     * @param newUser
+     * @param newProfile
      * @return
      */
-    public Infomation addUser(User newUser) {
+    public Infomation addUser(Profile newProfile) {
+        User newUser = newProfile.getUser();
         String email = newUser.getEmail();
         Infomation info = selectUser(email, null);
         // Nếu được xác nhận là thành công truy xuất
@@ -92,8 +97,10 @@ public class AuthServices {
                 newUser.setId(UUID.randomUUID());
                 newUser.setPassword(encoder.hashPass(newUser.getPassword()));
                 User user = dao.save(newUser);
+                profileDao.saveBasic(newProfile);
                 info.setContent(user.getId().toString());
             } else {
+                info.setCode(DefineInfomation.SUCCESS_BUT_HAS_ACCOUNT);
                 info.setContent(DefineInfomation.DEFAULT_HAS_ACCOUNT);
             }
         }
@@ -105,6 +112,7 @@ public class AuthServices {
         if(info.getCode() == DefineInfomation.SUCCESS) {
             Object content = info.getContent();
             if (content.equals(DefineInfomation.DEFAULT_NOT_ACCOUNT)) {
+                info.setCode(DefineInfomation.SUCCESS_BUT_NOT_FOUND);
                 info.setContent(DefineInfomation.DEFAULT_NOT_ACCOUNT);
             } else {
                 // Gửi mail tới tài khoản

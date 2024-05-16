@@ -49,4 +49,9 @@ public class Profile {
         this.country = country;
         this.phone = phone;
     }
+
+    public Profile(User user, String username) {
+        this.user = user;
+        this.username = username;
+    }
 }
