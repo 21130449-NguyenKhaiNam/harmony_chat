@@ -14,9 +14,9 @@ public class SettingScreen extends AppCompatActivity {
     "help","Account status","About"};
     String thong_so[]={"Public","50","0","0","20","0","0","0","online","0"};
     int  ic_greater=R.drawable.greater_than;
-    ArrayList<setting>myList;
-    ArrayList<setting> group1, group2, group3;
-    myArrAdapter adapter1, adapter2, adapter3;
+    ArrayList<Setting>myList;
+    ArrayList<Setting> group1, group2, group3;
+    ArrAdapterSetting adapter1, adapter2, adapter3;
     ListView lv1, lv2, lv3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,17 +31,17 @@ public class SettingScreen extends AppCompatActivity {
 
         for (int i = 0; i < name.length; i++) {
             if (i < 4) {
-                group1.add(new setting(icon[i], name[i], thong_so[i], ic_greater));
+                group1.add(new Setting(icon[i], name[i], thong_so[i], ic_greater));
             } else if (i <= 6) {
-                group2.add(new setting(icon[i], name[i], thong_so[i], ic_greater));
+                group2.add(new Setting(icon[i], name[i], thong_so[i], ic_greater));
             } else {
-                group3.add(new setting(icon[i], name[i], thong_so[i], ic_greater));
+                group3.add(new Setting(icon[i], name[i], thong_so[i], ic_greater));
             }
         }
 
-        adapter1 = new myArrAdapter(this, R.layout.item_setting, group1);
-        adapter2 = new myArrAdapter(this, R.layout.item_setting, group2);
-        adapter3 = new myArrAdapter(this, R.layout.item_setting, group3);
+        adapter1 = new ArrAdapterSetting(this, R.layout.item_setting, group1);
+        adapter2 = new ArrAdapterSetting(this, R.layout.item_setting, group2);
+        adapter3 = new ArrAdapterSetting(this, R.layout.item_setting, group3);
 
         lv1.setAdapter(adapter1);
         lv2.setAdapter(adapter2);

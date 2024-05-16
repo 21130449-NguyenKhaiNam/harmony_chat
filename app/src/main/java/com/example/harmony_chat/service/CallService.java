@@ -1,0 +1,57 @@
+package com.example.harmony_chat.service;
+
+import android.util.Log;
+
+import com.example.harmony_chat.config.DefinePropertyJson;
+import com.example.harmony_chat.config.DefineStatusResponsive;
+import com.example.harmony_chat.model.Information;
+import com.example.harmony_chat.model.User;
+import com.example.harmony_chat.util.MapFactory;
+
+import java.util.Map;
+import java.util.UUID;
+
+public class CallService {
+    private static CallService service;
+
+    private CallService() {}
+
+    public static CallService getInstance() {
+        return service == null ? (service = new CallService()) : service;
+    }
+
+    public User loginAccount(String email, String password) {
+        String[] keys = MapFactory.createArrayString(DefinePropertyJson.EMAIL, DefinePropertyJson.PASSWORD);
+        String[] values = MapFactory.createArrayString(email, password);
+        Map<String, String> json = MapFactory.createMapJson(keys, values);
+        ApiService.service.login(json).enqueue(Callback.getInstance());
+        Information info = Callback.getInstance().getInfo();
+        int code = info.getCode();
+        String content = info.getJson();
+        User user = null;
+        if(code == DefineStatusResponsive.SUCCESS) {
+            // Thành công
+            user = new User(content);
+        } else if(code == DefineStatusResponsive.SUCCESS_BUT_NOT_CORRECT) {
+            // Tìm thấy nhưng thông tin không đúng
+        } else if (code == DefineStatusResponsive.SUCCESS_BUT_NOT_FOUND){
+            // Không tìm thấy tài khoản
+        } else if(code == DefineStatusResponsive.ERROR_CLIENT) {
+            // Lỗi do người dùng hoặc lập trình viên
+        } else {
+            // Lỗi hệ thống
+        }
+        return user;
+    }
+
+    public User registerAccount(String email, String password) {
+        String[] keys = MapFactory.createArrayString(DefinePropertyJson.EMAIL, DefinePropertyJson.PASSWORD);
+        String[] values = MapFactory.createArrayString(email, password);
+        Map<String, String> json = MapFactory.createMapJson(keys, values);
+        return null;
+    }
+
+    public User forgetAccount(String email) {
+        return null;
+    }
+}
