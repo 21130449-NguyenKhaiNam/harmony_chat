@@ -6,6 +6,7 @@ import com.example.harmony_chat.model.Information;
 import com.example.harmony_chat.util.MapperJson;
 
 import java.util.Map;
+import java.util.Observer;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -23,6 +24,7 @@ public interface ApiService {
 
     @POST(DefinePathApi.LOGIN)
     Call<Information> login(@Body Map<String, String> json);
+
     @POST(DefinePathApi.REGISTER)
     Call<Information> register(@Body Map<String, String> json);
 

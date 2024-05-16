@@ -7,9 +7,17 @@ import com.example.harmony_chat.config.DefineStatusResponsive;
 import com.example.harmony_chat.model.Information;
 import com.example.harmony_chat.model.User;
 import com.example.harmony_chat.util.MapFactory;
+import com.example.harmony_chat.util.RxHelper;
 
 import java.util.Map;
-import java.util.UUID;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.core.Scheduler;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class CallService {
     private static CallService service;
@@ -24,23 +32,25 @@ public class CallService {
         String[] keys = MapFactory.createArrayString(DefinePropertyJson.EMAIL, DefinePropertyJson.PASSWORD);
         String[] values = MapFactory.createArrayString(email, password);
         Map<String, String> json = MapFactory.createMapJson(keys, values);
-        ApiService.service.login(json).enqueue(Callback.getInstance());
-        Information info = Callback.getInstance().getInfo();
-        int code = info.getCode();
-        String content = info.getJson();
-        User user = null;
-        if(code == DefineStatusResponsive.SUCCESS) {
-            // Thành công
-            user = new User(content);
-        } else if(code == DefineStatusResponsive.SUCCESS_BUT_NOT_CORRECT) {
-            // Tìm thấy nhưng thông tin không đúng
-        } else if (code == DefineStatusResponsive.SUCCESS_BUT_NOT_FOUND){
-            // Không tìm thấy tài khoản
-        } else if(code == DefineStatusResponsive.ERROR_CLIENT) {
-            // Lỗi do người dùng hoặc lập trình viên
-        } else {
-            // Lỗi hệ thống
-        }
+        User user = new User();
+        Callback callback = new Callback();
+        RxHelper.performImmediately(() -> {
+            ApiService.service.login(json).enqueue(callback);
+            Information info = callback.getInfo();
+            int code = info.getCode();
+            String content = info.getJson();
+            if(code == DefineStatusResponsive.SUCCESS) {
+                user.setId(content);
+            } else if(code == DefineStatusResponsive.SUCCESS_BUT_NOT_CORRECT) {
+                // Tìm thấy nhưng thông tin không đúng
+            } else if (code == DefineStatusResponsive.SUCCESS_BUT_NOT_FOUND){
+                // Không tìm thấy tài khoản
+            } else if(code == DefineStatusResponsive.ERROR_CLIENT) {
+                // Lỗi do người dùng hoặc lập trình viên
+            } else {
+                // Lỗi hệ thống
+            }
+        });
         return user;
     }
 

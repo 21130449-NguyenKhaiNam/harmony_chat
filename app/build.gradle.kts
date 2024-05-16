@@ -58,4 +58,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.8.7")
     // Convert gson
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    // RxJava
+    implementation("io.reactivex.rxjava3:rxjava:3.0.13")
+    implementation("io.reactivex.rxjava3:rxandroid:3.0.0")
 }

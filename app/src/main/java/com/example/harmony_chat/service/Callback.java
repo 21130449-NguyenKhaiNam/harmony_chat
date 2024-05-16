@@ -11,12 +11,8 @@ public class Callback implements retrofit2.Callback<Information> {
     private static Callback thisClass;
     private Information info;
 
-    private Callback() {
+    public Callback() {
         info = new Information();
-    }
-
-    public static Callback getInstance() {
-        return thisClass == null ? (thisClass = new Callback()) : thisClass;
     }
 
     public Information getInfo() {
@@ -25,9 +21,12 @@ public class Callback implements retrofit2.Callback<Information> {
 
     @Override
     public void onResponse(Call<Information> call, Response<Information> response) {
-        info.setCode(response.body().getCode());
-        info.setJson(response.body().getJson());
-        Log.d("obj", info.toString());
+        if (response.isSuccessful() && response.body() != null) {
+            info.setCode(response.body().getCode());
+            info.setJson(response.body().getJson());
+            // In ra trạng thái nhận được
+            Log.d("Trạng thái nhận được", info.toString());
+        }
     }
 
     @Override

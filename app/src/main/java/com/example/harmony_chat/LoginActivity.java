@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.harmony_chat.model.Information;
+import com.example.harmony_chat.model.User;
 import com.example.harmony_chat.service.ApiService;
 import com.example.harmony_chat.service.CallService;
 
@@ -54,6 +55,11 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        // Đây là đoạn code xử lý việc gọi và chuyển đổi dữ liệu sang đối tượng
+        String email = "khainam";
+        String password = "1234567";
+        User user = CallService.getInstance().loginAccount(email, password);
+        Log.d("Đối tượng nhận được", user.toString());
     }
 
     public void gotoSignup() {
