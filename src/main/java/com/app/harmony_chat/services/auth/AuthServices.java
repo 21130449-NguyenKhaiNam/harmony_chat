@@ -89,10 +89,10 @@ public class AuthServices {
             // Nếu chưa tồn tại tài khoản thì tạo
             if (content.equals(DefineInfomation.DEFAULT_NOT_ACCOUNT)) {
                 // Gửi mail tới tài khoản
-//                newUser.setId(UUID.randomUUID());
-//                newUser.setPassword(encoder.hashPass(newUser.getPassword()));
-//                User user = dao.save(newUser);
-//                info.setContent(user.getId().toString());
+                newUser.setId(UUID.randomUUID());
+                newUser.setPassword(encoder.hashPass(newUser.getPassword()));
+                User user = dao.save(newUser);
+                info.setContent(user.getId().toString());
             } else {
                 info.setContent(DefineInfomation.DEFAULT_HAS_ACCOUNT);
             }

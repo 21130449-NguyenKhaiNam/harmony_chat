@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Getter
-@Setter
 @Data
 @NoArgsConstructor
 @Table(name = DefineTableDatabase.COUNTRY)

@@ -11,8 +11,6 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
-@Getter
-@Setter
 @Data
 @NoArgsConstructor
 @Table(name = DefineTableDatabase.ROOM)
