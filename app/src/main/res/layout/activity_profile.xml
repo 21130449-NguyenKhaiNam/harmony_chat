@@ -134,7 +134,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/more"
-            android:textColor="@color/blue_0" />
+            android:textColor="@color/primary_sky" />
 
     </LinearLayout>
 
