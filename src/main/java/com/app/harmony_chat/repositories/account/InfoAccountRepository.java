@@ -1,6 +1,7 @@
 package com.app.harmony_chat.repositories.account;
 
 import com.app.harmony_chat.models.Profile;
+import com.app.harmony_chat.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -20,6 +21,10 @@ public interface InfoAccountRepository extends JpaRepository<Profile, Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO Profile (user, username) VALUES (:#{#newProfile.user}, :#{#newProfile.username})", nativeQuery = true)
-    void saveBasic(Profile newProfile);
+    @Query(value = "insert into profiles (user_id, username) VALUES (:user, :username)", nativeQuery = true)
+    void saveBasic(@Param("user") String userId, @Param("username") String username);
+
+    default void saveBasic(Profile profile) {
+        saveBasic(profile.getUser().getId(), profile.getUsername());
+    }
 }

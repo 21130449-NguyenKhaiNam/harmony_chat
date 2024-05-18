@@ -2,10 +2,7 @@ package com.app.harmony_chat.models;
 
 import com.app.harmony_chat.configs.DefineTableDatabase;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -15,13 +12,14 @@ import java.time.LocalDate;
 @Table(name = DefineTableDatabase.PROFILE)
 public class Profile {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
+    @Column(nullable = false)
     private String username;
 
     // Lưu đường dẫn

@@ -26,7 +26,7 @@ public class Register {
     private MapperJson mapper;
     @PostMapping(path = DefinePath.ACCOUNT_REGISTER)
     public String register(@RequestBody Map<String, String> json) {
-        List<String> params = mapper.getParam(json,DefinePropertyJson.EMAIL,DefinePropertyJson.PASSWORD , DefinePropertyJson.USERNAME );
+        List<String> params = mapper.getParam(json,DefinePropertyJson.EMAIL,DefinePropertyJson.PASSWORD , DefinePropertyJson.USERNAME);
         User newUser = new User(params.get(0), params.get(1));
         Profile newProfile = new Profile(newUser, params.get(2));
         return mapper.mapToJson(services.addUser(newProfile));

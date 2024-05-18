@@ -94,7 +94,7 @@ public class AuthServices {
             // Nếu chưa tồn tại tài khoản thì tạo
             if (content.equals(DefineInfomation.DEFAULT_NOT_ACCOUNT)) {
                 // Gửi mail tới tài khoản
-                newUser.setId(UUID.randomUUID());
+                newUser.setId(UUID.randomUUID().toString());
                 newUser.setPassword(encoder.hashPass(newUser.getPassword()));
                 User user = dao.save(newUser);
                 profileDao.saveBasic(newProfile);

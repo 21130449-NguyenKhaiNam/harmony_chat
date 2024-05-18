@@ -15,8 +15,7 @@ import java.util.UUID;
 @Table(name = DefineTableDatabase.USER)
 public class User {
     @Id
-    @GeneratedValue
-    private UUID id;
+    private String id;
     private String email;
     private String password;
 
@@ -26,6 +25,6 @@ public class User {
     }
 
     public User(String id) {
-        this.id = UUID.fromString(id);
+        this.id = id;
     }
 }
