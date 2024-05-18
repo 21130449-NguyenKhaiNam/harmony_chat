@@ -50,8 +50,6 @@ dependencies {
     implementation ("com.squareup.picasso:picasso:2.71828")
 //    thư viện thêm - 21130463
     implementation("androidx.cardview:cardview:1.0.0")
-    // Lombok
-    implementation("org.projectlombok:lombok:1.18.32")
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     // Gson

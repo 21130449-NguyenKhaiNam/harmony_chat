@@ -1,14 +1,7 @@
 package com.example.harmony_chat.model;
 
-import java.util.UUID;
-
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
 public class User {
-    private UUID id;
+    private String id;
     private String email;
     private String password;
 
@@ -21,10 +14,30 @@ public class User {
     }
 
     public User(String id) {
-        this.id = UUID.fromString(id);
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public void setId(String id) {
-        this.id = UUID.fromString(id);
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

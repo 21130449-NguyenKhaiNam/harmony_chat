@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Data
-@NoArgsConstructor
 public class Information {
     private int code;
     @SerializedName("content")
@@ -31,6 +29,7 @@ public class Information {
     public void setJson(String json) {
         this.json = json;
     }
+
 
     @NonNull
     @Override

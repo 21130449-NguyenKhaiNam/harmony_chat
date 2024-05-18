@@ -54,12 +54,6 @@ public class LoginActivity extends AppCompatActivity {
                 gotoForgetPassword();
             }
         });
-
-        // Đây là đoạn code xử lý việc gọi và chuyển đổi dữ liệu sang đối tượng
-        String email = "khainam";
-        String password = "1234567";
-        User user = CallService.getInstance().loginAccount(email, password);
-        Log.d("Đối tượng nhận được", user.toString());
     }
 
     public void gotoSignup() {
