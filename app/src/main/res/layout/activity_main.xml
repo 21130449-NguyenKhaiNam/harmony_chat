@@ -1,37 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:orientation="vertical"
+    android:padding="20dp"
+    >
 
-    <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/user_avatar"
-        android:layout_width="@dimen/main_activity_width_avatar"
-        android:layout_height="@dimen/main_activity_height_avatar"
-        android:layout_marginStart="@dimen/main_activity_avatar_margin_start"
-        android:layout_marginTop="@dimen/main_activity_avatar_margin_top"
-        android:src="@drawable/avatar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:riv_border_color="@color/blue_1"
-        app:riv_border_width="1dp"
-        app:riv_corner_radius="100dp" />
+<!--    <com.makeramen.roundedimageview.RoundedImageView-->
+<!--        android:id="@+id/user_avatar"-->
+<!--        android:layout_width="@dimen/main_activity_width_avatar"-->
+<!--        android:layout_height="@dimen/main_activity_height_avatar"-->
+<!--        android:layout_marginStart="@dimen/main_activity_avatar_margin_start"-->
+<!--        android:layout_marginTop="@dimen/main_activity_avatar_margin_top"-->
+<!--        android:src="@drawable/avatar"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:riv_border_color="@color/primary_blue"-->
+<!--        app:riv_border_width="1dp"-->
+<!--        app:riv_corner_radius="100dp" />-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints"
+        android:gravity="center_vertical">
 
-    <ImageView
-        android:id="@+id/search_icon"
-        android:layout_width="@dimen/main_activity_width_search"
-        android:layout_height="@dimen/main_activity_height_search"
-        android:layout_marginTop="@dimen/main_activity_search_margin_start"
-        android:layout_marginEnd="@dimen/main_activity_search_margin_top"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/find" />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/user_avatar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="100dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+            <ImageView
+                android:layout_width="@dimen/main_activity_avatar_size"
+                android:layout_height="@dimen/main_activity_avatar_size"
+                android:src="@drawable/avatar"/>
+        </androidx.cardview.widget.CardView>
+
+        <ImageView
+            android:id="@+id/search_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/find"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <HorizontalScrollView
         android:id="@+id/button_scroll_view"
-        android:layout_width="@dimen/main_activity_width_scroll_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/main_activity_scroll_view_margon_top"
         android:scrollbars="none"
@@ -50,7 +73,7 @@
                 android:layout_marginStart="@dimen/main_activity_button_margin_start"
                 android:layout_marginEnd="@dimen/main_activity_button_margin_end"
                 android:background="@drawable/selected_button"
-                android:textColor="@color/white_0"
+                android:textColor="@color/primary_white"
                 android:text="All"
                 android:fontFamily="sans-serif"
                 android:textStyle="bold"
@@ -63,7 +86,7 @@
                 android:layout_marginEnd="@dimen/main_activity_button_margin_end"
                 android:background="@drawable/unselected_button"
                 android:text="unread"
-                android:textColor="@color/black_0"
+                android:textColor="@color/primary_dark"
                 android:textStyle="bold"
                 />
 
@@ -74,7 +97,7 @@
                 android:layout_marginEnd="@dimen/main_activity_button_margin_end"
                 android:background="@drawable/unselected_button"
                 android:text="read"
-                android:textColor="@color/black_0"
+                android:textColor="@color/primary_dark"
                 android:textStyle="bold"
                 />
 
@@ -85,7 +108,7 @@
                 android:layout_marginEnd="@dimen/main_activity_button_margin_end"
                 android:background="@drawable/unselected_button"
                 android:text="pinned"
-                android:textColor="@color/black_0"
+                android:textColor="@color/primary_dark"
                 android:textStyle="bold"
                 />
 
@@ -96,17 +119,18 @@
                 android:layout_marginEnd="@dimen/main_activity_button_margin_end"
                 android:background="@drawable/unselected_button"
                 android:text="request"
-                android:textColor="@color/black_0"
+                android:textColor="@color/primary_dark"
                 android:textStyle="bold"
                 />
 
         </LinearLayout>
 
     </HorizontalScrollView>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chat_recycler_view"
-        android:layout_width="@dimen/main_activity_width_layout"
-        android:layout_height="@dimen/main_activity_height_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/main_activity_layout_margin_top"
         app:layout_constraintTop_toBottomOf="@+id/button_scroll_view"
         app:layout_constraintStart_toStartOf="parent"
@@ -114,4 +138,37 @@
         app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/item_chat" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+<!--    <LinearLayout-->
+<!--        android:id="@+id/avatar_menu"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="36dp"-->
+<!--        android:orientation="vertical"-->
+<!--        android:visibility="gone"-->
+<!--        android:background="@color/avatar_menu_white"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/user_avatar">-->
+
+<!--        <androidx.appcompat.widget.AppCompatButton-->
+<!--            android:id="@+id/profile_button"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="@drawable/profile_buttons"-->
+<!--            android:drawableStart="@drawable/user"-->
+<!--            android:drawableEnd="@drawable/arrow_next_ios"-->
+<!--            android:drawablePadding="10dp"-->
+<!--            android:text="My Profile"/>-->
+
+<!--        <androidx.appcompat.widget.AppCompatButton-->
+<!--            android:id="@+id/setting_button"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="@drawable/profile_buttons"-->
+<!--            android:drawableStart="@drawable/setting"-->
+<!--            android:drawableEnd="@drawable/arrow_next_ios"-->
+<!--            android:drawablePadding="10dp"-->
+<!--            android:text="Settings" />-->
+<!--    </LinearLayout>-->
+
+
+</LinearLayout>

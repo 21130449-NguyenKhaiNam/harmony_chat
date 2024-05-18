@@ -22,7 +22,7 @@
 
     <dimen name="reacts_size_0">26sp</dimen>
     <!-- Chữ cái -->
-    <dimen name="text_0">18sp</dimen>
+    <dimen name="text_0">@dimen/heading_1</dimen>
     <dimen name="text_1">16sp</dimen>
     <dimen name="text_2">14sp</dimen>
     <dimen name="text_3">12sp</dimen>
@@ -84,8 +84,7 @@
 
     <!--    21130467-->
     <!-- Màn hình chính -->
-    <dimen name="main_activity_width_avatar">40dp</dimen>
-    <dimen name="main_activity_height_avatar">40dp</dimen>
+    <dimen name="main_activity_avatar_size">40dp</dimen>
     <dimen name="main_activity_avatar_margin_start">36dp</dimen>
     <dimen name="main_activity_avatar_margin_top">52dp</dimen>
 
@@ -111,4 +110,5 @@
     <dimen name="main_activity_layout_margin_top">16dp</dimen>
     <!--    End 21130467-->
 
+    <dimen name="popup_options">180dp</dimen>
 </resources>
