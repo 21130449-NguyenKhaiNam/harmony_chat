@@ -14,12 +14,12 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
-public class myArrAdapter extends ArrayAdapter<Setting> {
+public class ArrAdapterSetting extends ArrayAdapter<Setting> {
     Activity context;
     int id_layout;
     ArrayList<Setting> myList;
 
-    public myArrAdapter(  Activity context, int id_layout, ArrayList<Setting> myList) {
+    public ArrAdapterSetting(Activity context, int id_layout, ArrayList<Setting> myList) {
         super(context, id_layout,myList);
         this.context = context;
         this.id_layout = id_layout;
