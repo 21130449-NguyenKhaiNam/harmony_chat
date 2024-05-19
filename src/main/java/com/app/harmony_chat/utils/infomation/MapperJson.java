@@ -4,6 +4,7 @@ import com.app.harmony_chat.configs.DefineInfomation;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.antlr.v4.runtime.misc.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -13,11 +14,10 @@ import java.util.stream.Collectors;
 
 @Component
 public class MapperJson {
+    @Autowired
     private ObjectMapper mapper;
 
-    public MapperJson() {
-        mapper = new ObjectMapper();
-    }
+    public MapperJson() {}
 
     /**
      * Chuyển đối tượng thành dạng json
@@ -43,7 +43,12 @@ public class MapperJson {
      * @param <T>
      */
     public <T> T convertObject(String json, Class<T> obj) {
-        return mapper.convertValue(json, obj);
+        try {
+            return mapper.readValue(json, obj);
+        } catch (JsonProcessingException e) {
+            System.err.println("ERROR CONVERTING JSON TO OBJECT");
+            throw new RuntimeException(e);
+        }
     }
 
     // Trả về một mảng liên tiếp tuân theo quy tắc nhận được ở names

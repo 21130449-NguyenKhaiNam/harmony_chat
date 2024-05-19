@@ -30,7 +30,10 @@ public class OtherUserService {
      * @return
      */
     public Infomation getProfile(String otherUserId) {
-        List<Profile> profileList = dao.findByUserId(UUID.fromString(otherUserId)).stream().toList();
+        List<Profile> profileList = dao.findByUserId(otherUserId).stream().toList();
+        profileList.forEach(profile -> {
+            profile.setUser(null);
+        });
         return filterInfomation.filterListGetOne(profileList);
     }
 
@@ -41,7 +44,7 @@ public class OtherUserService {
      * @return
      */
     public Infomation getFriends(String otherUserID) {
-        List<Relationship> relationships = daoFriend.findByUser(UUID.fromString(otherUserID));
+        List<Relationship> relationships = daoFriend.findByUser(otherUserID);
         Infomation info = new Infomation();
         info.setCode(DefineInfomation.SUCCESS)
                 .setContent(relationships.isEmpty() ?

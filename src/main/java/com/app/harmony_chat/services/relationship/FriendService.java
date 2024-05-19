@@ -2,9 +2,12 @@ package com.app.harmony_chat.services.relationship;
 
 import com.app.harmony_chat.configs.DefineInfomation;
 import com.app.harmony_chat.models.Infomation;
+import com.app.harmony_chat.models.Profile;
 import com.app.harmony_chat.models.Relationship;
 import com.app.harmony_chat.models.User;
+import com.app.harmony_chat.repositories.account.InfoAccountRepository;
 import com.app.harmony_chat.repositories.relationship.FriendRepository;
+import com.app.harmony_chat.services.auth.AuthServices;
 import com.app.harmony_chat.utils.infomation.CheckInfomation;
 import com.app.harmony_chat.utils.infomation.FilterInfomation;
 import com.app.harmony_chat.utils.infomation.MapperJson;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -21,6 +25,8 @@ import java.util.stream.Collectors;
 public class FriendService {
     @Autowired
     private FriendRepository dao;
+    @Autowired
+    private InfoAccountRepository infoAccountDao;
     @Autowired
     private CheckInfomation checkInfomation;
     @Autowired
@@ -35,7 +41,7 @@ public class FriendService {
      * @return
      */
     private Infomation selectRelationship(String userID, String otherID) {
-        List<Relationship> relationships = dao.findByUserAndFriend(UUID.fromString(userID), UUID.fromString(otherID));
+        List<Relationship> relationships = dao.findByUserAndFriend(userID, otherID);
         return filterInfomation.filterListGetOne(relationships);
     }
 
@@ -48,11 +54,16 @@ public class FriendService {
     public Infomation addFriend(String userID, String otherID) {
         User user = new User(userID);
         User otherUser = new User(otherID);
-        Relationship relationship = dao.save(new Relationship(user, otherUser, LocalDate.now()));
-        Infomation info = new Infomation();
-        info.setCode(DefineInfomation.SUCCESS)
-                .setContent(checkInfomation.isEmpty(info) ?
-                        DefineInfomation.DEFAULT_HAS_FRIEND : relationship.getId() + "");
+        Infomation info = selectRelationship(userID, otherID);
+        if(checkInfomation.checkOneWithAll(true, info.getCode(), DefineInfomation.SUCCESS_BUT_NOT_FOUND)) {
+            Profile profileFriend = infoAccountDao.findByUserId(otherID).orElse(null); // Vẫn có thể lỗi nếu không kiểm soát tốt
+            Relationship relationship = dao.save(new Relationship(user, otherUser, LocalDate.now(), profileFriend.getUsername()));
+            info.setCode(DefineInfomation.SUCCESS)
+                    .setContent(relationship.getId() + "");
+        } else {
+            info.setCode(DefineInfomation.ERROR_CLIENT)
+                    .setContent(DefineInfomation.DEFAULT_HAS_FRIEND);
+        }
         return info;
     }
 
@@ -65,10 +76,14 @@ public class FriendService {
     public Infomation deleteFriend(String userID, String otherID) {
         User user = new User(userID);
         User otherUser = new User(otherID);
-        dao.delete(new Relationship(user, otherUser));
-        Infomation info = new Infomation()
-                .setCode(DefineInfomation.SUCCESS)
-                .setContent(DefineInfomation.DEFAULT_UN_FRIEND_SUCCESS);
+        Infomation info = selectRelationship(userID, otherID);
+        if(checkInfomation.checkOneWithAll(true, info.getCode(), DefineInfomation.SUCCESS)) {
+            dao.deleteFriend(new Relationship(user, otherUser));
+            info.setContent(DefineInfomation.EMPTY);
+        } else {
+            info.setCode(DefineInfomation.ERROR_CLIENT)
+                    .setContent(DefineInfomation.DEFAULT_NO_FRIEND);
+        }
         return info;
     }
 
@@ -81,10 +96,18 @@ public class FriendService {
      */
     public Infomation updateNickName(String userID, String otherID, String nickname) {
         Infomation info = selectRelationship(userID, otherID);
-        Relationship relationship = mapper.convertObject((String) info.getContent(), Relationship.class);
-        dao.setNickNameForFriend(relationship.getId(), nickname);
-        info.setCode(DefineInfomation.SUCCESS)
-                .setContent(DefineInfomation.DEFAULT_RENAME_NICKNAME_FRIEND);
+        if(checkInfomation.checkOneWithAll(true, info.getCode(), DefineInfomation.SUCCESS)) {
+            String json = mapper.mapToJson(info.getContent());
+            System.out.println(json);
+            Relationship relationship = mapper.convertObject(json, Relationship.class);
+            dao.setNickNameForFriend(relationship.getId(), nickname);
+            info.setCode(DefineInfomation.SUCCESS)
+                    .setContent(DefineInfomation.DEFAULT_RENAME_NICKNAME_FRIEND);
+        } else {
+            info.setCode(DefineInfomation.ERROR_CLIENT)
+                    .setContent(DefineInfomation.DEFAULT_NO_FRIEND);
+        }
+
         return info;
     }
 
@@ -94,13 +117,21 @@ public class FriendService {
      * @return
      */
     public Infomation getListFriends(String userID) {
-        List<Relationship> relationships = dao.findByUser(UUID.fromString(userID));
+        List<Relationship> relationships = dao.findByUser(userID);
         List<User> friends = relationships.stream()
                 .map(relationship -> relationship.getFriend())
                 .collect(Collectors.toList());
+        List<Profile> profilesFriends = new ArrayList<>();
+        friends.forEach(friend -> {
+            Profile profile = infoAccountDao.findByUserId(friend.getId()).orElse(null);
+            profile.setUser(null);
+            if(!checkInfomation.isEmpty(profile)) {
+                profilesFriends.add(profile);
+            }
+        });
         Infomation info = new Infomation();
         info.setCode(DefineInfomation.SUCCESS);
-        info.setContent(friends);
+        info.setContent(profilesFriends);
         return info;
     }
 }

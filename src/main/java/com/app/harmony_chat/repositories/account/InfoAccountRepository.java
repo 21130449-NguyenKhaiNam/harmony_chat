@@ -16,8 +16,8 @@ import java.util.UUID;
 
 @Repository
 public interface InfoAccountRepository extends JpaRepository<Profile, Long> {
-    @Query("SELECT p.id, p.username, p.avatar, p.country, p.dob, p.gender, p.phone FROM Profile p WHERE p.user.id = :userId")
-    Optional<Profile> findByUserId(@Param("userId") UUID userId);
+    @Query("SELECT p FROM Profile p WHERE p.user.id = :userId")
+    Optional<Profile> findByUserId(@Param("userId") String userId);
 
     @Modifying
     @Transactional

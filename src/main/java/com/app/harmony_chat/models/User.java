@@ -12,6 +12,7 @@ import java.util.UUID;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = DefineTableDatabase.USER)
 public class User {
     @Id

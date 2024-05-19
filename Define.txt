@@ -23,6 +23,21 @@
 
 - Lỗi trong json: {"code":400,"content":null} - Có thể kèm nội dung nếu có
 - Lỗi do server: {"code":500,"content":null} - Có thể kèm nội dung nếu có
+- Một số lỗi sai khác:
+    + Sai loại action:
+        {
+          "timestamp": "2024-05-19T05:52:40.597+00:00",
+          "status": 405,
+          "error": "Method Not Allowed",
+          "path": "/api/v1/relationship/friend/add"
+        }
+    + Lỗi hệ thống:
+        {
+            "timestamp": "2024-05-19T05:53:53.632+00:00",
+            "status": 500,
+            "error": "Internal Server Error",
+            "path": "/api/v1/relationship/friend/add"
+        }
 
 - Liên quan đến truy cập:
 	+ /api/v1/account/login: Đăng nhập POST -> JSON {'email':'?', 'password': '?'} -> Phản hồi
@@ -37,6 +52,20 @@
         . Thành công: {"code":200, "content": null}, Mật khẩu mới gửi về mail
 	+ /api/v1/account/profile: Xem trang cá nhân của mình POST -> JSON {'user-id': ?}
         . Lỗi không tồn tại: {"code":400,"content":"Tài khoản không tồn tại"}
+        . Thành công:
+            {
+              "code": 200,
+              "content": {
+                "id": 4,
+                "user": null,
+                "username": "khainam",
+                "avatar": null,
+                "dob": null,
+                "gender": null,
+                "country": null,
+                "phone": null
+              }
+            }
 
 	+ /api/v1/account/profile/update: Cập nhật thông tin trang cá nhân của mình
 	    POST -> JSON {
@@ -56,12 +85,55 @@
 
 - Liên quan đến mối quan hệ:
 	+ /api/v1/relationship/friend/add: Thêm mối quan hệ bạn bè POST -> JSON {'user-id':'?', 'other-id': '?'}
+        . Đã kết bạn với nhau:
+            {"code":400,"content":"Đã kết bạn"}
+        . Thành công:
+            {"code":200,"content":"1"}
 	+ /api/v1/relationship/friend/unfriend: Hủy kết bạn POST -> JSON {'user-id':'?', 'other-id': '?'}
-	+ /api/v1/relationship/friend/rename: Đổi biệt danh bạn bè POST -> JSON {'user-id':'?', 'other-id': '?', 'nickname': '?'}
+        . Thành công
+            {"code":200,"content":"empty"}
+        . Danh sách trống:
+            {"code":400,"content":"Danh sách bạn bè trống"}
+    + /api/v1/relationship/friend/rename: Đổi biệt danh bạn bè POST -> JSON {'user-id':'?', 'other-id': '?', 'nickname': '?'}
+        . Thành công:
+            {"code":200,"content":"Đổi biệt danh thành công"}
 	+ /api/v1/relationship/friend/list: Lấy ra danh sách bạn bè POST -> JSON {'user-id':'?'}
-
+        . Thành công:
+            {
+              "code": 200,
+              "content": [
+                {
+                  "id": 3,
+                  "user": null,
+                  "username": "khainam",
+                  "avatar": null,
+                  "dob": null,
+                  "gender": null,
+                  "country": null,
+                  "phone": null
+                }
+              ]
+            }
 	+ /api/v1/relationship/other/profile: Xem thông tin của người dùng khác GET -> JSON {'other-id': '?'}
+        . Thành công:
+            {
+              "code": 200,
+              "content": {
+                "id": 3,
+                "user": null,
+                "username": "khainam",
+                "avatar": null,
+                "dob": null,
+                "gender": null,
+                "country": null,
+                "phone": null
+              }
+            }
 	+ /api/v1/relationship/other/friends: Xem bạn bè của người khác GET -> JSON {'other-id': '?'}
+        . Danh sách trống:
+            {
+                "other-id": "a095a050-abc4-4c55-a9c1-e75f3b09c01f"
+            }
 
 - Liên quan đến việc xem dữ liệu trên màn hình:
     + /api/v1/search/friend/mess: Tìm kiếm bạn bè trong danh sách tin nhắn GET -> JSON {'name': '?'}

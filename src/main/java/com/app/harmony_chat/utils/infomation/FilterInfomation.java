@@ -27,7 +27,7 @@ public class FilterInfomation {
         } else {
             info.setCode(DefineInfomation.SUCCESS);
             if (ts.isEmpty()) {
-                // Không tìm thấy tài khoản
+                info.setCode(DefineInfomation.SUCCESS_BUT_NOT_FOUND);
                 content.append(DefineInfomation.DEFAULT_NOT_ACCOUNT);
             } else {
                 T t = ts.get(0);
@@ -35,7 +35,7 @@ public class FilterInfomation {
             }
         }
         if (!content.isEmpty()) {
-            // Không tìm thấy profile tương ứng
+            info.setCode(DefineInfomation.SUCCESS_BUT_NOT_FOUND);
             info.setContent(content.toString());
         }
         return info;

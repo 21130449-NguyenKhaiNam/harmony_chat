@@ -19,10 +19,6 @@ public class MailService {
 	@Autowired
 	private PasswordEncoder encoder;
 
-	public static void main(String[] args) {
-		sendEmail("khainam23@gmail.com", DefineEmail.TITLE_REGISTER, DefineEmail.CONTENT_REGISTER);
-	}
-
 	// Nội dung trả về chính là mã code phải nhập
 	public static void sendEmail(String toEmail, String subject, String mess) {
 		try {

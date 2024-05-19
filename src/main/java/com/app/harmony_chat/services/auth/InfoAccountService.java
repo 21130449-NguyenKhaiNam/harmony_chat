@@ -26,15 +26,14 @@ public class InfoAccountService {
      * @return
      */
     public Infomation viewProfile(String id) {
-        System.out.println(id);
-        Profile profile = dao.findByUserId(UUID.fromString(id)).orElse(null);
+        Profile profile = dao.findByUserId(id).orElse(null);
         Infomation info = new Infomation();
         if(profile == null) {
-            // Xử lý lưu trữ để không cần xét
             info.setCode(DefineInfomation.ERROR_CLIENT);
             info.setContent(DefineInfomation.DEFAULT_NOT_ACCOUNT);
         } else {
-            info.setContent(DefineInfomation.SUCCESS);
+            profile.setUser(null);
+            info.setCode(DefineInfomation.SUCCESS);
             info.setContent(profile);
         }
         return info;

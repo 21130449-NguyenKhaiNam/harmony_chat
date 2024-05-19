@@ -13,6 +13,6 @@ import java.util.UUID;
 
 @Repository
 public interface OtherUserRepository extends JpaRepository<Profile, Long> {
-    @Query("SELECT p FROM Profile p WHERE p.user = :userId")
-    List<Profile> findByUserId(@Param("userId") UUID userId);
+    @Query("SELECT p FROM Profile p WHERE p.user.id = :userId")
+    List<Profile> findByUserId(@Param("userId") String userId);
 }

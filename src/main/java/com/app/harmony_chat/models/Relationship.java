@@ -31,10 +31,11 @@ public class Relationship {
 
     private String nickname;
 
-    public Relationship(User user, User friend, LocalDate established) {
+    public Relationship(User user, User friend, LocalDate established, String nickname) {
         this.user = user;
         this.friend = friend;
         this.established = established;
+        this.nickname = nickname;
     }
 
     public Relationship(User user, User friend) {
