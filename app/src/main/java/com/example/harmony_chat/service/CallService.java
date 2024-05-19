@@ -10,6 +10,7 @@ import com.example.harmony_chat.util.MapFactory;
 import com.example.harmony_chat.util.MapperJson;
 import com.example.harmony_chat.util.RxHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +23,21 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class CallService {
+    // Lý do không để null vì:
+    // 1. Sử dụng tính chất Anonymous Class
+    // 2. Tránh tình trạng bên FE không bắt tình huống null
+
+    // Các trường hợp khác, bổ sung cho việc nâng cấp hệ thống
+//                else if(code == DefineStatusResponsive.SUCCESS_BUT_NOT_CORRECT) {
+//                    // Tìm thấy nhưng thông tin không đúng
+//                } else if (code == DefineStatusResponsive.SUCCESS_BUT_NOT_FOUND){
+//                    // Không tìm thấy tài khoản
+//                } else if(code == DefineStatusResponsive.ERROR_CLIENT) {
+//                    // Lỗi do người dùng hoặc lập trình viên
+//                } else {
+//                    // Lỗi hệ thống
+//                }
+
     private static CallService service;
 
     private CallService() {}
@@ -43,9 +59,6 @@ public class CallService {
         String[] keys = MapFactory.createArrayString(DefinePropertyJson.EMAIL, DefinePropertyJson.PASSWORD);
         String[] values = MapFactory.createArrayString(email, password);
         Map<String, String> json = MapFactory.createMapJson(keys, values);
-        // Lý do không để null vì:
-        // 1. Sử dụng tính chất Anonymous Class
-        // 2. Tránh tình trạng bên FE không bắt tình huống null
         User user = new User();
         Callback callback = new Callback();
         RxHelper.performImmediately(() -> {
@@ -56,16 +69,6 @@ public class CallService {
             if (code == DefineStatusResponsive.SUCCESS) {
                 user.setId(content);
             }
-            // Các trường hợp khác
-//                else if(code == DefineStatusResponsive.SUCCESS_BUT_NOT_CORRECT) {
-//                    // Tìm thấy nhưng thông tin không đúng
-//                } else if (code == DefineStatusResponsive.SUCCESS_BUT_NOT_FOUND){
-//                    // Không tìm thấy tài khoản
-//                } else if(code == DefineStatusResponsive.ERROR_CLIENT) {
-//                    // Lỗi do người dùng hoặc lập trình viên
-//                } else {
-//                    // Lỗi hệ thống
-//                }
         });
         return user;
     }
@@ -94,16 +97,6 @@ public class CallService {
             if (code == DefineStatusResponsive.SUCCESS) {
                 user.setId(content);
             }
-            // Các trường hợp khác
-//                else if(code == DefineStatusResponsive.SUCCESS_BUT_NOT_CORRECT) {
-//                    // Tìm thấy nhưng thông tin không đúng
-//                } else if (code == DefineStatusResponsive.SUCCESS_BUT_NOT_FOUND){
-//                    // Không tìm thấy tài khoản
-//                } else if(code == DefineStatusResponsive.ERROR_CLIENT) {
-//                    // Lỗi do người dùng hoặc lập trình viên
-//                } else {
-//                    // Lỗi hệ thống
-//                }
         });
         return user;
     }
@@ -123,17 +116,6 @@ public class CallService {
             if (code == DefineStatusResponsive.SUCCESS) {
                 // Chỉ có gửi mail tới tài khoản
             }
-            // Các trường hợp khác
-//                else if(code == DefineStatusResponsive.SUCCESS_BUT_NOT_CORRECT) {
-//                    // Tìm thấy nhưng thông tin không đúng
-//                } else if (code == DefineStatusResponsive.SUCCESS_BUT_NOT_FOUND){
-//                    // Không tìm thấy tài khoản
-//                } else if(code == DefineStatusResponsive.ERROR_CLIENT) {
-//                    // Lỗi do người dùng hoặc lập trình viên
-//                } else {
-//                    // Lỗi hệ thống
-//                }
-
         });
         // Hiện tại đang null -> Dự định sẽ nhận xem gửi được mail không
         return user;
@@ -155,17 +137,6 @@ public class CallService {
                 Profile convertProfileFromJson = MapperJson.getInstance().convertObjFromJson(content, Profile.class);
                 profile.inject(convertProfileFromJson);
             }
-            // Các trường hợp khác
-//                else if(code == DefineStatusResponsive.SUCCESS_BUT_NOT_CORRECT) {
-//                    // Tìm thấy nhưng thông tin không đúng
-//                } else if (code == DefineStatusResponsive.SUCCESS_BUT_NOT_FOUND){
-//                    // Không tìm thấy tài khoản
-//                } else if(code == DefineStatusResponsive.ERROR_CLIENT) {
-//                    // Lỗi do người dùng hoặc lập trình viên
-//                } else {
-//                    // Lỗi hệ thống
-//                }
-
         });
         return profile;
     }
@@ -190,17 +161,6 @@ public class CallService {
             if (code == DefineStatusResponsive.SUCCESS) {
                 relationship.setId(Long.parseLong(content));
             }
-            // Các trường hợp khác
-//                else if(code == DefineStatusResponsive.SUCCESS_BUT_NOT_CORRECT) {
-//                    // Tìm thấy nhưng thông tin không đúng
-//                } else if (code == DefineStatusResponsive.SUCCESS_BUT_NOT_FOUND){
-//                    // Không tìm thấy tài khoản
-//                } else if(code == DefineStatusResponsive.ERROR_CLIENT) {
-//                    // Lỗi do người dùng hoặc lập trình viên
-//                } else {
-//                    // Lỗi hệ thống
-//                }
-
         });
         return relationship.getId() != 0;
     }
@@ -220,38 +180,84 @@ public class CallService {
             if (code == DefineStatusResponsive.SUCCESS) {
                 relationship.setId(-1);
             }
-            // Các trường hợp khác
-//                else if(code == DefineStatusResponsive.SUCCESS_BUT_NOT_CORRECT) {
-//                    // Tìm thấy nhưng thông tin không đúng
-//                } else if (code == DefineStatusResponsive.SUCCESS_BUT_NOT_FOUND){
-//                    // Không tìm thấy tài khoản
-//                } else if(code == DefineStatusResponsive.ERROR_CLIENT) {
-//                    // Lỗi do người dùng hoặc lập trình viên
-//                } else {
-//                    // Lỗi hệ thống
-//                }
-
         });
         return relationship.getId() == -1;
     }
 
     // Đổi biệt danh
     public String renameFriend(String userId, String otherId, String nickname) {
-        return null;
+        String[] keys = MapFactory.createArrayString(DefinePropertyJson.USER_ID, DefinePropertyJson.OTHER_ID);
+        String[] values = MapFactory.createArrayString(userId, otherId);
+        Map<String, String> json = MapFactory.createMapJson(keys, values);
+        Callback callback = new Callback();
+        StringBuilder stringBuilder = new StringBuilder();
+        RxHelper.performImmediately(() -> {
+            ApiService.service.login(json).enqueue(callback);
+            Information info = callback.getInfo();
+            int code = info.getCode();
+            String content = info.getJson();
+            if (code == DefineStatusResponsive.SUCCESS) {
+                stringBuilder.append(content);
+            }
+        });
+        return stringBuilder.toString();
     }
 
-    // Xem trang cá nhân người khác
+    // Xem danh sách bạn bè của mình
     public List<Profile> getMyListFriends(String userId) {
-        return null;
+        String[] keys = MapFactory.createArrayString(DefinePropertyJson.USER_ID);
+        String[] values = MapFactory.createArrayString(userId);
+        Map<String, String> json = MapFactory.createMapJson(keys, values);
+        Callback callback = new Callback();
+        List<Profile> profiles = new ArrayList<>();
+        RxHelper.performImmediately(() -> {
+            ApiService.service.login(json).enqueue(callback);
+            Information info = callback.getInfo();
+            int code = info.getCode();
+            String content = info.getJson();
+            if (code == DefineStatusResponsive.SUCCESS) {
+                profiles.addAll(MapperJson.getInstance().convertListObjFromJson(content, Profile.class));
+            }
+        });
+        return profiles;
     }
 
-    // Xem danh sách bạn bè của người khác
+    // Xem trang cá nhân của người khác
     public Profile viewOtherProfile(String otherId) {
-        return null;
+        String[] keys = MapFactory.createArrayString(DefinePropertyJson.OTHER_ID);
+        String[] values = MapFactory.createArrayString(otherId);
+        Map<String, String> json = MapFactory.createMapJson(keys, values);
+        Profile profile = new Profile();
+        Callback callback = new Callback();
+        RxHelper.performImmediately(() -> {
+            ApiService.service.login(json).enqueue(callback);
+            Information info = callback.getInfo();
+            int code = info.getCode();
+            String content = info.getJson();
+            if (code == DefineStatusResponsive.SUCCESS) {
+                Profile convertProfileFromJson = MapperJson.getInstance().convertObjFromJson(content, Profile.class);
+                profile.inject(convertProfileFromJson);
+            }
+        });
+        return profile;
     }
 
     // Xem danh sách bạn bè của người khác
     public List<Profile> getOtherListFriends(String otherId) {
-        return null;
+        String[] keys = MapFactory.createArrayString(DefinePropertyJson.OTHER_ID);
+        String[] values = MapFactory.createArrayString(otherId);
+        Map<String, String> json = MapFactory.createMapJson(keys, values);
+        Callback callback = new Callback();
+        List<Profile> profiles = new ArrayList<>();
+        RxHelper.performImmediately(() -> {
+            ApiService.service.login(json).enqueue(callback);
+            Information info = callback.getInfo();
+            int code = info.getCode();
+            String content = info.getJson();
+            if (code == DefineStatusResponsive.SUCCESS) {
+                profiles.addAll(MapperJson.getInstance().convertListObjFromJson(content, Profile.class));
+            }
+        });
+        return profiles;
     }
 }
