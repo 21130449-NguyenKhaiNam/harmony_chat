@@ -34,6 +34,7 @@
         . Tài khoản đã tồn tại: {"code":203,"content":"Tài khoản đã tồn tại"}
 	+ /api/v1/account/forget: Quên mật khẩu POST -> JSON {'email':'?'}
         . Tài khoản không có trong hệ thống: {"code":202,"content":"Tài khoản không tồn tại"}
+        . Thành công: {"code":200, "content": null}, Mật khẩu mới gửi về mail
 	+ /api/v1/account/profile: Xem trang cá nhân của mình POST -> JSON {'user-id': ?}
         . Lỗi không tồn tại: {"code":400,"content":"Tài khoản không tồn tại"}
 

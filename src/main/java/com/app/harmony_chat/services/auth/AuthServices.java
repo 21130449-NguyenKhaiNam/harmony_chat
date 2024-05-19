@@ -29,6 +29,8 @@ public class AuthServices {
     private PasswordEncoder encoder;
     @Autowired
     private CheckInfomation checkInfomation;
+    @Autowired
+    private MailService mailService;
 
     /**
      * Lấy ra tài khoản người dùng. Có 2 cách thực hiện:
@@ -99,6 +101,7 @@ public class AuthServices {
                 User user = dao.save(newUser);
                 profileDao.saveBasic(newProfile);
                 info.setContent(user.getId().toString());
+                mailService.sendMailRegister(email);
             } else {
                 info.setCode(DefineInfomation.SUCCESS_BUT_HAS_ACCOUNT);
                 info.setContent(DefineInfomation.DEFAULT_HAS_ACCOUNT);
@@ -116,6 +119,7 @@ public class AuthServices {
                 info.setContent(DefineInfomation.DEFAULT_NOT_ACCOUNT);
             } else {
                 // Gửi mail tới tài khoản
+                mailService.sendMailForgetPass(email);
             }
         }
         return info;
