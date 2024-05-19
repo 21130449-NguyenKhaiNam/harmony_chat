@@ -19,4 +19,9 @@ public class MapperJson {
                 .setDateFormat(formatDate)
                 .create();
     }
+
+    // Chuyển một json về đối tượng
+    public <T> T convertObjFromJson(String json, Class<T> type) {
+        return gson.fromJson(json, type);
+    }
 }

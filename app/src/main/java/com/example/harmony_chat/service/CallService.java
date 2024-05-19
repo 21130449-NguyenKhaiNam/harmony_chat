@@ -1,13 +1,13 @@
 package com.example.harmony_chat.service;
 
-import android.util.Log;
-
-import com.example.harmony_chat.Profile;
 import com.example.harmony_chat.config.DefinePropertyJson;
 import com.example.harmony_chat.config.DefineStatusResponsive;
 import com.example.harmony_chat.model.Information;
+import com.example.harmony_chat.model.Profile;
+import com.example.harmony_chat.model.Relationship;
 import com.example.harmony_chat.model.User;
 import com.example.harmony_chat.util.MapFactory;
+import com.example.harmony_chat.util.MapperJson;
 import com.example.harmony_chat.util.RxHelper;
 
 import java.util.List;
@@ -24,14 +24,21 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class CallService {
     private static CallService service;
 
-    private CallService() {
-    }
+    private CallService() {}
 
     public static CallService getInstance() {
         return service == null ? (service = new CallService()) : service;
     }
 
-    // Đăng nhập
+    /**
+     * Đăng nhập
+     * 1. Thành công: Trả về token - Gắn trong id tài khoản
+     * 2. Không thành công: Không có gì
+     *
+     * @param email
+     * @param password
+     * @return
+     */
     public User loginAccount(String email, String password) {
         String[] keys = MapFactory.createArrayString(DefinePropertyJson.EMAIL, DefinePropertyJson.PASSWORD);
         String[] values = MapFactory.createArrayString(email, password);
@@ -63,7 +70,16 @@ public class CallService {
         return user;
     }
 
-    // Đăng ký
+    /**
+     * Đăng ký
+     * 1. Thành công: Trả về token - Gắn trong id tài khoản
+     * 2. Không thành công: Không có gì
+     *
+     * @param email
+     * @param password
+     * @param username
+     * @return
+     */
     public User registerAccount(String email, String password, String username) {
         String[] keys = MapFactory.createArrayString(DefinePropertyJson.EMAIL, DefinePropertyJson.PASSWORD, DefinePropertyJson.USERNAME);
         String[] values = MapFactory.createArrayString(email, password, username);
@@ -92,7 +108,7 @@ public class CallService {
         return user;
     }
 
-    // Quên mật khẩu, gửi mật khẩu mới về mail (mất thì chịu ròi :v)
+    // Quên mật khẩu, gửi mật khẩu mới về mail
     public User forgetAccount(String email) {
         String[] keys = MapFactory.createArrayString(DefinePropertyJson.EMAIL);
         String[] values = MapFactory.createArrayString(email);
@@ -105,7 +121,7 @@ public class CallService {
             int code = info.getCode();
             String content = info.getJson();
             if (code == DefineStatusResponsive.SUCCESS) {
-                user.setEmail(content);
+                // Chỉ có gửi mail tới tài khoản
             }
             // Các trường hợp khác
 //                else if(code == DefineStatusResponsive.SUCCESS_BUT_NOT_CORRECT) {
@@ -119,6 +135,7 @@ public class CallService {
 //                }
 
         });
+        // Hiện tại đang null -> Dự định sẽ nhận xem gửi được mail không
         return user;
     }
 
@@ -135,7 +152,8 @@ public class CallService {
             int code = info.getCode();
             String content = info.getJson();
             if (code == DefineStatusResponsive.SUCCESS) {
-
+                Profile convertProfileFromJson = MapperJson.getInstance().convertObjFromJson(content, Profile.class);
+                profile.inject(convertProfileFromJson);
             }
             // Các trường hợp khác
 //                else if(code == DefineStatusResponsive.SUCCESS_BUT_NOT_CORRECT) {
@@ -158,22 +176,72 @@ public class CallService {
     }
 
     // Thêm bạn
-    public boolean addFriend(String otherId) {
-        return false;
+    public boolean addFriend(String userId, String otherId) {
+        String[] keys = MapFactory.createArrayString(DefinePropertyJson.USER_ID, DefinePropertyJson.OTHER_ID);
+        String[] values = MapFactory.createArrayString(userId, otherId);
+        Map<String, String> json = MapFactory.createMapJson(keys, values);
+        Callback callback = new Callback();
+        Relationship relationship = new Relationship();
+        RxHelper.performImmediately(() -> {
+            ApiService.service.login(json).enqueue(callback);
+            Information info = callback.getInfo();
+            int code = info.getCode();
+            String content = info.getJson();
+            if (code == DefineStatusResponsive.SUCCESS) {
+                relationship.setId(Long.parseLong(content));
+            }
+            // Các trường hợp khác
+//                else if(code == DefineStatusResponsive.SUCCESS_BUT_NOT_CORRECT) {
+//                    // Tìm thấy nhưng thông tin không đúng
+//                } else if (code == DefineStatusResponsive.SUCCESS_BUT_NOT_FOUND){
+//                    // Không tìm thấy tài khoản
+//                } else if(code == DefineStatusResponsive.ERROR_CLIENT) {
+//                    // Lỗi do người dùng hoặc lập trình viên
+//                } else {
+//                    // Lỗi hệ thống
+//                }
+
+        });
+        return relationship.getId() != 0;
     }
 
     // Xóa bạn
-    public boolean unfriend(String otherId) {
-        return false;
+    public boolean unfriend(String userId, String otherId) {
+        String[] keys = MapFactory.createArrayString(DefinePropertyJson.USER_ID, DefinePropertyJson.OTHER_ID);
+        String[] values = MapFactory.createArrayString(userId, otherId);
+        Map<String, String> json = MapFactory.createMapJson(keys, values);
+        Callback callback = new Callback();
+        Relationship relationship = new Relationship();
+        RxHelper.performImmediately(() -> {
+            ApiService.service.login(json).enqueue(callback);
+            Information info = callback.getInfo();
+            int code = info.getCode();
+            String content = info.getJson();
+            if (code == DefineStatusResponsive.SUCCESS) {
+                relationship.setId(-1);
+            }
+            // Các trường hợp khác
+//                else if(code == DefineStatusResponsive.SUCCESS_BUT_NOT_CORRECT) {
+//                    // Tìm thấy nhưng thông tin không đúng
+//                } else if (code == DefineStatusResponsive.SUCCESS_BUT_NOT_FOUND){
+//                    // Không tìm thấy tài khoản
+//                } else if(code == DefineStatusResponsive.ERROR_CLIENT) {
+//                    // Lỗi do người dùng hoặc lập trình viên
+//                } else {
+//                    // Lỗi hệ thống
+//                }
+
+        });
+        return relationship.getId() == -1;
     }
 
     // Đổi biệt danh
-    public String renameFriend(String otherId, String nickname) {
+    public String renameFriend(String userId, String otherId, String nickname) {
         return null;
     }
 
     // Xem trang cá nhân người khác
-    public List<Profile> getMyListFriends() {
+    public List<Profile> getMyListFriends(String userId) {
         return null;
     }
 

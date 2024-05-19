@@ -83,4 +83,15 @@ public class Profile {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
+    public void inject(Profile other) {
+        this.id = other.id;
+        this.user = other.user;
+        this.username = other.username;
+        this.avatar = other.avatar;
+        this.dob = other.dob;
+        this.gender = other.gender;
+        this.country = other.country;
+        this.phone = other.phone;
+    }
 }
