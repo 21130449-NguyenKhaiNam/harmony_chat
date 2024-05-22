@@ -19,7 +19,7 @@ public class SettingScreen extends AppCompatActivity {
     int  ic_greater=R.drawable.greater_than;
     ArrayList<Setting>myList;
     ArrayList<Setting> group1, group2, group3;
-    myArrAdapter adapter1, adapter2, adapter3;
+    ArrAdapterSetting adapter1, adapter2, adapter3;
     ListView lv1, lv2, lv3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +45,9 @@ public class SettingScreen extends AppCompatActivity {
             }
         }
 
-        adapter1 = new myArrAdapter(this, R.layout.item_setting, group1);
-        adapter2 = new myArrAdapter(this, R.layout.item_setting, group2);
-        adapter3 = new myArrAdapter(this, R.layout.item_setting, group3);
+        adapter1 = new ArrAdapterSetting(this, R.layout.item_setting, group1);
+        adapter2 = new ArrAdapterSetting(this, R.layout.item_setting, group2);
+        adapter3 = new ArrAdapterSetting(this, R.layout.item_setting, group3);
 
         lv1.setAdapter(adapter1);
         lv2.setAdapter(adapter2);

@@ -56,4 +56,13 @@ dependencies {
     implementation ("com.squareup.picasso:picasso:2.71828")
 //    thư viện thêm - 21130463
     implementation("androidx.cardview:cardview:1.0.0")
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    // Gson
+    implementation("com.google.code.gson:gson:2.8.7")
+    // Convert gson
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    // RxJava
+    implementation("io.reactivex.rxjava3:rxjava:3.0.13")
+    implementation("io.reactivex.rxjava3:rxandroid:3.0.0")
 }
