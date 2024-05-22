@@ -2,6 +2,7 @@ package com.example.harmony_chat;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +14,25 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,6 +47,10 @@ public class MainActivity extends AppCompatActivity {
     private Button pinnedButton;
     private Button requestButton;
     private List<Button> buttons;
+
+    private RecyclerView chatRecyclerView;
+    private ChatAdapter chatAdapter;
+    private List<ChatItem> chatItemList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +85,18 @@ public class MainActivity extends AppCompatActivity {
         pinnedButton.setOnClickListener(view -> setSelectedButton(pinnedButton));
         requestButton.setOnClickListener(view -> setSelectedButton(requestButton));
 
+        // Initialize RecyclerView
+        chatRecyclerView = findViewById(R.id.chat_recycler_view);
+        chatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        chatItemList = new ArrayList<>();
+        chatAdapter = new ChatAdapter(chatItemList);
+        chatRecyclerView.setAdapter(chatAdapter);
+
         // Load avatar from API
         loadProfileData();
+
+        // Load chat data from API
+        loadChatData();
     }
 
     private void createPopUpWindow() {
@@ -126,6 +155,46 @@ public class MainActivity extends AppCompatActivity {
                 .into(avatarImageView);
     }
 
+    private void loadChatData() {
+        OkHttpClient client = new OkHttpClient();
+        String url = "https://example.com/path/to/chatdata.json"; // URL của JSON API
+
+        Request request = new Request.Builder().url(url).build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String jsonData = response.body().string();
+                    runOnUiThread(() -> {
+                        try {
+                            parseJsonData(jsonData);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    private void parseJsonData(String jsonData) throws JSONException {
+        JSONArray jsonArray = new JSONArray(jsonData);
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            String title = jsonObject.getString("title");
+            String message = jsonObject.getString("message");
+            String time = jsonObject.getString("time");
+            String avatarUrl = jsonObject.getString("avatarUrl");
+            chatItemList.add(new ChatItem(title, message, time, avatarUrl));
+        }
+        chatAdapter.notifyDataSetChanged();
+    }
+
     private void hideSystemUI() {
         View decorView = getWindow().getDecorView();
         decorView.setSystemUiVisibility(
@@ -138,4 +207,3 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 }
-
