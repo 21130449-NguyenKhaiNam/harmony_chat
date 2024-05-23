@@ -23,38 +23,38 @@ public interface ApiService {
             .create(ApiService.class);
 
     @POST(DefinePathApi.LOGIN)
-    Call<Information> login(@Body Map<String, String> json);
+    Call<DataResponsive> login(@Body Map<String, String> json);
 
     @POST(DefinePathApi.REGISTER)
-    Call<Information> register(@Body Map<String, String> json);
+    Call<DataResponsive> register(@Body Map<String, String> json);
 
     @POST(DefinePathApi.FORGET)
-    Call<Information> forget(@Body Map<String, String> json);
+    Call<DataResponsive> forget(@Body Map<String, String> json);
 
     @POST(DefinePathApi.PROFILE)
-    Call<Information> profile(@Body Map<String, String> json);
+    Call<DataResponsive> profile(@Body Map<String, String> json);
 
     @POST(DefinePathApi.UPDATE)
-    Call<Information> update(@Body Map<String, String> json);
+    Call<DataResponsive> update(@Body Map<String, String> json);
 
     @POST(DefinePathApi.FRIEND_ADD)
-    Call<Information> addFriend(@Body Map<String, String> json);
+    Call<DataResponsive> addFriend(@Body Map<String, String> json);
 
     @POST(DefinePathApi.FRIEND_UN)
-    Call<Information> unFriend(@Body Map<String, String> json);
+    Call<DataResponsive> unFriend(@Body Map<String, String> json);
 
     @POST(DefinePathApi.FRIEND_RENAME)
-    Call<Information> renameFriend(@Body Map<String, String> json);
+    Call<DataResponsive> renameFriend(@Body Map<String, String> json);
 
     @POST(DefinePathApi.FRIEND_LIST)
-    Call<Information> listFriend(@Body Map<String, String> json);
+    Call<DataResponsive> listFriend(@Body Map<String, String> json);
 
     @GET(DefinePathApi.OTHER_PROFILE)
-    Call<Information> otherProfile(@Body Map<String, String> json);
+    Call<DataResponsive> otherProfile(@Body Map<String, String> json);
 
     @GET(DefinePathApi.OTHER_FRIENDS)
-    Call<Information> otherFriends(@Body Map<String, String> json);
+    Call<DataResponsive> otherFriends(@Body Map<String, String> json);
 
     @GET(DefinePathApi.SEARCH_FRIEND_MESS)
-    Call<Information> searchFriendMess(@Body Map<String, String> json);
+    Call<DataResponsive> searchFriendMess(@Body Map<String, String> json);
 }

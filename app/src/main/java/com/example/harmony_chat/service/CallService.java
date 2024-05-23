@@ -1,5 +1,7 @@
 package com.example.harmony_chat.service;
 
+import android.util.Log;
+
 import com.example.harmony_chat.config.DefinePropertyJson;
 import com.example.harmony_chat.config.DefineStatusResponsive;
 import com.example.harmony_chat.model.Information;
@@ -90,7 +92,7 @@ public class CallService {
         User user = new User();
         Callback callback = new Callback();
         RxHelper.performImmediately(() -> {
-            ApiService.service.login(json).enqueue(callback);
+            ApiService.service.register(json).enqueue(callback);
             Information info = callback.getInfo();
             int code = info.getCode();
             String content = info.getJson();
@@ -109,7 +111,7 @@ public class CallService {
         User user = new User();
         Callback callback = new Callback();
         RxHelper.performImmediately(() -> {
-            ApiService.service.login(json).enqueue(callback);
+            ApiService.service.forget(json).enqueue(callback);
             Information info = callback.getInfo();
             int code = info.getCode();
             String content = info.getJson();
@@ -128,9 +130,12 @@ public class CallService {
         Map<String, String> json = MapFactory.createMapJson(keys, values);
         Profile profile = new Profile();
         Callback callback = new Callback();
+        Information info = new Information();
         RxHelper.performImmediately(() -> {
-            ApiService.service.login(json).enqueue(callback);
-            Information info = callback.getInfo();
+            ApiService.service.profile(json).enqueue(callback);
+            info.setCode(callback.getInfo().getCode());
+            info.setJson(callback.getInfo().getJson());
+            Log.i("INFO Call API", info.toString());
             int code = info.getCode();
             String content = info.getJson();
             if (code == DefineStatusResponsive.SUCCESS) {
@@ -154,7 +159,7 @@ public class CallService {
         Callback callback = new Callback();
         Relationship relationship = new Relationship();
         RxHelper.performImmediately(() -> {
-            ApiService.service.login(json).enqueue(callback);
+            ApiService.service.addFriend(json).enqueue(callback);
             Information info = callback.getInfo();
             int code = info.getCode();
             String content = info.getJson();
@@ -173,7 +178,7 @@ public class CallService {
         Callback callback = new Callback();
         Relationship relationship = new Relationship();
         RxHelper.performImmediately(() -> {
-            ApiService.service.login(json).enqueue(callback);
+            ApiService.service.unFriend(json).enqueue(callback);
             Information info = callback.getInfo();
             int code = info.getCode();
             String content = info.getJson();
@@ -192,7 +197,7 @@ public class CallService {
         Callback callback = new Callback();
         StringBuilder stringBuilder = new StringBuilder();
         RxHelper.performImmediately(() -> {
-            ApiService.service.login(json).enqueue(callback);
+            ApiService.service.renameFriend(json).enqueue(callback);
             Information info = callback.getInfo();
             int code = info.getCode();
             String content = info.getJson();
@@ -211,7 +216,7 @@ public class CallService {
         Callback callback = new Callback();
         List<Profile> profiles = new ArrayList<>();
         RxHelper.performImmediately(() -> {
-            ApiService.service.login(json).enqueue(callback);
+            ApiService.service.listFriend(json).enqueue(callback);
             Information info = callback.getInfo();
             int code = info.getCode();
             String content = info.getJson();
@@ -230,7 +235,7 @@ public class CallService {
         Profile profile = new Profile();
         Callback callback = new Callback();
         RxHelper.performImmediately(() -> {
-            ApiService.service.login(json).enqueue(callback);
+            ApiService.service.otherProfile(json).enqueue(callback);
             Information info = callback.getInfo();
             int code = info.getCode();
             String content = info.getJson();
@@ -250,7 +255,7 @@ public class CallService {
         Callback callback = new Callback();
         List<Profile> profiles = new ArrayList<>();
         RxHelper.performImmediately(() -> {
-            ApiService.service.login(json).enqueue(callback);
+            ApiService.service.otherFriends(json).enqueue(callback);
             Information info = callback.getInfo();
             int code = info.getCode();
             String content = info.getJson();
