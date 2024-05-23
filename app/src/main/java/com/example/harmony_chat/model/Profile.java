@@ -1,8 +1,9 @@
 package com.example.harmony_chat.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Profile {
+public class Profile implements Serializable {
     private long id;
 
     private User user;
