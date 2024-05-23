@@ -1,3 +1,8 @@
+buildscript {
+    dependencies {
+        classpath("com.google.gms:google-services:4.4.1")
+    }
+}
 //buildscript {
 //    val agp_version by extra("8.3.2")
 //}
