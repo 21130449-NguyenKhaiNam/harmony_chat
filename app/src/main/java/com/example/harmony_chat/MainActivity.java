@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView find;
 
     private TextView setting, profile;
+    private com.example.harmony_chat.model.Profile myProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         hideSystemUI();
+
+        Intent intent = getIntent();
+        myProfile = (com.example.harmony_chat.model.Profile) intent.getSerializableExtra("profile");
+
         boolean isSearchVisible = false;
 
         avatar = findViewById(R.id.user_avatar);
