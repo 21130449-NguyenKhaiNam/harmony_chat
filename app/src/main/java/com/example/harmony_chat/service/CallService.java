@@ -10,19 +10,13 @@ import com.example.harmony_chat.model.Relationship;
 import com.example.harmony_chat.model.User;
 import com.example.harmony_chat.util.MapFactory;
 import com.example.harmony_chat.util.MapperJson;
-import com.example.harmony_chat.util.RxHelper;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.core.Scheduler;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
+import retrofit2.Response;
 
 public class CallService {
     // Lý do không để null vì:
@@ -49,6 +43,26 @@ public class CallService {
     }
 
     /**
+     * Hàm gọi api chung
+     */
+    public void generalCallApi(Response<DataResponsive> response , CallBack func) {
+        Information info = new Information();
+        if (response.isSuccessful() && response.body() != null) {
+            DataResponsive dataResponsive = response.body();
+            info.setCode(dataResponsive.getCode());
+            info.setJson(dataResponsive.getContent());
+        } else {
+            Log.e("API Error", "Response not successful or body is null");
+        }
+        int code = info.getCode();
+        String content = info.getJson();
+        if (code == DefineStatusResponsive.SUCCESS) {
+            // Gọi hàm func ở đây
+            func.callback(code, content);
+        }
+    }
+
+    /**
      * Đăng nhập
      * 1. Thành công: Trả về token - Gắn trong id tài khoản
      * 2. Không thành công: Không có gì
@@ -62,16 +76,12 @@ public class CallService {
         String[] values = MapFactory.createArrayString(email, password);
         Map<String, String> json = MapFactory.createMapJson(keys, values);
         User user = new User();
-        Callback callback = new Callback();
-        RxHelper.performImmediately(() -> {
-            ApiService.service.login(json).enqueue(callback);
-            Information info = callback.getInfo();
-            int code = info.getCode();
-            String content = info.getJson();
-            if (code == DefineStatusResponsive.SUCCESS) {
-                user.setId(content);
-            }
-        });
+        Response<DataResponsive> res = null;
+        try {
+            res = ApiService.service.login(json).execute();
+        } catch (IOException e) {
+            Log.e("Lỗi gọi api login", e.getMessage());
+        }
         return user;
     }
 
@@ -90,15 +100,14 @@ public class CallService {
         String[] values = MapFactory.createArrayString(email, password, username);
         Map<String, String> json = MapFactory.createMapJson(keys, values);
         User user = new User();
-        Callback callback = new Callback();
-        RxHelper.performImmediately(() -> {
-            ApiService.service.register(json).enqueue(callback);
-            Information info = callback.getInfo();
-            int code = info.getCode();
-            String content = info.getJson();
-            if (code == DefineStatusResponsive.SUCCESS) {
-                user.setId(content);
-            }
+        Response<DataResponsive> res = null;
+        try {
+            res = ApiService.service.register(json).execute();
+        } catch (IOException e) {
+            Log.e("Lỗi gọi api register", e.getMessage());
+        }
+        generalCallApi(res, (code, content) -> {
+            user.setId(content);
         });
         return user;
     }
@@ -109,15 +118,14 @@ public class CallService {
         String[] values = MapFactory.createArrayString(email);
         Map<String, String> json = MapFactory.createMapJson(keys, values);
         User user = new User();
-        Callback callback = new Callback();
-        RxHelper.performImmediately(() -> {
-            ApiService.service.forget(json).enqueue(callback);
-            Information info = callback.getInfo();
-            int code = info.getCode();
-            String content = info.getJson();
-            if (code == DefineStatusResponsive.SUCCESS) {
-                // Chỉ có gửi mail tới tài khoản
-            }
+        Response<DataResponsive> res = null;
+        try {
+            res = ApiService.service.forget(json).execute();
+        } catch (IOException e) {
+            Log.e("Lỗi gọi api forget", e.getMessage());
+        }
+        generalCallApi(res, (code, content) -> {
+            // Gửi mail tới tài khoản
         });
         // Hiện tại đang null -> Dự định sẽ nhận xem gửi được mail không
         return user;
@@ -129,19 +137,14 @@ public class CallService {
         String[] values = MapFactory.createArrayString(userId);
         Map<String, String> json = MapFactory.createMapJson(keys, values);
         Profile profile = new Profile();
-        Callback callback = new Callback();
-        Information info = new Information();
-        RxHelper.performImmediately(() -> {
-            ApiService.service.profile(json).enqueue(callback);
-            info.setCode(callback.getInfo().getCode());
-            info.setJson(callback.getInfo().getJson());
-            Log.i("INFO Call API", info.toString());
-            int code = info.getCode();
-            String content = info.getJson();
-            if (code == DefineStatusResponsive.SUCCESS) {
-                Profile convertProfileFromJson = MapperJson.getInstance().convertObjFromJson(content, Profile.class);
-                profile.inject(convertProfileFromJson);
-            }
+        Response<DataResponsive> res = null;
+        try {
+            res = ApiService.service.profile(json).execute();
+        } catch (IOException e) {
+            Log.e("Lỗi gọi api profile", e.getMessage());
+        }
+        generalCallApi(res, (code, content) -> {
+            profile.inject(MapperJson.getInstance().convertObjFromJson(content, Profile.class));
         });
         return profile;
     }
@@ -156,16 +159,15 @@ public class CallService {
         String[] keys = MapFactory.createArrayString(DefinePropertyJson.USER_ID, DefinePropertyJson.OTHER_ID);
         String[] values = MapFactory.createArrayString(userId, otherId);
         Map<String, String> json = MapFactory.createMapJson(keys, values);
-        Callback callback = new Callback();
         Relationship relationship = new Relationship();
-        RxHelper.performImmediately(() -> {
-            ApiService.service.addFriend(json).enqueue(callback);
-            Information info = callback.getInfo();
-            int code = info.getCode();
-            String content = info.getJson();
-            if (code == DefineStatusResponsive.SUCCESS) {
-                relationship.setId(Long.parseLong(content));
-            }
+        Response<DataResponsive> res = null;
+        try {
+            res = ApiService.service.addFriend(json).execute();
+        } catch (IOException e) {
+            Log.e("Lỗi gọi api addFriend", e.getMessage());
+        }
+        generalCallApi(res, (code, content) -> {
+            relationship.setId(Long.parseLong(content));
         });
         return relationship.getId() != 0;
     }
@@ -175,16 +177,15 @@ public class CallService {
         String[] keys = MapFactory.createArrayString(DefinePropertyJson.USER_ID, DefinePropertyJson.OTHER_ID);
         String[] values = MapFactory.createArrayString(userId, otherId);
         Map<String, String> json = MapFactory.createMapJson(keys, values);
-        Callback callback = new Callback();
         Relationship relationship = new Relationship();
-        RxHelper.performImmediately(() -> {
-            ApiService.service.unFriend(json).enqueue(callback);
-            Information info = callback.getInfo();
-            int code = info.getCode();
-            String content = info.getJson();
-            if (code == DefineStatusResponsive.SUCCESS) {
-                relationship.setId(-1);
-            }
+        Response<DataResponsive> res = null;
+        try {
+            res = ApiService.service.unFriend(json).execute();
+        } catch (IOException e) {
+            Log.e("Lỗi gọi api unFriend", e.getMessage());
+        }
+        generalCallApi(res, (code, content) -> {
+            relationship.setId(-1);
         });
         return relationship.getId() == -1;
     }
@@ -194,16 +195,15 @@ public class CallService {
         String[] keys = MapFactory.createArrayString(DefinePropertyJson.USER_ID, DefinePropertyJson.OTHER_ID);
         String[] values = MapFactory.createArrayString(userId, otherId);
         Map<String, String> json = MapFactory.createMapJson(keys, values);
-        Callback callback = new Callback();
         StringBuilder stringBuilder = new StringBuilder();
-        RxHelper.performImmediately(() -> {
-            ApiService.service.renameFriend(json).enqueue(callback);
-            Information info = callback.getInfo();
-            int code = info.getCode();
-            String content = info.getJson();
-            if (code == DefineStatusResponsive.SUCCESS) {
-                stringBuilder.append(content);
-            }
+        Response<DataResponsive> res = null;
+        try {
+            res = ApiService.service.renameFriend(json).execute();
+        } catch (IOException e) {
+            Log.e("Lỗi gọi api renameFriend", e.getMessage());
+        }
+        generalCallApi(res, (code, content) -> {
+            stringBuilder.append(content);
         });
         return stringBuilder.toString();
     }
@@ -213,16 +213,15 @@ public class CallService {
         String[] keys = MapFactory.createArrayString(DefinePropertyJson.USER_ID);
         String[] values = MapFactory.createArrayString(userId);
         Map<String, String> json = MapFactory.createMapJson(keys, values);
-        Callback callback = new Callback();
         List<Profile> profiles = new ArrayList<>();
-        RxHelper.performImmediately(() -> {
-            ApiService.service.listFriend(json).enqueue(callback);
-            Information info = callback.getInfo();
-            int code = info.getCode();
-            String content = info.getJson();
-            if (code == DefineStatusResponsive.SUCCESS) {
-                profiles.addAll(MapperJson.getInstance().convertListObjFromJson(content, Profile.class));
-            }
+        Response<DataResponsive> res = null;
+        try {
+            res = ApiService.service.listFriend(json).execute();
+        } catch (IOException e) {
+            Log.e("Lỗi gọi api listFriend", e.getMessage());
+        }
+        generalCallApi(res, (code, content) -> {
+            profiles.addAll(MapperJson.getInstance().convertListObjFromJson(content, Profile.class));
         });
         return profiles;
     }
@@ -233,17 +232,16 @@ public class CallService {
         String[] values = MapFactory.createArrayString(otherId);
         Map<String, String> json = MapFactory.createMapJson(keys, values);
         Profile profile = new Profile();
-        Callback callback = new Callback();
-        RxHelper.performImmediately(() -> {
-            ApiService.service.otherProfile(json).enqueue(callback);
-            Information info = callback.getInfo();
-            int code = info.getCode();
-            String content = info.getJson();
-            if (code == DefineStatusResponsive.SUCCESS) {
-                Profile convertProfileFromJson = MapperJson.getInstance().convertObjFromJson(content, Profile.class);
-                profile.inject(convertProfileFromJson);
-            }
+        Response<DataResponsive> res = null;
+        try {
+            res = ApiService.service.otherProfile(json).execute();
+        } catch (IOException e) {
+            Log.e("Lỗi gọi api otherProfile", e.getMessage());
+        }
+        generalCallApi(res, (code, content) -> {
+            profile.inject(MapperJson.getInstance().convertObjFromJson(content, Profile.class));
         });
+
         return profile;
     }
 
@@ -252,16 +250,15 @@ public class CallService {
         String[] keys = MapFactory.createArrayString(DefinePropertyJson.OTHER_ID);
         String[] values = MapFactory.createArrayString(otherId);
         Map<String, String> json = MapFactory.createMapJson(keys, values);
-        Callback callback = new Callback();
         List<Profile> profiles = new ArrayList<>();
-        RxHelper.performImmediately(() -> {
-            ApiService.service.otherFriends(json).enqueue(callback);
-            Information info = callback.getInfo();
-            int code = info.getCode();
-            String content = info.getJson();
-            if (code == DefineStatusResponsive.SUCCESS) {
-                profiles.addAll(MapperJson.getInstance().convertListObjFromJson(content, Profile.class));
-            }
+        Response<DataResponsive> res = null;
+        try {
+            res = ApiService.service.otherFriends(json).execute();
+        } catch (IOException e) {
+            Log.e("Lỗi gọi api otherFriends", e.getMessage());
+        }
+        generalCallApi(res, (code, content) -> {
+            profiles.addAll(MapperJson.getInstance().convertListObjFromJson(content, Profile.class));
         });
         return profiles;
     }

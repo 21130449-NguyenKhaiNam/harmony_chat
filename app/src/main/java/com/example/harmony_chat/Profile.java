@@ -1,8 +1,10 @@
 package com.example.harmony_chat;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 import com.example.harmony_chat.model.Country;
 import com.example.harmony_chat.model.User;
 import com.example.harmony_chat.service.CallService;
+import com.example.harmony_chat.util.RxHelper;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,6 +22,7 @@ public class Profile extends AppCompatActivity {
     private TextView textUsername, textDescription, textEmail,
             textPhone, textDob, textSex, textAdress;
     private com.example.harmony_chat.model.Profile profile;
+    private List<com.example.harmony_chat.model.Profile> listFriends;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,17 +42,22 @@ public class Profile extends AppCompatActivity {
         textSex = findViewById(R.id.user_sex);
         textAdress = findViewById(R.id.user_address);
 
-        // Lấy dữ liệu
-        profile = CallService.getInstance().viewMyProfile("316199df-4227-4efb-8af3-42e4a5dd8c4a");
-        List<com.example.harmony_chat.model.Profile> listFriends = CallService.getInstance().getMyListFriends("316199df-4227-4efb-8af3-42e4a5dd8c4a");
-
         work();
     }
 
     // Luồng thực hiện hàm
     private void work() {
+        // Thiết lập chức năng nút
         setupButton();
-        injectData();
+
+        // Lấy dữ liệu
+        RxHelper.performImmediately(() -> {
+            profile = CallService.getInstance().viewMyProfile("316199df-4227-4efb-8af3-42e4a5dd8c4a");
+            listFriends = CallService.getInstance().getMyListFriends("316199df-4227-4efb-8af3-42e4a5dd8c4a");
+            runOnUiThread(() -> {
+                injectData();
+            });
+        });
     }
 
     // Truyền dữ liệu vào
@@ -66,12 +75,7 @@ public class Profile extends AppCompatActivity {
     }
 
     private void setupButton() {
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        btnBack.setOnClickListener((view) -> finish());
     }
 
     private void hideSystemUI() {

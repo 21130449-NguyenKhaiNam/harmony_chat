@@ -7,6 +7,7 @@ import com.example.harmony_chat.util.MapperJson;
 
 import java.util.Map;
 import java.util.Observer;
+import java.util.concurrent.Executor;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -57,4 +58,6 @@ public interface ApiService {
 
     @GET(DefinePathApi.SEARCH_FRIEND_MESS)
     Call<DataResponsive> searchFriendMess(@Body Map<String, String> json);
+
+
 }

@@ -5,7 +5,6 @@ import androidx.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
 public class Information {
     private int code;
-    @SerializedName("content")
     private String json;
 
     public int getCode() {
