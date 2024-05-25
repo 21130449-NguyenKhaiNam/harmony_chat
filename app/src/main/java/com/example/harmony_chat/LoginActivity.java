@@ -21,6 +21,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.harmony_chat.model.User;
 import com.example.harmony_chat.service.CallService;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 
@@ -32,6 +38,11 @@ public class LoginActivity extends AppCompatActivity {
     TextView forgetPasswordBtn;
     String status;
     boolean isPasswordVisible;
+
+//    dang nhap bang google
+    GoogleSignInOptions gso;
+    GoogleSignInClient gsc;
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +120,18 @@ public class LoginActivity extends AppCompatActivity {
             futureFeatures();
         });
 
+//        dang nhap bang google
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        gsc = GoogleSignIn.getClient(this,gso);
+
+        btn_google.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                loginWithGoogle();
+            }
+        });
+
 
     }
 
@@ -122,6 +145,21 @@ public class LoginActivity extends AppCompatActivity {
                 if (status != null && status.equalsIgnoreCase("signupSuccessful")) {
                     Toast.makeText(LoginActivity.this, "Đăng ký thành công, vui lòng đăng nhập lại", Toast.LENGTH_SHORT).show();
                 }
+            }
+        } else if(requestCode == 1000) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+
+
+
+            try {
+                task.getResult(ApiException.class);
+                Toast.makeText(getApplicationContext(),"Đăng nhập thành công",Toast.LENGTH_SHORT).show();
+//            finish();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            } catch (ApiException e) {
+               Toast.makeText(getApplicationContext(),"Có gì đó hoạt động sai",Toast.LENGTH_SHORT).show();
+
             }
         }
     }
@@ -141,6 +179,12 @@ public class LoginActivity extends AppCompatActivity {
 
     private void futureFeatures() {
         Toast.makeText(this,"Tính năng sẽ được cập nhật trong phiên bản sau", Toast.LENGTH_SHORT).show();
+    }
+
+    public void loginWithGoogle() {
+        Intent intent = gsc.getSignInIntent();
+        startActivityForResult(intent,1000);
+
     }
 
     public void gotoSignup() {

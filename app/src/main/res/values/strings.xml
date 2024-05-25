@@ -8,6 +8,7 @@
     -->
 
     <string name="app_name">harmony-chat</string>
+    <string name="web_client_ID">170160510788-1fs52f2ec6vudtr4cnkcekjuq3b3036q.apps.googleusercontent.com</string>
 
     <string name="sign_in">Đăng nhập</string>
     <string name="register">Đăng ký</string>

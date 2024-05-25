@@ -16,6 +16,10 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,6 +28,11 @@ public class MainActivity extends AppCompatActivity {
     private ImageView find;
 
     private TextView setting, profile;
+
+    TextView txtEmail, txtName;
+    GoogleSignInOptions gso;
+    GoogleSignInClient gsc;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +50,19 @@ public class MainActivity extends AppCompatActivity {
         // Hiển thị hoặc ẩn button tìm kiếm tùy thuộc vào trạng thái của thanh tìm kiếm
         find = findViewById(R.id.search_icon);
         find.setVisibility(isSearchVisible ? View.GONE : View.VISIBLE);
+        txtEmail = findViewById(R.id.txtEmail);
+        txtName = findViewById(R.id.txtName);
+
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        gsc = GoogleSignIn.getClient(this,gso);
+
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if(account!=null) {
+            String username = account.getDisplayName();
+            String useremail = account.getEmail();
+            txtName.setText(username);
+            txtEmail.setText(useremail);
+        }
 
         find.setOnClickListener(new View.OnClickListener() {
             @Override

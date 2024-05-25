@@ -83,16 +83,12 @@
         android:orientation="horizontal">
 
 
-
         <ImageButton
             android:id="@+id/googleBtn"
             style="@style/social_button_style"
-            android:layout_weight="1"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
             android:layout_marginHorizontal="10dp"
+            android:layout_weight="1"
             android:src="@drawable/google" />
-
 
         <ImageButton
             android:id="@+id/facebookBtn"

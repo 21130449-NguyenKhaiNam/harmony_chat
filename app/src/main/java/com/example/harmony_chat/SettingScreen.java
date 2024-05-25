@@ -1,11 +1,20 @@
 package com.example.harmony_chat;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 
@@ -21,10 +30,17 @@ public class SettingScreen extends AppCompatActivity {
     ArrayList<Setting> group1, group2, group3;
     ArrAdapterSetting adapter1, adapter2, adapter3;
     ListView lv1, lv2, lv3;
+
+    ImageButton logoutBtn;
+    GoogleSignInOptions gso;
+    GoogleSignInClient gsc;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        gsc = GoogleSignIn.getClient(this,gso);
 
         hideSystemUI();
 
@@ -59,6 +75,14 @@ public class SettingScreen extends AppCompatActivity {
                 finish();
             }
         });
+
+        logoutBtn = findViewById(R.id.ic_logout);
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logout();
+            }
+        });
     }
 
     private void hideSystemUI() {
@@ -72,5 +96,18 @@ public class SettingScreen extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
         );
+    }
+
+    public void logout() {
+        Toast.makeText(this, "test logout", Toast.LENGTH_SHORT).show();
+        gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete( Task<Void> task) {
+                Intent intent = new Intent(SettingScreen.this, LoginActivity.class);
+                finish();
+                startActivity(intent);
+
+            }
+        });
     }
 }
