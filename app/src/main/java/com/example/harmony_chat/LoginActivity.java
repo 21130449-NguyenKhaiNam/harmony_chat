@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.harmony_chat.JavaMail.JavaMailAPI;
 import com.example.harmony_chat.model.User;
 import com.example.harmony_chat.service.CallService;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -139,7 +140,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
-            System.out.println("co goi tra ve");
             if (resultCode == RESULT_OK) {
                 String status = (String) data.getStringExtra("status");
                 if (status != null && status.equalsIgnoreCase("signupSuccessful")) {
@@ -148,9 +148,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         } else if(requestCode == 1000) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-
-
-
             try {
                 task.getResult(ApiException.class);
                 Toast.makeText(getApplicationContext(),"Đăng nhập thành công",Toast.LENGTH_SHORT).show();
@@ -161,6 +158,14 @@ public class LoginActivity extends AppCompatActivity {
                Toast.makeText(getApplicationContext(),"Có gì đó hoạt động sai",Toast.LENGTH_SHORT).show();
 
             }
+        } else if(requestCode == 2) {
+            if (resultCode == RESULT_OK) {
+                String status = (String) data.getStringExtra("status");
+                if (status != null && status.equalsIgnoreCase("sendSuccessful")) {
+                    Toast.makeText(LoginActivity.this, "Đã gửi mật khẩu mới về email của bạn", Toast.LENGTH_SHORT).show();
+                }
+            }
+
         }
     }
 
@@ -189,14 +194,15 @@ public class LoginActivity extends AppCompatActivity {
 
     public void gotoSignup() {
         Intent intent = new Intent(this, SignupActivity.class);
-        startActivity(intent);
+//        startActivity(intent);
         startActivityForResult(intent, 1);
 
     }
 
     public void gotoForgetPassword() {
         Intent intent = new Intent(this, ForgetPasswordActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, 2);
+
     }
 
     public void gotoMain() {
