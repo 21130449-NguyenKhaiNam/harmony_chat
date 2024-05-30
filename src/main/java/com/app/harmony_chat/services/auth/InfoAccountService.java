@@ -32,7 +32,7 @@ public class InfoAccountService {
             info.setCode(DefineInfomation.ERROR_CLIENT);
             info.setContent(DefineInfomation.DEFAULT_NOT_ACCOUNT);
         } else {
-            profile.setUser(null);
+            profile.getUser().setPassword(null);
             info.setCode(DefineInfomation.SUCCESS);
             info.setContent(profile);
         }
