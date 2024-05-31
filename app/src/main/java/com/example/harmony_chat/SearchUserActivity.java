@@ -67,12 +67,7 @@ public class SearchUserActivity extends AppCompatActivity {
 
             }
         });
-
-
-
-
     }
-
 
     public List<User1> getListUser() {
         List<User1> users = new ArrayList<>();
