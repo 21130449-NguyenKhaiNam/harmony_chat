@@ -8,6 +8,7 @@ import com.app.harmony_chat.models.User;
 import com.app.harmony_chat.repositories.account.InfoAccountRepository;
 import com.app.harmony_chat.repositories.relationship.FriendRepository;
 import com.app.harmony_chat.services.auth.AuthServices;
+import com.app.harmony_chat.services.image.CloudinaryServices;
 import com.app.harmony_chat.utils.infomation.CheckInfomation;
 import com.app.harmony_chat.utils.infomation.FilterInfomation;
 import com.app.harmony_chat.utils.infomation.MapperJson;
@@ -118,14 +119,13 @@ public class FriendService {
      */
     public Infomation getListFriends(String userID) {
         List<Relationship> relationships = dao.findByUser(userID);
-        List<User> friends = relationships.stream()
-                .map(relationship -> relationship.getFriend())
-                .collect(Collectors.toList());
         List<Profile> profilesFriends = new ArrayList<>();
-        friends.forEach(friend -> {
-            Profile profile = infoAccountDao.findByUserId(friend.getId()).orElse(null);
+        relationships.forEach(relationship -> {
+            Profile profile = infoAccountDao.findByUserId(relationship.getFriend().getId()).orElse(null);
             profile.setUser(null);
             if(!checkInfomation.isEmpty(profile)) {
+                // Giả ảnh
+                profile.setAvatar(CloudinaryServices.getINSTANCE().getRandomImage());
                 profilesFriends.add(profile);
             }
         });

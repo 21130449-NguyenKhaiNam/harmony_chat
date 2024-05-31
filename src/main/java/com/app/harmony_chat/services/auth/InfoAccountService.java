@@ -3,15 +3,11 @@ package com.app.harmony_chat.services.auth;
 import com.app.harmony_chat.configs.DefineInfomation;
 import com.app.harmony_chat.models.Infomation;
 import com.app.harmony_chat.models.Profile;
-import com.app.harmony_chat.models.User;
 import com.app.harmony_chat.repositories.account.InfoAccountRepository;
+import com.app.harmony_chat.services.image.CloudinaryServices;
 import com.app.harmony_chat.utils.infomation.CheckInfomation;
-import com.app.harmony_chat.utils.infomation.FilterInfomation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.UUID;
 
 @Service
 public class InfoAccountService {
@@ -34,6 +30,8 @@ public class InfoAccountService {
         } else {
             profile.getUser().setPassword(null);
             info.setCode(DefineInfomation.SUCCESS);
+            // Giả ảnh
+            profile.setAvatar(CloudinaryServices.getINSTANCE().getRandomImage());
             info.setContent(profile);
         }
         return info;
