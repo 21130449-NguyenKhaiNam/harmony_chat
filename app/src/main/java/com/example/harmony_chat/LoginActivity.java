@@ -29,6 +29,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -133,7 +134,13 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        loadLogo();
+    }
 
+    private void loadLogo() {
+        Picasso.get()
+                .load(R.drawable.logo_black)
+                .into((ImageView) findViewById(R.id.avatarImg));
     }
 
     @Override

@@ -98,4 +98,18 @@ public class Profile implements Serializable {
         this.country = other.country;
         this.phone = other.phone;
     }
+
+    @Override
+    public String toString() {
+        return "Profile{" +
+                "id=" + id +
+                ", user=" + user +
+                ", username='" + username + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", dob=" + dob +
+                ", gender=" + gender +
+                ", country=" + country +
+                ", phone='" + phone + '\'' +
+                '}';
+    }
 }

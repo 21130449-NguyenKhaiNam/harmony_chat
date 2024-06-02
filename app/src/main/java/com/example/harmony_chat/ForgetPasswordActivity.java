@@ -12,10 +12,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.harmony_chat.JavaMail.JavaMailAPI;
 import com.example.harmony_chat.model.User;
 import com.example.harmony_chat.util.InputHelper;
+import com.squareup.picasso.Picasso;
 
 import java.util.Random;
 public class ForgetPasswordActivity extends AppCompatActivity {
-    EditText editUsername, editEmail;
+    EditText editEmail;
     ImageView avatar;
     Button forgetPasswordBtn;
 
@@ -26,7 +27,6 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_forgetpassword);
 
         hideSystemUI();
-        editUsername = findViewById(R.id.editUsername);
         editEmail = findViewById(R.id.editEmail);
 
         avatar = findViewById(R.id.avatarImg);
@@ -48,6 +48,14 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                 forgetPassword();
             }
         });
+
+        loadLogo();
+    }
+
+    private void loadLogo() {
+        Picasso.get()
+                .load(R.drawable.logo_black)
+                .into((ImageView) findViewById(R.id.avatarImg));
     }
 
     public void forgetPassword() {
