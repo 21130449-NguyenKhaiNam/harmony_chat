@@ -35,12 +35,12 @@ public class LoginActivity extends AppCompatActivity {
     EditText editEmail, editPassword;
     ImageView avatar;
     Button loginBtn, gotoSignupBtn;
-    private ImageButton btn_facebook, btn_github,btn_google;
+    private ImageButton btn_facebook, btn_github, btn_google;
     TextView forgetPasswordBtn;
     String status;
     boolean isPasswordVisible;
 
-//    dang nhap bang google
+    //    dang nhap bang google
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
 
@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
         btn_github = findViewById(R.id.githubBtn);
         btn_google = findViewById(R.id.googleBtn);
 
-        isPasswordVisible =false;
+        isPasswordVisible = false;
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,8 +92,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 final int DRAWABLE_RIGHT = 2;
-                if(event.getAction() == MotionEvent.ACTION_UP) {
-                    if(event.getRawX() >= (editPassword.getRight() - editPassword.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (editPassword.getRight() - editPassword.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                         if (isPasswordVisible) {
                             editPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
                             editPassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.password, 0, R.drawable.unhide, 0);
@@ -111,19 +111,19 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        btn_facebook.setOnClickListener(e->{
+        btn_facebook.setOnClickListener(e -> {
             futureFeatures();
         });
-        btn_google.setOnClickListener(e->{
+        btn_google.setOnClickListener(e -> {
             futureFeatures();
         });
-        btn_github.setOnClickListener(e->{
+        btn_github.setOnClickListener(e -> {
             futureFeatures();
         });
 
 //        dang nhap bang google
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
-        gsc = GoogleSignIn.getClient(this,gso);
+        gsc = GoogleSignIn.getClient(this, gso);
 
         btn_google.setOnClickListener(new View.OnClickListener() {
 
@@ -146,19 +146,19 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Đăng ký thành công, vui lòng đăng nhập lại", Toast.LENGTH_SHORT).show();
                 }
             }
-        } else if(requestCode == 1000) {
+        } else if (requestCode == 1000) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 task.getResult(ApiException.class);
-                Toast.makeText(getApplicationContext(),"Đăng nhập thành công",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
 //            finish();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             } catch (ApiException e) {
-               Toast.makeText(getApplicationContext(),"Có gì đó hoạt động sai",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Có gì đó hoạt động sai", Toast.LENGTH_SHORT).show();
 
             }
-        } else if(requestCode == 2) {
+        } else if (requestCode == 2) {
             if (resultCode == RESULT_OK) {
                 String status = (String) data.getStringExtra("status");
                 if (status != null && status.equalsIgnoreCase("sendSuccessful")) {
@@ -183,12 +183,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void futureFeatures() {
-        Toast.makeText(this,"Tính năng sẽ được cập nhật trong phiên bản sau", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Tính năng sẽ được cập nhật trong phiên bản sau", Toast.LENGTH_SHORT).show();
     }
 
     public void loginWithGoogle() {
         Intent intent = gsc.getSignInIntent();
-        startActivityForResult(intent,1000);
+        startActivityForResult(intent, 1000);
 
     }
 
@@ -211,7 +211,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public int checkLogin() {
-        int re =0;
+        int re = 0;
         String password = editPassword.getText().toString();
 //        String email = editUsername
         return re;
@@ -219,22 +219,24 @@ public class LoginActivity extends AppCompatActivity {
 
     public void login() {
         boolean isOK = true;
-        if(checkNull(editEmail)) isOK = false;
-        if(checkNull(editPassword)) isOK = false;
+        if (checkNull(editEmail)) isOK = false;
+        if (checkNull(editPassword)) isOK = false;
 
 
-        if(isOK) {
+        if (isOK) {
             String email = editEmail.getText().toString();
             String password = editPassword.getText().toString();
 //            ma hoa password
             password = User.encodePwd(password);
-            User u = CallService.getInstance().loginAccount(email,password);
-            if(u.getEmail()==null) {
-                changeEditStroke(editEmail,Color.RED);
-                changeEditStroke(editPassword,Color.RED);
-                Toast.makeText(LoginActivity.this, "Thông tin đăng nhập không chính xác" , Toast.LENGTH_SHORT).show();
+//            User u = CallService.getInstance().loginAccount(email,password);  // Phương thức chính thức khi dùng để get dữ liệu từ API của Khải Nam
+            User u = CallService.getInstance().loginAccount(email, password);   // Phương thức dùng để test chức năng login
+            if (u == null) {
+                changeEditStroke(editEmail, Color.RED);
+                changeEditStroke(editPassword, Color.RED);
+                Toast.makeText(LoginActivity.this, "Thông tin đăng nhập không chính xác", Toast.LENGTH_SHORT).show();
             } else {
                 Intent intent = new Intent(this, MainActivity.class);
+                intent.putExtra("user_id", u.getId());
                 startActivity(intent);
             }
 
@@ -245,8 +247,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public boolean checkNull(EditText e) {
-        boolean re= false;
-        if(e.getText().toString().equals("")) {
+        boolean re = false;
+        if (e.getText().toString().equals("")) {
             e.setHint("Không được để trống");
             e.setHintTextColor(Color.RED);
             changeEditStroke(e, Color.RED);

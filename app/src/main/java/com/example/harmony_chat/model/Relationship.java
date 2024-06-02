@@ -5,18 +5,18 @@ import java.time.LocalDate;
 
 public class Relationship {
     private long id;
-
     private User user;
     private User friend;
-
     private LocalDate established;
-
     private String nickname;
 
     public Relationship(User user, User friend, LocalDate established) {
         this.user = user;
         this.friend = friend;
         this.established = established;
+    }
+
+    public Relationship() {
     }
 
     public Relationship(User user, User friend) {

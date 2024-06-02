@@ -10,18 +10,6 @@
     android:padding="20dp"
     >
 
-<!--    <com.makeramen.roundedimageview.RoundedImageView-->
-<!--        android:id="@+id/user_avatar"-->
-<!--        android:layout_width="@dimen/main_activity_width_avatar"-->
-<!--        android:layout_height="@dimen/main_activity_height_avatar"-->
-<!--        android:layout_marginStart="@dimen/main_activity_avatar_margin_start"-->
-<!--        android:layout_marginTop="@dimen/main_activity_avatar_margin_top"-->
-<!--        android:src="@drawable/avatar"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:riv_border_color="@color/primary_blue"-->
-<!--        app:riv_border_width="1dp"-->
-<!--        app:riv_corner_radius="100dp" />-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,6 +25,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent">
             <ImageView
+                android:id="@+id/avatar_image_view"
                 android:layout_width="@dimen/main_activity_avatar_size"
                 android:layout_height="@dimen/main_activity_avatar_size"
                 android:src="@drawable/avatar"/>
@@ -51,31 +40,31 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <TextView
-            android:id="@+id/txtEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="31dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="94dp"
-            android:layout_marginBottom="11dp"
-            android:text="user email"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/txtName"
-            app:layout_constraintStart_toEndOf="@+id/user_avatar"
-            app:layout_constraintTop_toTopOf="parent" />
+<!--        <TextView-->
+<!--            android:id="@+id/txtEmail"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="31dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginEnd="94dp"-->
+<!--            android:layout_marginBottom="11dp"-->
+<!--            android:text="user email"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/txtName"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/user_avatar"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
-        <TextView
-            android:id="@+id/txtName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="50dp"
-            android:layout_marginBottom="13dp"
-            android:text="user name"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/search_icon"
-            app:layout_constraintTop_toTopOf="parent" />
+<!--        <TextView-->
+<!--            android:id="@+id/txtName"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:layout_marginEnd="50dp"-->
+<!--            android:layout_marginBottom="13dp"-->
+<!--            android:text="user name"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/search_icon"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <HorizontalScrollView
@@ -162,39 +151,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:listitem="@layout/item_chat" />
-
-<!--    <LinearLayout-->
-<!--        android:id="@+id/avatar_menu"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="36dp"-->
-<!--        android:orientation="vertical"-->
-<!--        android:visibility="gone"-->
-<!--        android:background="@color/avatar_menu_white"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/user_avatar">-->
-
-<!--        <androidx.appcompat.widget.AppCompatButton-->
-<!--            android:id="@+id/profile_button"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:background="@drawable/profile_buttons"-->
-<!--            android:drawableStart="@drawable/user"-->
-<!--            android:drawableEnd="@drawable/arrow_next_ios"-->
-<!--            android:drawablePadding="10dp"-->
-<!--            android:text="My Profile"/>-->
-
-<!--        <androidx.appcompat.widget.AppCompatButton-->
-<!--            android:id="@+id/setting_button"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:background="@drawable/profile_buttons"-->
-<!--            android:drawableStart="@drawable/setting"-->
-<!--            android:drawableEnd="@drawable/arrow_next_ios"-->
-<!--            android:drawablePadding="10dp"-->
-<!--            android:text="Settings" />-->
-<!--    </LinearLayout>-->
+        tools:listitem="@layout/chat_message_layout" />
 
 
 </LinearLayout>
