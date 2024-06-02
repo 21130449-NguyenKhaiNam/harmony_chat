@@ -76,17 +76,12 @@ public class MainActivity extends AppCompatActivity implements SelectListener {
         chatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         chatItemList = new ArrayList<>();
         String urlImage = "https://images.unsplash.com/photo-1627087820883-7a102b79179a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+
+        // Truy xuất cơ sở dữ liệu và hiển thị nó ra RecycleView của màn hình giao diện
         FirebaseFirestore.getInstance()
                 .collection("PROFILES")
                 .get()
                 .addOnCompleteListener(task -> {
-//                    if (task.isSuccessful()) {
-//                        for (DocumentSnapshot document : task.getResult()) {
-//                            com.example.harmony_chat.model.Profile pro5 = document.toObject(com.example.harmony_chat.model.Profile.class);
-//                            LocalDate localDate = LocalDate.now();
-//                            chatItemList.add(new ChatItem(pro5.getUsername(), "message", urlImage, localDate.toString()));
-//                        }
-//                    }
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
 //                            Log.d(TAG, document.getId() + " => " + document.getData());
@@ -167,9 +162,11 @@ public class MainActivity extends AppCompatActivity implements SelectListener {
         );
     }
 
+    // Khi người dùng nhấn vào từng dòng của RecycleView thì thực hiện chuyển màn hình tới ChatScreen tương ứng của cuộc trò chuyện
     @Override
     public void onItemClicked(ChatItem chatItem) {
         Intent intent = new Intent(this, ChatScreen.class);
+        intent.putExtra("myProfile", myProfile);
         startActivity(intent);
     }
 }

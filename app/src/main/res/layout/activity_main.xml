@@ -5,51 +5,39 @@
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
     android:orientation="vertical"
     android:padding="20dp"
-    >
+    tools:context=".MainActivity">
 
-<!--    <com.makeramen.roundedimageview.RoundedImageView-->
-<!--        android:id="@+id/user_avatar"-->
-<!--        android:layout_width="@dimen/main_activity_width_avatar"-->
-<!--        android:layout_height="@dimen/main_activity_height_avatar"-->
-<!--        android:layout_marginStart="@dimen/main_activity_avatar_margin_start"-->
-<!--        android:layout_marginTop="@dimen/main_activity_avatar_margin_top"-->
-<!--        android:src="@drawable/avatar"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:riv_border_color="@color/primary_blue"-->
-<!--        app:riv_border_width="1dp"-->
-<!--        app:riv_corner_radius="100dp" />-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        tools:ignore="MissingConstraints">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/user_avatar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:cardCornerRadius="100dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintTop_toTopOf="parent">
+
             <ImageView
                 android:layout_width="@dimen/main_activity_avatar_size"
                 android:layout_height="@dimen/main_activity_avatar_size"
-                android:src="@drawable/avatar"/>
+                android:src="@drawable/avatar" />
         </androidx.cardview.widget.CardView>
 
         <ImageView
             android:id="@+id/search_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/find"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:srcCompat="@drawable/find" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <HorizontalScrollView
@@ -66,6 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/all_button"
                 android:layout_width="@dimen/main_activity_width_button"
@@ -73,11 +62,10 @@
                 android:layout_marginStart="@dimen/main_activity_button_margin_start"
                 android:layout_marginEnd="@dimen/main_activity_button_margin_end"
                 android:background="@drawable/selected_button"
-                android:textColor="@color/primary_white"
-                android:text="All"
                 android:fontFamily="sans-serif"
-                android:textStyle="bold"
-                />
+                android:text="All"
+                android:textColor="@color/primary_white"
+                android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/unread_button"
@@ -87,8 +75,7 @@
                 android:background="@drawable/unselected_button"
                 android:text="unread"
                 android:textColor="@color/primary_dark"
-                android:textStyle="bold"
-                />
+                android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/read_button"
@@ -98,8 +85,7 @@
                 android:background="@drawable/unselected_button"
                 android:text="read"
                 android:textColor="@color/primary_dark"
-                android:textStyle="bold"
-                />
+                android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/pinned_button"
@@ -109,8 +95,7 @@
                 android:background="@drawable/unselected_button"
                 android:text="pinned"
                 android:textColor="@color/primary_dark"
-                android:textStyle="bold"
-                />
+                android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/request_button"
@@ -120,8 +105,7 @@
                 android:background="@drawable/unselected_button"
                 android:text="request"
                 android:textColor="@color/primary_dark"
-                android:textStyle="bold"
-                />
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -132,43 +116,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/main_activity_layout_margin_top"
-        app:layout_constraintTop_toBottomOf="@+id/button_scroll_view"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_scroll_view"
         tools:listitem="@layout/item_chat" />
-
-<!--    <LinearLayout-->
-<!--        android:id="@+id/avatar_menu"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="36dp"-->
-<!--        android:orientation="vertical"-->
-<!--        android:visibility="gone"-->
-<!--        android:background="@color/avatar_menu_white"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/user_avatar">-->
-
-<!--        <androidx.appcompat.widget.AppCompatButton-->
-<!--            android:id="@+id/profile_button"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:background="@drawable/profile_buttons"-->
-<!--            android:drawableStart="@drawable/user"-->
-<!--            android:drawableEnd="@drawable/arrow_next_ios"-->
-<!--            android:drawablePadding="10dp"-->
-<!--            android:text="My Profile"/>-->
-
-<!--        <androidx.appcompat.widget.AppCompatButton-->
-<!--            android:id="@+id/setting_button"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:background="@drawable/profile_buttons"-->
-<!--            android:drawableStart="@drawable/setting"-->
-<!--            android:drawableEnd="@drawable/arrow_next_ios"-->
-<!--            android:drawablePadding="10dp"-->
-<!--            android:text="Settings" />-->
-<!--    </LinearLayout>-->
-
 
 </LinearLayout>

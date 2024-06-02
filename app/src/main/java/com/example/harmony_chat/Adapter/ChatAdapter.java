@@ -8,6 +8,10 @@ import android.widget.TextView;
 
 import com.example.harmony_chat.Item.ChatItem;
 import com.example.harmony_chat.R;
+import com.example.harmony_chat.model.User;
+import com.google.firebase.Firebase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
