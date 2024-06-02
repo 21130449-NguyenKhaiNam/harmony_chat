@@ -2,6 +2,9 @@ package com.example.harmony_chat;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -10,11 +13,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.harmony_chat.model.User;
+import com.example.harmony_chat.service.CallService;
+
+import java.util.ArrayList;
+
 public class SignupActivity extends AppCompatActivity {
     EditText editEmail, editUsername, editPassword, editRepassword;
+    TextView txtPasswordError;
     ImageView avatar;
     Button signupBtn, gotoLoginBtn;
 
@@ -31,6 +42,7 @@ public class SignupActivity extends AppCompatActivity {
         editUsername = findViewById(R.id.editUsername);
         editPassword = findViewById(R.id.editPassword);
         editRepassword = findViewById(R.id.editRePassword);
+        txtPasswordError = findViewById(R.id.txtPasswordError);
 
         avatar = findViewById(R.id.avatarImg);
 
@@ -46,7 +58,6 @@ public class SignupActivity extends AppCompatActivity {
                 gotoLogin();
             }
         });
-
 
 //        an hien mat khau
         editPassword.setOnTouchListener(new View.OnTouchListener() {
@@ -95,6 +106,13 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
+        signupBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signup();
+            }
+        });
+
     }
 
     public void gotoLogin() {
@@ -112,5 +130,66 @@ public class SignupActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
         );
+    }
+
+    public void signup() {
+        boolean isOK = true;
+        if(checkNull(editEmail)) isOK = false;
+        if(checkNull(editUsername)) isOK = false;
+        if(checkNull(editPassword)) isOK = false;
+        if(checkNull(editRepassword)) isOK = false;
+
+        if(!editPassword.getText().toString().equals(editRepassword.getText().toString())) {
+            isOK= false;
+            txtPasswordError.setText("Mật khẩu không trùng khớp");
+            changeEditStroke(editPassword,Color.RED);
+            changeEditStroke(editRepassword,Color.RED);
+        } else {
+            txtPasswordError.setText("");
+            changeEditStroke(editPassword,Color.TRANSPARENT);
+            changeEditStroke(editRepassword,Color.TRANSPARENT);
+        }
+
+        if(isOK) {
+            String email = editEmail.getText().toString();
+            String username = editUsername.getText().toString();
+            String password = editPassword.getText().toString();
+//            ma hoa password
+            password = User.encodePwd(password);
+            CallService.getInstance().registerAccount(email,password,username);
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.putExtra("status","signupSuccessful");
+            setResult(RESULT_OK, intent);
+
+            finish();
+        }
+
+
+    }
+
+    public boolean checkNull(EditText e) {
+        boolean re= false;
+        if(e.getText().toString().equals("")) {
+            e.setHint("Không được để trống");
+            e.setHintTextColor(Color.RED);
+            changeEditStroke(e, Color.RED);
+            return true;
+        } else {
+            e.setHint("");
+            e.setHintTextColor(Color.WHITE);
+            changeEditStroke(e, Color.TRANSPARENT);
+        }
+        return re;
+    }
+
+    public int changeEditStroke(EditText e, int color) {
+        Drawable background = e.getBackground();
+        if (background instanceof GradientDrawable) {
+            GradientDrawable gradientDrawable = (GradientDrawable) background;
+            gradientDrawable.setStroke(4, color);
+            return 1;
+        }
+        return 0;
+
     }
 }

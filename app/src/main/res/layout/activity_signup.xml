@@ -70,6 +70,13 @@
         android:hint="@string/reenterpwd"
         android:drawableRight="@drawable/unhide"/>
 
+    <TextView
+        android:id="@+id/txtPasswordError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:textColor="@color/danger" />
+
     <Button
         android:id="@+id/signupBtn"
         style="@style/long_input_style"
