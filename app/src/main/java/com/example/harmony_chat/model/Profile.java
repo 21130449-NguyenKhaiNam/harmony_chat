@@ -1,25 +1,29 @@
 package com.example.harmony_chat.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Profile {
+public class Profile implements Serializable {
     private long id;
-
     private User user;
-
     private String username;
-
-    // Lưu đường dẫn
     private String avatar;
-
     private LocalDate dob;
-
     private Gender gender;
-
     private Country country;
-
     private String phone;
 
+    public Profile(long id, String username, String avatar) {
+        this.id = id;
+        this.username = username;
+        this.avatar = avatar;
+    }
+
+    public Profile() {
+
+    }
+
+    // Getter và Setter
     public long getId() {
         return id;
     }

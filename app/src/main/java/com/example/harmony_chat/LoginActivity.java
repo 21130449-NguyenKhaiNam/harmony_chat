@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.harmony_chat.JavaMail.JavaMailAPI;
 import com.example.harmony_chat.model.User;
 import com.example.harmony_chat.service.CallService;
+import com.example.harmony_chat.util.FakeDB;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -43,7 +44,6 @@ public class LoginActivity extends AppCompatActivity {
     //    dang nhap bang google
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -189,20 +189,17 @@ public class LoginActivity extends AppCompatActivity {
     public void loginWithGoogle() {
         Intent intent = gsc.getSignInIntent();
         startActivityForResult(intent, 1000);
-
     }
 
     public void gotoSignup() {
         Intent intent = new Intent(this, SignupActivity.class);
 //        startActivity(intent);
         startActivityForResult(intent, 1);
-
     }
 
     public void gotoForgetPassword() {
         Intent intent = new Intent(this, ForgetPasswordActivity.class);
         startActivityForResult(intent, 2);
-
     }
 
     public void gotoMain() {
@@ -229,7 +226,7 @@ public class LoginActivity extends AppCompatActivity {
 //            ma hoa password
             password = User.encodePwd(password);
 //            User u = CallService.getInstance().loginAccount(email,password);  // Phương thức chính thức khi dùng để get dữ liệu từ API của Khải Nam
-            User u = CallService.getInstance().loginAccount(email, password);   // Phương thức dùng để test chức năng login
+            User u = FakeDB.getInstance().loginAccount(email, password);   // Phương thức dùng để test chức năng login
             if (u == null) {
                 changeEditStroke(editEmail, Color.RED);
                 changeEditStroke(editPassword, Color.RED);

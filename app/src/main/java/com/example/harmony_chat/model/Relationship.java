@@ -5,9 +5,12 @@ import java.time.LocalDate;
 
 public class Relationship {
     private long id;
+
     private User user;
     private User friend;
+
     private LocalDate established;
+
     private String nickname;
 
     public Relationship(User user, User friend, LocalDate established) {
@@ -15,10 +18,8 @@ public class Relationship {
         this.friend = friend;
         this.established = established;
     }
-
     public Relationship() {
     }
-
     public Relationship(User user, User friend) {
         this.user = user;
         this.friend = friend;

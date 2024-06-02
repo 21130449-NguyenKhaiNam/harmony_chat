@@ -38,7 +38,7 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = encodePwd(password);
+        this.password = password;
     }
 
     @Override

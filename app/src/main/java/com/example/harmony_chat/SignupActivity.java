@@ -112,7 +112,6 @@ public class SignupActivity extends AppCompatActivity {
                 signup();
             }
         });
-
     }
 
     public void gotoLogin() {

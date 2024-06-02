@@ -1,15 +1,11 @@
 package com.example.harmony_chat;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,7 +14,6 @@ import com.example.harmony_chat.model.User;
 import com.example.harmony_chat.util.InputHelper;
 
 import java.util.Random;
-
 public class ForgetPasswordActivity extends AppCompatActivity {
     EditText editUsername, editEmail;
     ImageView avatar;
@@ -31,7 +26,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_forgetpassword);
 
         hideSystemUI();
-
+        editUsername = findViewById(R.id.editUsername);
         editEmail = findViewById(R.id.editEmail);
 
         avatar = findViewById(R.id.avatarImg);
@@ -69,10 +64,6 @@ public class ForgetPasswordActivity extends AppCompatActivity {
             String pwdEncoded = User.encodePwd(pwd);
 //            cap  nhat mau khau moi cho nguoi dung vao database
 //           pwdEncoded: day la mat khau da duoc ma hoa, dung de them vao database
-
-
-
-
 //            gui mat khau moi toi nguoi dung
             String title="Quên mật khẩu Harmony chat";
             String message = "Mật khẩu mới của bạn là: " + pwd +"\nLưu ý: Đây là mật khẩu hệ thống tạo tự động. Hãy thay đổi mật khẩu khác để bạn có thể dễ nhớ hơn.";

@@ -5,6 +5,13 @@ import com.example.harmony_chat.config.DefineStatusResponsive;
 import com.example.harmony_chat.model.Information;
 import com.example.harmony_chat.model.Profile;
 import com.example.harmony_chat.model.Relationship;
+
+import android.util.Log;
+
+import com.example.harmony_chat.config.DefinePropertyJson;
+import com.example.harmony_chat.config.DefineStatusResponsive;
+import com.example.harmony_chat.model.BlackList;
+import com.example.harmony_chat.model.Information;
 import com.example.harmony_chat.model.User;
 import com.example.harmony_chat.util.MapFactory;
 import com.example.harmony_chat.util.MapperJson;
@@ -37,10 +44,10 @@ public class CallService {
 //                } else {
 //                    // Lỗi hệ thống
 //                }
-
     private static CallService service;
 
-    private CallService() {}
+    private CallService() {
+    }
 
     public static CallService getInstance() {
         return service == null ? (service = new CallService()) : service;
@@ -114,10 +121,20 @@ public class CallService {
             int code = info.getCode();
             String content = info.getJson();
             if (code == DefineStatusResponsive.SUCCESS) {
-                // Chỉ có gửi mail tới tài khoản
+                user.setEmail(content);
             }
+            // Các trường hợp khác
+//                else if(code == DefineStatusResponsive.SUCCESS_BUT_NOT_CORRECT) {
+//                    // Tìm thấy nhưng thông tin không đúng
+//                } else if (code == DefineStatusResponsive.SUCCESS_BUT_NOT_FOUND){
+//                    // Không tìm thấy tài khoản
+//                } else if(code == DefineStatusResponsive.ERROR_CLIENT) {
+//                    // Lỗi do người dùng hoặc lập trình viên
+//                } else {
+//                    // Lỗi hệ thống
+//                }
+
         });
-        // Hiện tại đang null -> Dự định sẽ nhận xem gửi được mail không
         return user;
     }
 
@@ -137,6 +154,17 @@ public class CallService {
                 Profile convertProfileFromJson = MapperJson.getInstance().convertObjFromJson(content, Profile.class);
                 profile.inject(convertProfileFromJson);
             }
+            // Các trường hợp khác
+//                else if(code == DefineStatusResponsive.SUCCESS_BUT_NOT_CORRECT) {
+//                    // Tìm thấy nhưng thông tin không đúng
+//                } else if (code == DefineStatusResponsive.SUCCESS_BUT_NOT_FOUND){
+//                    // Không tìm thấy tài khoản
+//                } else if(code == DefineStatusResponsive.ERROR_CLIENT) {
+//                    // Lỗi do người dùng hoặc lập trình viên
+//                } else {
+//                    // Lỗi hệ thống
+//                }
+
         });
         return profile;
     }
@@ -259,5 +287,24 @@ public class CallService {
             }
         });
         return profiles;
+    }
+
+    // Xem danh sách các người dùng bị chặn
+    public ArrayList<BlackList> getBlackList(String userId) {
+        String[] keys = MapFactory.createArrayString(DefinePropertyJson.USER_ID);
+        String[] values = MapFactory.createArrayString(userId);
+        Map<String, String> json = MapFactory.createMapJson(keys, values);
+        Callback callback = new Callback();
+        ArrayList<BlackList> blackList = new ArrayList<>();
+        RxHelper.performImmediately(() -> {
+            ApiService.service.getBlackList(json).enqueue(callback);
+            Information info = callback.getInfo();
+            int code = info.getCode();
+            String content = info.getJson();
+            if (code == DefineStatusResponsive.SUCCESS) {
+                blackList.addAll(MapperJson.getInstance().convertListObjFromJson(content, BlackList.class));
+            }
+        });
+        return blackList;
     }
 }
