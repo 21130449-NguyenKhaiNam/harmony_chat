@@ -4,7 +4,6 @@ import com.example.harmony_chat.config.DefineForGson;
 import com.example.harmony_chat.config.DefinePathApi;
 import com.example.harmony_chat.model.Information;
 import com.example.harmony_chat.util.MapperJson;
-
 import java.util.Map;
 import java.util.Observer;
 
@@ -57,4 +56,7 @@ public interface ApiService {
 
     @GET(DefinePathApi.SEARCH_FRIEND_MESS)
     Call<Information> searchFriendMess(@Body Map<String, String> json);
+
+    @GET(DefinePathApi.BLACK_LIST)
+    Call<Information> getBlackList(@Body Map<String, String> json);
 }

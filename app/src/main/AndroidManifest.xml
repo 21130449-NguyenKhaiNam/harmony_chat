@@ -50,6 +50,12 @@
         <activity
             android:name=".Profile"
             android:exported="true" />
+        <activity
+            android:name=".FriendListActivity"
+            android:exported="true" />
+        <activity
+            android:name=".BlackListActivity"
+            android:exported="true" />
     </application>
 
 </manifest>

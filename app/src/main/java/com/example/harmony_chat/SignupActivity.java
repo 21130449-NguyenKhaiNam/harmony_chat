@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.harmony_chat.model.User;
 import com.example.harmony_chat.service.CallService;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -113,6 +114,13 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
+        loadLogo();
+    }
+
+    private void loadLogo() {
+        Picasso.get()
+                .load(R.drawable.logo_black)
+                .into((ImageView) findViewById(R.id.avatarImg));
     }
 
     public void gotoLogin() {
