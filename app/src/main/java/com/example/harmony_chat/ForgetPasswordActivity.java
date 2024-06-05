@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.harmony_chat.JavaMail.JavaMailAPI;
 import com.example.harmony_chat.model.User;
+import com.example.harmony_chat.service.CallService;
 import com.example.harmony_chat.util.InputHelper;
 import com.squareup.picasso.Picasso;
 
@@ -72,6 +73,8 @@ public class ForgetPasswordActivity extends AppCompatActivity {
             String pwdEncoded = User.encodePwd(pwd);
 //            cap  nhat mau khau moi cho nguoi dung vao database
 //           pwdEncoded: day la mat khau da duoc ma hoa, dung de them vao database
+            CallService.getInstance().changePasswordAuto(email,pwdEncoded);
+
 //            gui mat khau moi toi nguoi dung
             String title="Quên mật khẩu Harmony chat";
             String message = "Mật khẩu mới của bạn là: " + pwd +"\nLưu ý: Đây là mật khẩu hệ thống tạo tự động. Hãy thay đổi mật khẩu khác để bạn có thể dễ nhớ hơn.";

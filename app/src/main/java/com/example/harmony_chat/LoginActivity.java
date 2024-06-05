@@ -156,11 +156,21 @@ public class LoginActivity extends AppCompatActivity {
         } else if (requestCode == 1000) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-                task.getResult(ApiException.class);
-                Toast.makeText(getApplicationContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-//            finish();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
+                GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+                if(account!=null) {
+                    String username = account.getDisplayName();
+                    String useremail = account.getEmail();
+                    String pwd ="";
+                    if(CallService.getInstance().loginGoogleAccount(useremail)==null) {
+                        CallService.getInstance().registerGoogleAccount(useremail,username);
+                    } else {
+                        task.getResult(ApiException.class);
+                        Toast.makeText(getApplicationContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                    }
+                }
+
             } catch (ApiException e) {
                 Toast.makeText(getApplicationContext(), "Có gì đó hoạt động sai", Toast.LENGTH_SHORT).show();
 

@@ -80,6 +80,24 @@ public class CallService {
         return user;
     }
 
+    public User loginGoogleAccount(String email) {
+        String[] keys = MapFactory.createArrayString(DefinePropertyJson.EMAIL, DefinePropertyJson.PASSWORD);
+        String[] values = MapFactory.createArrayString(email, "");
+        Map<String, String> json = MapFactory.createMapJson(keys, values);
+        User user = new User();
+        Callback callback = new Callback();
+        RxHelper.performImmediately(() -> {
+            ApiService.service.login(json).enqueue(callback);
+            Information info = callback.getInfo();
+            int code = info.getCode();
+            String content = info.getJson();
+            if (code == DefineStatusResponsive.SUCCESS) {
+                user.setId(content);
+            }
+        });
+        return user;
+    }
+
     /**
      * Đăng ký
      * 1. Thành công: Trả về token - Gắn trong id tài khoản
@@ -93,6 +111,24 @@ public class CallService {
     public User registerAccount(String email, String password, String username) {
         String[] keys = MapFactory.createArrayString(DefinePropertyJson.EMAIL, DefinePropertyJson.PASSWORD, DefinePropertyJson.USERNAME);
         String[] values = MapFactory.createArrayString(email, password, username);
+        Map<String, String> json = MapFactory.createMapJson(keys, values);
+        User user = new User();
+        Callback callback = new Callback();
+        RxHelper.performImmediately(() -> {
+            ApiService.service.login(json).enqueue(callback);
+            Information info = callback.getInfo();
+            int code = info.getCode();
+            String content = info.getJson();
+            if (code == DefineStatusResponsive.SUCCESS) {
+                user.setId(content);
+            }
+        });
+        return user;
+    }
+
+    public User registerGoogleAccount(String email,String username) {
+        String[] keys = MapFactory.createArrayString(DefinePropertyJson.EMAIL, DefinePropertyJson.PASSWORD, DefinePropertyJson.USERNAME);
+        String[] values = MapFactory.createArrayString(email,"", username);
         Map<String, String> json = MapFactory.createMapJson(keys, values);
         User user = new User();
         Callback callback = new Callback();
@@ -210,6 +246,24 @@ public class CallService {
             }
         });
         return relationship.getId() == -1;
+    }
+
+    public String changePasswordAuto(String email, String password) {
+        String[] keys = MapFactory.createArrayString(DefinePropertyJson.EMAIL, DefinePropertyJson.PASSWORD);
+        String[] values = MapFactory.createArrayString(email, password);
+        Map<String, String> json = MapFactory.createMapJson(keys, values);
+        Callback callback = new Callback();
+        StringBuilder stringBuilder = new StringBuilder();
+        RxHelper.performImmediately(() -> {
+            ApiService.service.login(json).enqueue(callback);
+            Information info = callback.getInfo();
+            int code = info.getCode();
+            String content = info.getJson();
+            if (code == DefineStatusResponsive.SUCCESS) {
+                stringBuilder.append(content);
+            }
+        });
+        return stringBuilder.toString();
     }
 
     // Đổi biệt danh
