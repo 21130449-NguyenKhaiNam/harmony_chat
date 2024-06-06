@@ -1,7 +1,10 @@
 package com.example.harmony_chat;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +14,11 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.example.harmony_chat.model.Hierarchy;
+import com.example.harmony_chat.model.User;
+import com.example.harmony_chat.service.CallService;
+import com.example.harmony_chat.util.CheckInfomation;
+import com.example.harmony_chat.util.RxHelper;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -42,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private CardView avatarCardView;
     private ImageView avatarImageView;
     private ImageView find;
-    private TextView setting, profile;
+    private TextView setting, profile, username;
 
 //    TextView txtEmail, txtName;
     GoogleSignInOptions gso;
@@ -58,13 +66,21 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView chatRecyclerView;
     private ChatAdapter chatAdapter;
     private List<ChatItem> chatItemList;
-
-    String img_url = "https://images.unsplash.com/photo-1627087820883-7a102b79179a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+    private User user;
+    private com.example.harmony_chat.model.Profile profileUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+        String userId = sharedPreferences.getString("id", null);
+        // Không có tài khoản
+        if(CheckInfomation.isEmpty(userId)) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
 
         hideSystemUI();
         boolean isSearchVisible = false;
@@ -75,18 +91,20 @@ public class MainActivity extends AppCompatActivity {
 
         find = findViewById(R.id.search_icon);
         find.setVisibility(isSearchVisible ? View.GONE : View.VISIBLE);
+        username = findViewById(R.id.user_username);
 //        txtEmail = findViewById(R.id.txtEmail);
 //        txtName = findViewById(R.id.txtName);
 
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
-        gsc = GoogleSignIn.getClient(this,gso);
+        gsc = GoogleSignIn.getClient(this, gso);
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if(account!=null) {
-            String username = account.getDisplayName();
-            String useremail = account.getEmail();
+            String name = account.getDisplayName();
+            String email = account.getEmail();
 //            txtName.setText(username);
-//            txtEmail.setText(useremail);
+//            txtEmail.setText(email);
+            username.setText(name);
         }
         find.setOnClickListener(v -> gotoSearchUser());
 
@@ -111,17 +129,22 @@ public class MainActivity extends AppCompatActivity {
         chatRecyclerView = findViewById(R.id.chat_recycler_view);
         chatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         chatItemList = new ArrayList<>();
-        chatItemList.add(new ChatItem("User1","Hello",img_url,"5:10"));
-        chatItemList.add(new ChatItem("User2","Hi",img_url,"5:13"));
-
-        chatAdapter = new ChatAdapter(chatItemList);
-        chatRecyclerView.setAdapter(chatAdapter);
-
-        // Load avatar from API
-        loadProfileData();
-
-        // Load chat data from API
-        loadChatData();
+        RxHelper.performImmediately(() -> {
+            List<Hierarchy> rooms = CallService.getInstance().getRoom(userId);
+            profileUser = CallService.getInstance().viewMyProfile(userId);
+            for (int i = 0; i < rooms.size(); i++) {
+                Hierarchy hierarchy = rooms.get(i);
+                com.example.harmony_chat.model.Profile profileLeader = CallService.getInstance().viewOtherProfile(hierarchy.getLeader().getId());
+                chatItemList.add(new ChatItem(profileLeader.getUsername(), profileLeader.getUsername(), hierarchy.getRoom().getImage(), hierarchy.getRoom().getPublished()));
+            }
+            runOnUiThread(() -> {
+                Log.e("Data chat", rooms.toString());
+                chatAdapter = new ChatAdapter(chatItemList);
+                chatRecyclerView.setAdapter(chatAdapter);
+                // Load avatar from API
+                loadProfileData();
+            });
+        });
     }
 
     private void createPopUpWindow() {
@@ -169,48 +192,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadProfileData() {
         Picasso.get()
-                .load(img_url)
+                .load(profileUser.getAvatar())
                 .into(avatarImageView);
-    }
-
-    private void loadChatData() {
-        OkHttpClient client = new OkHttpClient();
-        String url = "https://example.com/path/to/chatdata.json"; // URL của JSON API
-
-        Request request = new Request.Builder().url(url).build();
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    String jsonData = response.body().string();
-                    runOnUiThread(() -> {
-                        try {
-                            parseJsonData(jsonData);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    });
-                }
-            }
-        });
-    }
-
-    private void parseJsonData(String jsonData) throws JSONException {
-        JSONArray jsonArray = new JSONArray(jsonData);
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject jsonObject = jsonArray.getJSONObject(i);
-            String title = jsonObject.getString("title");
-            String message = jsonObject.getString("message");
-            String time = jsonObject.getString("time");
-            String avatarUrl = jsonObject.getString("avatarUrl");
-            chatItemList.add(new ChatItem(title, message, time, avatarUrl));
-        }
-        chatAdapter.notifyDataSetChanged();
     }
 
     private void hideSystemUI() {

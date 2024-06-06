@@ -1,17 +1,21 @@
 package com.example.harmony_chat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.harmony_chat.JavaMail.JavaMailAPI;
 import com.example.harmony_chat.model.User;
+import com.example.harmony_chat.service.CallService;
 import com.example.harmony_chat.util.InputHelper;
+import com.example.harmony_chat.util.RxHelper;
 import com.squareup.picasso.Picasso;
 
 import java.util.Random;
@@ -64,20 +68,14 @@ public class ForgetPasswordActivity extends AppCompatActivity {
 
         if(isOK ==true) {
             String email = editEmail.getText().toString();
-            Random rand = new Random();
-            String pwd ="";
-            for(int i=0;i<6; i++) {
-                pwd+= String.valueOf(rand.nextInt(9)+1);
-            }
-            String pwdEncoded = User.encodePwd(pwd);
-//            cap  nhat mau khau moi cho nguoi dung vao database
-//           pwdEncoded: day la mat khau da duoc ma hoa, dung de them vao database
-//            gui mat khau moi toi nguoi dung
-            String title="Quên mật khẩu Harmony chat";
-            String message = "Mật khẩu mới của bạn là: " + pwd +"\nLưu ý: Đây là mật khẩu hệ thống tạo tự động. Hãy thay đổi mật khẩu khác để bạn có thể dễ nhớ hơn.";
-            JavaMailAPI javaMailAPI = new JavaMailAPI(this,email,title,message);
-            javaMailAPI.execute();
-
+            RxHelper.performImmediately(() -> {
+                CallService.getInstance().forgetAccount(email);
+                runOnUiThread(() -> {
+                    Toast.makeText(ForgetPasswordActivity.this, "Đã gửi thông tin tới tài khoản", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    startActivity(intent);
+                });
+            });
         }
     }
 

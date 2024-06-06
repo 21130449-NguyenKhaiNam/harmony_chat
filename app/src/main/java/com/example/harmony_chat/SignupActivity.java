@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.harmony_chat.model.User;
 import com.example.harmony_chat.service.CallService;
+import com.example.harmony_chat.util.RxHelper;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class SignupActivity extends AppCompatActivity {
     Button signupBtn, gotoLoginBtn;
 
     boolean isPasswordVisible, isRePasswordVisible;
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +67,8 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 final int DRAWABLE_RIGHT = 2;
-                if(event.getAction() == MotionEvent.ACTION_UP) {
-                    if(event.getRawX() >= (editPassword.getRight() - editPassword.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (editPassword.getRight() - editPassword.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                         if (isPasswordVisible) {
                             editPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
                             editPassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.password, 0, R.drawable.unhide, 0);
@@ -88,8 +90,8 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 final int DRAWABLE_RIGHT = 2;
-                if(event.getAction() == MotionEvent.ACTION_UP) {
-                    if(event.getRawX() >= (editRepassword.getRight() - editRepassword.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (editRepassword.getRight() - editRepassword.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                         if (isRePasswordVisible) {
                             editRepassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
                             editRepassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.password, 0, R.drawable.unhide, 0);
@@ -142,42 +144,48 @@ public class SignupActivity extends AppCompatActivity {
 
     public void signup() {
         boolean isOK = true;
-        if(checkNull(editEmail)) isOK = false;
-        if(checkNull(editUsername)) isOK = false;
-        if(checkNull(editPassword)) isOK = false;
-        if(checkNull(editRepassword)) isOK = false;
+        if (checkNull(editEmail) || editEmail.getText().toString().contains(" ")) isOK = false;
+        if (checkNull(editUsername)) isOK = false;
+        if (checkNull(editPassword)) isOK = false;
+        if (checkNull(editRepassword)) isOK = false;
 
-        if(!editPassword.getText().toString().equals(editRepassword.getText().toString())) {
-            isOK= false;
+        if (!editPassword.getText().toString().equals(editRepassword.getText().toString())) {
+            isOK = false;
             txtPasswordError.setText("Mật khẩu không trùng khớp");
-            changeEditStroke(editPassword,Color.RED);
-            changeEditStroke(editRepassword,Color.RED);
+            changeEditStroke(editPassword, Color.RED);
+            changeEditStroke(editRepassword, Color.RED);
         } else {
             txtPasswordError.setText("");
-            changeEditStroke(editPassword,Color.TRANSPARENT);
-            changeEditStroke(editRepassword,Color.TRANSPARENT);
+            changeEditStroke(editPassword, Color.TRANSPARENT);
+            changeEditStroke(editRepassword, Color.TRANSPARENT);
         }
 
-        if(isOK) {
+        if (isOK) {
             String email = editEmail.getText().toString();
             String username = editUsername.getText().toString();
             String password = editPassword.getText().toString();
-//            ma hoa password
-            password = User.encodePwd(password);
-            CallService.getInstance().registerAccount(email,password,username);
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.putExtra("status","signupSuccessful");
-            setResult(RESULT_OK, intent);
+            RxHelper.performImmediately(() -> {
+                User user = CallService.getInstance().registerAccount(email, password, username);
+                runOnUiThread(() -> {
+                    if (user.getId() != null) {
+                        Intent intent = new Intent(this, LoginActivity.class);
+                        intent.putExtra("status", "signupSuccessful");
+                        setResult(RESULT_OK, intent);
 
-            finish();
+                        finish();
+                    } else {
+                        Toast.makeText(SignupActivity.this, "Tài khoản đã tồn tại hoặc thông tin không chính xác!!!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            });
         }
 
 
     }
 
     public boolean checkNull(EditText e) {
-        boolean re= false;
-        if(e.getText().toString().equals("")) {
+        boolean re = false;
+        if (e.getText().toString().equals("")) {
             e.setHint("Không được để trống");
             e.setHintTextColor(Color.RED);
             changeEditStroke(e, Color.RED);

@@ -1,13 +1,16 @@
 package com.example.harmony_chat;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +26,7 @@ import com.example.harmony_chat.JavaMail.JavaMailAPI;
 import com.example.harmony_chat.model.User;
 import com.example.harmony_chat.service.CallService;
 import com.example.harmony_chat.util.FakeDB;
+import com.example.harmony_chat.util.RxHelper;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -45,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
     //    dang nhap bang google
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,7 +168,6 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             } catch (ApiException e) {
                 Toast.makeText(getApplicationContext(), "Có gì đó hoạt động sai", Toast.LENGTH_SHORT).show();
-
             }
         } else if (requestCode == 2) {
             if (resultCode == RESULT_OK) {
@@ -230,23 +234,25 @@ public class LoginActivity extends AppCompatActivity {
         if (isOK) {
             String email = editEmail.getText().toString();
             String password = editPassword.getText().toString();
-//            ma hoa password
-            password = User.encodePwd(password);
-//            User u = CallService.getInstance().loginAccount(email,password);  // Phương thức chính thức khi dùng để get dữ liệu từ API của Khải Nam
-            User u = FakeDB.getInstance().loginAccount(email, password);   // Phương thức dùng để test chức năng login
-            if (u == null) {
-                changeEditStroke(editEmail, Color.RED);
-                changeEditStroke(editPassword, Color.RED);
-                Toast.makeText(LoginActivity.this, "Thông tin đăng nhập không chính xác", Toast.LENGTH_SHORT).show();
-            } else {
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.putExtra("user_id", u.getId());
-                startActivity(intent);
-            }
-
-//
-//            Intent intent = new Intent(this, MainActivity.class);
-//            startActivity(intent);
+            RxHelper.performImmediately(() -> {
+                User user = CallService.getInstance().loginAccount(email, password);  // Phương thức chính thức khi dùng để get dữ liệu từ API của Khải Nam
+                runOnUiThread(() -> {
+                    if (user.getId() == null) {
+                        // Tài khoản không tồn tại
+                        changeEditStroke(editEmail, Color.RED);
+                        changeEditStroke(editPassword, Color.RED);
+                        Toast.makeText(LoginActivity.this, "Thông tin đăng nhập không chính xác", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Intent intent = new Intent(this, MainActivity.class);
+                        // Thiết lập session nếu đăng nhập thành công
+                        SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("id", user.getId());
+                        editor.commit();
+                        startActivity(intent);
+                    }
+                });
+            });
         }
     }
 
