@@ -47,7 +47,7 @@
 	+ /api/v1/account/register: Đăng ký POST -> JSON {'email':'?', 'password': '?'} -> Phản hồi
 	    . Đăng ký thành công: {"code":200,"content":"--token--"}
         . Tài khoản đã tồn tại: {"code":203,"content":"Tài khoản đã tồn tại"}
-	+ /api/v1/account/forget: Quên mật khẩu POST -> JSON {'email':'?'}
+	+ /api/v1/account/forPOST: Quên mật khẩu POST -> JSON {'email':'?'}
         . Tài khoản không có trong hệ thống: {"code":202,"content":"Tài khoản không tồn tại"}
         . Thành công: {"code":200, "content": null}, Mật khẩu mới gửi về mail
 	+ /api/v1/account/profile: Xem trang cá nhân của mình POST -> JSON {'user-id': ?}
@@ -114,7 +114,7 @@
                 }
               ]
             }
-	+ /api/v1/relationship/other/profile: Xem thông tin của người dùng khác GET -> JSON {'other-id': '?'}
+	+ /api/v1/relationship/other/profile: Xem thông tin của người dùng khác POST -> JSON {'other-id': '?'}
         . Thành công:
             {
               "code": 200,
@@ -129,11 +129,18 @@
                 "phone": null
               }
             }
-	+ /api/v1/relationship/other/friends: Xem bạn bè của người khác GET -> JSON {'other-id': '?'}
+	+ /api/v1/relationship/other/friends: Xem bạn bè của người khác POST -> JSON {'other-id': '?'}
         . Danh sách trống:
             {
                 "other-id": "a095a050-abc4-4c55-a9c1-e75f3b09c01f"
             }
 
+   + /api/v1/relationship/room: Lấy danh sách người liên hệ POST -> JSON {'user-id': '?'}
+        . Gọi thành công:
+            {
+                "code":200,
+                "content":[]
+            }
+
 - Liên quan đến việc xem dữ liệu trên màn hình:
-    + /api/v1/search/friend/mess: Tìm kiếm bạn bè trong danh sách tin nhắn GET -> JSON {'name': '?'}
+    + /api/v1/search/friend/mess: Tìm kiếm bạn bè trong danh sách tin nhắn POST -> JSON {'name': '?'}

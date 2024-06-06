@@ -23,4 +23,9 @@ public class Member {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
+    public Member(Room room, User user) {
+        this.room = room;
+        this.user = user;
+    }
 }

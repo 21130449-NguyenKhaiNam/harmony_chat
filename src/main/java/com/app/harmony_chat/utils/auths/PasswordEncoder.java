@@ -43,6 +43,6 @@ public class PasswordEncoder {
             stringBuilder.append(randomChar);
         }
 
-        return hashPass(stringBuilder.toString());
+        return stringBuilder.toString();
     }
 }

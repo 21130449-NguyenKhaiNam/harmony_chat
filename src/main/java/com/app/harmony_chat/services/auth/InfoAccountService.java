@@ -31,7 +31,7 @@ public class InfoAccountService {
             profile.getUser().setPassword(null);
             info.setCode(DefineInfomation.SUCCESS);
             // Giả ảnh
-            profile.setAvatar(CloudinaryServices.getINSTANCE().getRandomImage());
+            profile.setAvatar(CloudinaryServices.getINSTANCE().getRandomAvatar());
             info.setContent(profile);
         }
         return info;

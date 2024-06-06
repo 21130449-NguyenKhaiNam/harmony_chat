@@ -43,4 +43,8 @@ public class Profile {
         com.app.harmony_chat.models.Profile profile = new com.app.harmony_chat.models.Profile(user, params.get(3), params.get(4), LocalDate.parse(params.get(5)), gender, country, params.get(12));
         return mapper.mapToJson(service.updateProfile(profile));
     }
+
+    public String viewBlockUsers(@RequestBody Map<String, String> json) {
+        return null;
+    }
 }

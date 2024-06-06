@@ -1,26 +1,20 @@
 package com.app.harmony_chat.services.relationship;
 
 import com.app.harmony_chat.configs.DefineInfomation;
-import com.app.harmony_chat.models.Infomation;
-import com.app.harmony_chat.models.Profile;
-import com.app.harmony_chat.models.Relationship;
-import com.app.harmony_chat.models.User;
+import com.app.harmony_chat.models.*;
 import com.app.harmony_chat.repositories.account.InfoAccountRepository;
 import com.app.harmony_chat.repositories.relationship.FriendRepository;
-import com.app.harmony_chat.services.auth.AuthServices;
+import com.app.harmony_chat.repositories.relationship.RoomRepository;
 import com.app.harmony_chat.services.image.CloudinaryServices;
 import com.app.harmony_chat.utils.infomation.CheckInfomation;
 import com.app.harmony_chat.utils.infomation.FilterInfomation;
 import com.app.harmony_chat.utils.infomation.MapperJson;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class FriendService {
@@ -28,6 +22,8 @@ public class FriendService {
     private FriendRepository dao;
     @Autowired
     private InfoAccountRepository infoAccountDao;
+    @Autowired
+    private RoomRepository roomRepository;
     @Autowired
     private CheckInfomation checkInfomation;
     @Autowired
@@ -59,6 +55,16 @@ public class FriendService {
         if(checkInfomation.checkOneWithAll(true, info.getCode(), DefineInfomation.SUCCESS_BUT_NOT_FOUND)) {
             Profile profileFriend = infoAccountDao.findByUserId(otherID).orElse(null); // Vẫn có thể lỗi nếu không kiểm soát tốt
             Relationship relationship = dao.save(new Relationship(user, otherUser, LocalDate.now(), profileFriend.getUsername()));
+            Room room = new Room(relationship.getId(), LocalDate.now(), true);
+            roomRepository.saveRoom(room);
+            User lead = new User(userID);
+            User deputy = new User(otherID);
+            Hierarchy hierarchy = new Hierarchy(room, lead, deputy);
+            roomRepository.saveHierarchy(hierarchy);
+            Member memberLeader = new Member(room, lead);
+            Member memberDeputy = new Member(room, deputy);
+            roomRepository.saveMember(memberLeader);
+            roomRepository.saveMember(memberDeputy);
             info.setCode(DefineInfomation.SUCCESS)
                     .setContent(relationship.getId() + "");
         } else {
@@ -72,6 +78,7 @@ public class FriendService {
      * Xóa một người bạn
      * @param userID
      * @param otherID
+     * @return
      * @return
      */
     public Infomation deleteFriend(String userID, String otherID) {
@@ -99,7 +106,6 @@ public class FriendService {
         Infomation info = selectRelationship(userID, otherID);
         if(checkInfomation.checkOneWithAll(true, info.getCode(), DefineInfomation.SUCCESS)) {
             String json = mapper.mapToJson(info.getContent());
-            System.out.println(json);
             Relationship relationship = mapper.convertObject(json, Relationship.class);
             dao.setNickNameForFriend(relationship.getId(), nickname);
             info.setCode(DefineInfomation.SUCCESS)
@@ -125,7 +131,7 @@ public class FriendService {
             profile.setUser(null);
             if(!checkInfomation.isEmpty(profile)) {
                 // Giả ảnh
-                profile.setAvatar(CloudinaryServices.getINSTANCE().getRandomImage());
+                profile.setAvatar(CloudinaryServices.getINSTANCE().getRandomAvatar());
                 profilesFriends.add(profile);
             }
         });

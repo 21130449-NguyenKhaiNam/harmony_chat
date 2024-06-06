@@ -16,7 +16,7 @@ import java.util.UUID;
 @Table(name = DefineTableDatabase.ROOM)
 public class Room {
     @Id
-    private UUID id;
+    private long id;
     
     @Temporal(TemporalType.DATE)
     private LocalDate published;
@@ -28,4 +28,10 @@ public class Room {
 
     // Đường dẫn
     private String background;
+
+    public Room(long id, LocalDate published, boolean visible) {
+        this.id = id;
+        this.published = published;
+        this.visible = visible;
+    }
 }

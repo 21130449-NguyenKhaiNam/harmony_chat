@@ -18,6 +18,7 @@ public interface DefinePath {
     String FRIEND_DELETE = "/friend/unfriend";
     String FRIEND_RENAME_NICKNAME = "/friend/rename";
     String FRIEND_LIST = "/friend/list";
+    String ROOM = "/room";
 
     // Other
     String OTHER_PROFILE = "/other/profile";
@@ -26,7 +27,4 @@ public interface DefinePath {
     // View
     String SEARCH = "/api/v1/search";
     String SEARCH_FRIEND_MESS = "/friend/mess";
-
-    // Chat
-    String CHAT = "/api/v1/chat";
 }

@@ -2,10 +2,7 @@ package com.app.harmony_chat.models;
 
 import com.app.harmony_chat.configs.DefineTableDatabase;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Data
@@ -27,4 +24,10 @@ public class Hierarchy {
     @ManyToOne
     @JoinColumn(name = "deputy_id", referencedColumnName = "id")
     private User deputy;
+
+    public Hierarchy(Room room, User leader, User deputy) {
+        this.room = room;
+        this.leader = leader;
+        this.deputy = deputy;
+    }
 }

@@ -1,8 +1,13 @@
 package com.app.harmony_chat;
 
+import com.app.harmony_chat.configs.DefineEmail;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @SpringBootApplication
 public class HarmonyChatApplication {

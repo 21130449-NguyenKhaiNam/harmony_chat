@@ -14,6 +14,10 @@ import java.util.Random;
 //Services dùng để upload ảnh, service hiện tại đang sử dụng Cloudinary làm cloud lưu trữ ảnh
 public class CloudinaryServices {
     String DEMO_PATH_USER = "samples/people";
+    String DEMO_PATH_BACKGROUND = "samples/landscapes";
+    String DEMO_PATH_IMAGE_GROUP = "samples/animals";
+    String[] DEMO_NAME_IMAGE_GROUP = {"kitten-playing", "three-dogs", "reindeer", "cat"};
+    String[] DEMO_NAME_BACKGROUND = {"landscape-panorama", "nature-mountains", "beach-boat", "architecture-signs", "girl-urban-view"};
     String[] DEMO_NAME_IMAGE = {"bicycle", "jazz", "boy-snow-hoodie", "smiling-man", "kitchen-bar"};
 
     private static CloudinaryServices INSTANCE = null;
@@ -60,8 +64,20 @@ public class CloudinaryServices {
         return res;
     }
 
-    public String getRandomImage() {
+    public String getRandomImage(String path, String[] folder) {
         Random random = new Random();
-        return getImage(DEMO_PATH_USER, DEMO_NAME_IMAGE[random.nextInt(DEMO_NAME_IMAGE.length)]);
+        return getImage(path, folder[random.nextInt(folder.length)]);
+    }
+
+    public String getRandomAvatar() {
+        return getRandomImage(DEMO_PATH_USER, DEMO_NAME_IMAGE);
+    }
+
+    public String getRandomBackground() {
+        return getRandomImage(DEMO_PATH_BACKGROUND, DEMO_NAME_BACKGROUND);
+    }
+
+    public String getRandomImageGroup() {
+        return getRandomImage(DEMO_PATH_IMAGE_GROUP, DEMO_NAME_IMAGE_GROUP);
     }
 }
