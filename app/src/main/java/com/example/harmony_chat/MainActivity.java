@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,36 +13,26 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.harmony_chat.model.Hierarchy;
 import com.example.harmony_chat.model.User;
 import com.example.harmony_chat.service.CallService;
 import com.example.harmony_chat.util.CheckInfomation;
+import com.example.harmony_chat.util.MapperJson;
 import com.example.harmony_chat.util.RxHelper;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -66,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView chatRecyclerView;
     private ChatAdapter chatAdapter;
     private List<ChatItem> chatItemList;
-    private User user;
     private com.example.harmony_chat.model.Profile profileUser;
 
     @Override
@@ -102,8 +90,6 @@ public class MainActivity extends AppCompatActivity {
         if(account!=null) {
             String name = account.getDisplayName();
             String email = account.getEmail();
-//            txtName.setText(username);
-//            txtEmail.setText(email);
             username.setText(name);
         }
         find.setOnClickListener(v -> gotoSearchUser());
@@ -132,16 +118,19 @@ public class MainActivity extends AppCompatActivity {
         RxHelper.performImmediately(() -> {
             List<Hierarchy> rooms = CallService.getInstance().getRoom(userId);
             profileUser = CallService.getInstance().viewMyProfile(userId);
+            User user = new User(userId);
+            profileUser.setUser(user);
             for (int i = 0; i < rooms.size(); i++) {
                 Hierarchy hierarchy = rooms.get(i);
                 com.example.harmony_chat.model.Profile profileLeader = CallService.getInstance().viewOtherProfile(hierarchy.getLeader().getId());
                 chatItemList.add(new ChatItem(profileLeader.getUsername(), profileLeader.getUsername(), hierarchy.getRoom().getImage(), hierarchy.getRoom().getPublished()));
             }
             runOnUiThread(() -> {
-                Log.e("Data chat", rooms.toString());
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("profile", MapperJson.getInstance().convertObjToJson(profileUser));
+                editor.commit();
                 chatAdapter = new ChatAdapter(chatItemList);
                 chatRecyclerView.setAdapter(chatAdapter);
-                // Load avatar from API
                 loadProfileData();
             });
         });
@@ -175,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void gotoSetting() {
         Intent intent = new Intent(this, SettingScreen.class);
+        intent.putExtra("totalFriends", chatItemList.size());
         startActivity(intent);
     }
 
@@ -191,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadProfileData() {
+        username.setText(profileUser.getUsername());
         Picasso.get()
                 .load(profileUser.getAvatar())
                 .into(avatarImageView);

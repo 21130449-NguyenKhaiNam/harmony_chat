@@ -266,7 +266,7 @@ public class CallService {
     }
 
     // Xem danh sách các người dùng bị chặn
-    public ArrayList<BlackList> getBlackList(String userId) {
+    public List<BlackList> getBlackList(String userId) {
         String[] keys = MapFactory.createArrayString(DefinePropertyJson.USER_ID);
         String[] values = MapFactory.createArrayString(userId);
         Map<String, String> json = MapFactory.createMapJson(keys, values);

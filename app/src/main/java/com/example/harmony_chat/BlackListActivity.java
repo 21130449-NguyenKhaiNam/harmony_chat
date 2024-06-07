@@ -16,6 +16,7 @@ import com.example.harmony_chat.service.CallService;
 import com.example.harmony_chat.util.RxHelper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BlackListActivity extends AppCompatActivity {
     private ListView blackListView;
@@ -27,7 +28,7 @@ public class BlackListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_block_list);
-        back.findViewById(R.id.btnBackBlackList);
+//        back.findViewById(R.id.btnBackBlackList);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,7 +49,7 @@ public class BlackListActivity extends AppCompatActivity {
 
     private void getBlockListFromAPI(String userId) {
         // Thực hiện cuộc gọi API để lấy danh sách chặn từ userId bằng CallService
-        ArrayList<BlackList> blacklist = CallService.getInstance().getBlackList(userId);
+        List<BlackList> blacklist = CallService.getInstance().getBlackList(userId);
         updateBlackList(blackList);
     }
 

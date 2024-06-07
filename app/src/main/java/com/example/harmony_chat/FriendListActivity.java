@@ -1,7 +1,10 @@
 package com.example.harmony_chat;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -10,14 +13,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.harmony_chat.model.Profile;
 import com.example.harmony_chat.service.CallService;
+import com.example.harmony_chat.util.MapperJson;
+import com.example.harmony_chat.util.RxHelper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FriendListActivity extends AppCompatActivity {
     private ListView friendListView;
     private FriendListAdapter adapter;
     private ArrayList<Profile> friendList;
     private ImageButton back;
+    private com.example.harmony_chat.model.Profile profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +42,27 @@ public class FriendListActivity extends AppCompatActivity {
         friendList = new ArrayList<>();
         adapter = new FriendListAdapter(this, R.layout.item_friend, friendList);
         friendListView.setAdapter(adapter);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+        profile = MapperJson.getInstance().convertObjFromJson(sharedPreferences.getString("profile", ""), Profile.class);
+
+        RxHelper.performImmediately(() -> {
+            List<Profile> friends = CallService.getInstance().getMyListFriends(profile.getUser().getId());
+            for(int i = 0; i < friends.size(); ++i) {
+                friendList.add(friends.get(i));
+            }
+            Log.e("Friend list", friendList.toString());
+            runOnUiThread(() -> {
+                adapter.notifyDataSetChanged();
+            });
+        });
         // Gọi phương thức để lấy danh sách bạn bè từ API
 //          getFriendListFromAPI("userId");
 
 
         // Tạo và thêm dữ liệu test
-        createTestData();
-        updateFriendListTest();
+//        createTestData();
+//        updateFriendListTest();
     }
 
     private void createTestData() {
@@ -57,7 +78,6 @@ public class FriendListActivity extends AppCompatActivity {
     }
 
     private void updateFriendListTest() {
-
         adapter.notifyDataSetChanged();
     }
 //        private void getFriendListFromAPI(String userId) {

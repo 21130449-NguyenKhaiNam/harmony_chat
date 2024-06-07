@@ -3,21 +3,35 @@ package com.example.harmony_chat;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
+import com.example.harmony_chat.model.BlackList;
+import com.example.harmony_chat.model.Profile;
+import com.example.harmony_chat.service.CallService;
+import com.example.harmony_chat.util.MapperJson;
+import com.example.harmony_chat.util.RxHelper;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.squareup.picasso.Picasso;
+
 import android.widget.AdapterView;
+import android.widget.TextView;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class SettingScreen extends AppCompatActivity {
 
-    ImageButton back, logoutButton;
+    ImageButton back, logoutButton, avatar;
+    private TextView username;
     int icon[] = {R.drawable.account_privacy, R.drawable.friends, R.drawable.block, R.drawable.chat, R.drawable.unfriend, R.drawable.font, R.drawable.add_user, R.drawable.chat, R.drawable.unfriend, R.drawable.font};
     String name[] = {"Quyền riêng tư tài khoản", "Danh sách bạn bè", "Bị chặn", "Tin nhắn", "Hạn chế", "Ẩn từ ngữ", "Thêm bạn bè", "Trợ giúp", "Trạng thái tài khoản", "Giới thiệu"};
     String thong_so[] = {"Public", "0", "0", "0", "20", "0", "0", "0", "Online", "0"};
@@ -25,8 +39,7 @@ public class SettingScreen extends AppCompatActivity {
     ArrayList<Setting> group1, group2, group3;
     ArrAdapterSetting adapter1, adapter2, adapter3;
     ListView lv1, lv2, lv3;
-
-    ImageButton logoutBtn;
+    private com.example.harmony_chat.model.Profile profile;
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
     private static final int REQUEST_FRIEND_LIST = 1;
@@ -41,12 +54,38 @@ public class SettingScreen extends AppCompatActivity {
 
         hideSystemUI();
 
+        avatar = findViewById(R.id.account_status);
+        username = findViewById(R.id.username);
+
         lv1 = findViewById(R.id.lv_group1);
         lv2 = findViewById(R.id.lv_group2);
         lv3 = findViewById(R.id.lv_group3);
         group1 = new ArrayList<>();
         group2 = new ArrayList<>();
         group3 = new ArrayList<>();
+
+        SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+        profile = MapperJson.getInstance().convertObjFromJson(sharedPreferences.getString("profile", ""), Profile.class);
+
+        RxHelper.performImmediately(() -> {
+            Intent intent = getIntent();
+            String totalFriend =intent.getIntExtra("totalFriends", 0) + "";
+            thong_so[1] = totalFriend;
+            List<BlackList> blackList = CallService.getInstance().getBlackList(sharedPreferences.getString("id", ""));
+            thong_so[2] = blackList.size() + "";
+            thong_so[3] = totalFriend;
+            runOnUiThread(() -> {
+                work();
+            });
+        });
+    }
+
+    public void work() {
+        Picasso.get()
+                .load(profile.getAvatar())
+                .into(avatar);
+
+        username.setText(profile.getUsername());
 
         for (int i = 0; i < name.length; i++) {
             if (i < 4) {
@@ -153,6 +192,10 @@ public class SettingScreen extends AppCompatActivity {
 
     private void handleLogout() {
         Intent intent = new Intent(SettingScreen.this, LoginActivity.class);
+        // Xóa toàn bộ session
+        SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
         startActivity(intent);
         finish();
     }
