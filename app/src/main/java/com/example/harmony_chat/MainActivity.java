@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements SelectListener {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-//                            Log.d(TAG, document.getId() + " => " + document.getData());
+                            // Can xu ly lai
                             com.example.harmony_chat.model.Profile pro5 = document.toObject(com.example.harmony_chat.model.Profile.class);
                             LocalDate localDate = LocalDate.now();
                             chatItemList.add(new ChatItem(pro5.getUsername(), "message", urlImage, localDate.toString()));
@@ -167,6 +167,7 @@ public class MainActivity extends AppCompatActivity implements SelectListener {
     public void onItemClicked(ChatItem chatItem) {
         Intent intent = new Intent(this, ChatScreen.class);
         intent.putExtra("myProfile", myProfile);
+
         startActivity(intent);
     }
 }

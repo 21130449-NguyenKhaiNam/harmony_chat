@@ -14,16 +14,20 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.harmony_chat.model.Profile;
+import com.example.harmony_chat.model.User;
+import com.example.harmony_chat.util.FirebaseUtil;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.squareup.picasso.Picasso;
 
 public class ChatScreen extends AppCompatActivity {
     private TextView txtChatName;
     private Profile myProfile;
+    private User otherUser;
     private EditText txtChatMessage;
     private ImageView img_avatar;
 
     private ImageButton backBtn, btn_send;
+    private String chatroomId;
 
     @Override
     protected void onCreate(Bundle savedInstancestate) {
@@ -76,6 +80,10 @@ public class ChatScreen extends AppCompatActivity {
 
         backBtn = findViewById(R.id.backBtn);
         btn_send = findViewById(R.id.btn_send);
+
+        // getUserModel
+        otherUser = (User) getIntent().getSerializableExtra("otherUser");
+        chatroomId = FirebaseUtil.getChatroomId(FirebaseUtil.currentUserId(), otherUser.getId());
     }
 
     private void process() {

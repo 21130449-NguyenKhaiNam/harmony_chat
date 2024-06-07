@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public class ChatroomModel {
-    private  String roomId;
+    private  Room room;
     private List<String> userIds;
     private Timestamp lastMessageTimestamp;
     private String lastMessageSenderId;
@@ -12,19 +12,19 @@ public class ChatroomModel {
     public ChatroomModel() {
     }
 
-    public ChatroomModel(String roomId, List<String> userIds, Timestamp lastMessageTimestamp, String lastMessageSenderId) {
-        this.roomId = roomId;
+    public ChatroomModel(Room room, List<String> userIds, Timestamp lastMessageTimestamp, String lastMessageSenderId) {
+        this.room = room;
         this.userIds = userIds;
         this.lastMessageTimestamp = lastMessageTimestamp;
         this.lastMessageSenderId = lastMessageSenderId;
     }
 
-    public String getRoomId() {
-        return roomId;
+    public Room getRoom() {
+        return room;
     }
 
-    public void setRoomId(String roomId) {
-        this.roomId = roomId;
+    public void setRoom(Room room) {
+        this.room = room;
     }
 
     public List<String> getUserIds() {
@@ -54,7 +54,7 @@ public class ChatroomModel {
     @Override
     public String toString() {
         return "ChatroomModel{" +
-                "roomId='" + roomId + '\'' +
+                "roomId='" + room + '\'' +
                 ", userIds=" + userIds +
                 ", lastMessageTimestamp=" + lastMessageTimestamp +
                 ", lastMessageSenderId='" + lastMessageSenderId + '\'' +
