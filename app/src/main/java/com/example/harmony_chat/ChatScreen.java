@@ -1,7 +1,9 @@
 package com.example.harmony_chat;
 
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,17 +14,16 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.harmony_chat.model.Profile;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.squareup.picasso.Picasso;
 
 public class ChatScreen extends AppCompatActivity {
-
-    private boolean isFragmentDisplayed = false;
-    private Fragment reactsFragment, messageOptionsFragment;
-    private View options, reacts;
-    private TextView txtMessage, txtChatName;
+    private TextView txtChatName;
     private Profile myProfile;
+    private EditText txtChatMessage;
+    private ImageView img_avatar;
 
-    ImageButton backBtn;
+    private ImageButton backBtn, btn_send;
 
     @Override
     protected void onCreate(Bundle savedInstancestate) {
@@ -30,82 +31,8 @@ public class ChatScreen extends AppCompatActivity {
         setContentView(R.layout.activity_chat_screen);
 
         hideSystemUI();
-
-        myProfile = (Profile) getIntent().getSerializableExtra("myProfile");
-
-        String img_url = "https://images.unsplash.com/photo-1627087820883-7a102b79179a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
-        ImageView imageView = findViewById(R.id.img_avatar);
-
-        Picasso.get()
-                .load(img_url)
-                .into(imageView);
-
-//        txtMessage = findViewById(R.id.message);
-        txtChatName = findViewById(R.id.txt_chat_name);
-        txtChatName.setText(myProfile.getUser().getId());   // tạm thời hiển thị id của người dùng đang đăng nhập
-        backBtn = findViewById(R.id.backBtn);
-//        reactsFragment = getSupportFragmentManager().findFragmentById(R.id.reacts);
-//        messageOptionsFragment = getSupportFragmentManager().findFragmentById(R.id.message_options_fragment);
-
-//        txtMessage.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                showFragments();
-//                return true;
-//            }
-//        });
-
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                back();
-            }
-        });
-
-    }
-
-    private void showFragments() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-
-        if (reactsFragment != null) {
-            transaction.show(reactsFragment);
-        }
-
-        if (messageOptionsFragment != null) {
-            transaction.show(messageOptionsFragment);
-        }
-
-        transaction.commit();
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (isFragmentsVisible()) {
-            hideFragments();
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    private boolean isFragmentsVisible() {
-        return reactsFragment != null && reactsFragment.isVisible() ||
-                messageOptionsFragment != null && messageOptionsFragment.isVisible();
-    }
-
-    private void hideFragments() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-
-        if (reactsFragment != null) {
-            transaction.hide(reactsFragment);
-        }
-
-        if (messageOptionsFragment != null) {
-            transaction.hide(messageOptionsFragment);
-        }
-
-        transaction.commit();
+        loadConfig();
+        process();
     }
 
     public void back() {
@@ -123,5 +50,40 @@ public class ChatScreen extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
         );
+    }
+
+    private void loadImage() {
+        String default_url = "https://images.unsplash.com/photo-1627087820883-7a102b79179a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", img_url = (img_avatar != null) ?
+                ((myProfile.getAvatar() != null) && !(myProfile.getAvatar().trim().isEmpty())) ? myProfile.getAvatar() : default_url :
+                default_url;
+        Picasso.get()
+                .load(img_url)
+                .into(img_avatar);
+    }
+
+    // Tìm và gán các phần tử của Context vào đối tượng tương ứng. Phải được gọi trước khi xử lý các phần tử của Context như là bắt sự kiện,...
+    private void loadConfig() {
+        // Lấy ra đối tượng Profile được gửi thông qua intent từ MainActivity.java
+        myProfile = (Profile) getIntent().getSerializableExtra("myProfile");
+
+        txtChatName = findViewById(R.id.txt_chat_name);
+        txtChatName.setText(myProfile.getUser().getId());   // tạm thời hiển thị id của người dùng đang đăng nhập
+
+        txtChatMessage = findViewById(R.id.txt_chat_message);
+
+        img_avatar = findViewById(R.id.img_avatar);
+        loadImage();
+
+        backBtn = findViewById(R.id.backBtn);
+        btn_send = findViewById(R.id.btn_send);
+    }
+
+    private void process() {
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                back();
+            }
+        });
     }
 }
