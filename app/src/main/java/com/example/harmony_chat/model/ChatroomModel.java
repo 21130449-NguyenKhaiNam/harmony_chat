@@ -1,6 +1,7 @@
 package com.example.harmony_chat.model;
 
-import java.sql.Timestamp;
+import com.google.firebase.Timestamp;
+
 import java.util.List;
 
 public class ChatroomModel {

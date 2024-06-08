@@ -1,7 +1,6 @@
 package com.example.harmony_chat;
 
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -9,20 +8,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.harmony_chat.model.Profile;
-import com.example.harmony_chat.model.User;
 import com.example.harmony_chat.util.FirebaseUtil;
-import com.google.android.material.imageview.ShapeableImageView;
 import com.squareup.picasso.Picasso;
 
 public class ChatScreen extends AppCompatActivity {
     private TextView txtChatName;
     private Profile myProfile;
-    private User otherUser;
+    private Profile otherUser;
     private EditText txtChatMessage;
     private ImageView img_avatar;
 
@@ -57,9 +51,11 @@ public class ChatScreen extends AppCompatActivity {
     }
 
     private void loadImage() {
-        String default_url = "https://images.unsplash.com/photo-1627087820883-7a102b79179a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", img_url = (img_avatar != null) ?
-                ((myProfile.getAvatar() != null) && !(myProfile.getAvatar().trim().isEmpty())) ? myProfile.getAvatar() : default_url :
-                default_url;
+        String default_url =
+                "https://images.unsplash.com/photo-1627087820883-7a102b79179a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                img_url = (img_avatar != null) ?
+                        ((myProfile.getAvatar() != null) && !(myProfile.getAvatar().trim().isEmpty())) ? myProfile.getAvatar() : default_url :
+                        default_url;
         Picasso.get()
                 .load(img_url)
                 .into(img_avatar);
@@ -82,8 +78,8 @@ public class ChatScreen extends AppCompatActivity {
         btn_send = findViewById(R.id.btn_send);
 
         // getUserModel
-        otherUser = (User) getIntent().getSerializableExtra("otherUser");
-        chatroomId = FirebaseUtil.getChatroomId(FirebaseUtil.currentUserId(), otherUser.getId());
+        otherUser = (Profile) getIntent().getSerializableExtra("otherUser");
+        chatroomId = FirebaseUtil.getChatroomId(FirebaseUtil.currentUserId(), otherUser.getUser().getId());
     }
 
     private void process() {

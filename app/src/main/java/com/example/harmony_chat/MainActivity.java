@@ -2,7 +2,6 @@ package com.example.harmony_chat;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,24 +10,24 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.harmony_chat.Adapter.ChatAdapter;
 import com.example.harmony_chat.Adapter.SelectListener;
 import com.example.harmony_chat.Item.ChatItem;
+import com.example.harmony_chat.model.ChatroomModel;
+import com.example.harmony_chat.model.Room;
+import com.example.harmony_chat.util.FirebaseUtil;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.makeramen.roundedimageview.RoundedImageView;
 
-import java.time.LocalDate;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements SelectListener {
     private RecyclerView chatRecyclerView;
     private ChatAdapter chatAdapter;
     private List<ChatItem> chatItemList;
-    private com.example.harmony_chat.model.Profile myProfile;
+    private com.example.harmony_chat.model.Profile myProfile, otherProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements SelectListener {
         setContentView(R.layout.activity_main);
 
         hideSystemUI();
+
+//        createDB();
 
         Intent intent = getIntent();
         myProfile = (com.example.harmony_chat.model.Profile) intent.getSerializableExtra("profile");
@@ -79,15 +80,19 @@ public class MainActivity extends AppCompatActivity implements SelectListener {
 
         // Truy xuất cơ sở dữ liệu và hiển thị nó ra RecycleView của màn hình giao diện
         FirebaseFirestore.getInstance()
-                .collection("PROFILES")
+                .collection("CHATROOMS")
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            // Can xu ly lai
-                            com.example.harmony_chat.model.Profile pro5 = document.toObject(com.example.harmony_chat.model.Profile.class);
-                            LocalDate localDate = LocalDate.now();
-                            chatItemList.add(new ChatItem(pro5.getUsername(), "message", urlImage, localDate.toString()));
+                            ChatroomModel chatroom = document.toObject(ChatroomModel.class);
+                            chatItemList.add(new ChatItem(
+                                    chatroom.getRoom().getId(),
+                                    chatroom.getLastMessageSenderId(),
+                                    chatroom.getRoom().getImage(),
+                                    FirebaseUtil.timestampToString(chatroom.getLastMessageTimestamp()),
+                                    chatroom.getUserIds().get(1))
+                            );
                         }
                         // Sau khi đã lấy được dữ liệu từ Firestore và thêm vào chatItemList
                         // Bây giờ ta tạo adapter và thiết lập cho RecyclerView
@@ -98,6 +103,43 @@ public class MainActivity extends AppCompatActivity implements SelectListener {
                         Log.e("MAIN_ACTIVITY ERROR", "Error getting documents: ", task.getException());
                     }
                 });
+    }
+
+    private void createDB() {
+
+        ArrayList<String> userIds1 = new ArrayList<>(),
+                userIds2 = new ArrayList<>();
+        userIds1.add("PIvRqetu8cPO08NKhgwBoHS6WWK2");
+        userIds1.add("jcb71Z0JguTSgRGLO9tB3zjyHND3");
+        userIds2.add("jcb71Z0JguTSgRGLO9tB3zjyHND3");
+        userIds2.add("sCnLWWex8bc7hZNy0k3QQmBwjA52");
+
+        ChatroomModel r1 = new ChatroomModel(
+                new Room(),
+                userIds1,
+                new Timestamp(Instant.now()),
+                ""),
+                r2 = new ChatroomModel(
+                        new Room(),
+                        userIds2,
+                        new Timestamp(Instant.now()),
+                        ""
+                );
+        r1.getRoom().setId("1");
+        r2.getRoom().setId("2");
+        ArrayList<ChatroomModel> chatroomModels = new ArrayList<>();
+        chatroomModels.add(r1);
+        chatroomModels.add(r2);
+
+        for (ChatroomModel c : chatroomModels) {
+            FirebaseFirestore.getInstance()
+                    .collection("CHATROOMS")
+                    .add(c)
+                    .addOnCompleteListener(task -> {
+
+                    });
+        }
+
     }
 
     private void createPopUpWindow() {
@@ -166,8 +208,21 @@ public class MainActivity extends AppCompatActivity implements SelectListener {
     @Override
     public void onItemClicked(ChatItem chatItem) {
         Intent intent = new Intent(this, ChatScreen.class);
-        intent.putExtra("myProfile", myProfile);
 
+        FirebaseFirestore.getInstance().collection("PROFILES")
+                .whereEqualTo("user.id", chatItem.getOtherUserId())
+                .get().addOnCompleteListener(task -> {
+                   if (task.isSuccessful()){
+                       for (DocumentSnapshot documnet: task.getResult()){
+                           otherProfile = documnet.toObject(com.example.harmony_chat.model.Profile.class);
+                       }
+                   }
+                });
+
+        intent.putExtra("myProfile", myProfile);
+        intent.putExtra("otherUser", otherProfile);
         startActivity(intent);
     }
+
+
 }
