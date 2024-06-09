@@ -44,7 +44,6 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.0")
     // Thư viện tạo phần tử bo tròn
     implementation("com.makeramen:roundedimageview:2.3.0")
-    implementation("com.google.firebase:firebase-firestore:25.0.0")
     implementation ("com.squareup.okhttp3:okhttp:4.9.3")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -63,14 +62,6 @@ dependencies {
     // RxJava
     implementation("io.reactivex.rxjava3:rxjava:3.0.13")
     implementation("io.reactivex.rxjava3:rxandroid:3.0.0")
-
-//    Password authentication firebase
-    // Import the BoM for the Firebase platform
-    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
-
-    // Add the dependency for the Firebase Authentication library
-    // When using the BoM, you don't specify versions in Firebase library dependencies
-    implementation("com.google.firebase:firebase-auth")
 //    dang nhap bang google
     implementation ("com.google.android.gms:play-services-auth:20.4.0")
 
@@ -78,4 +69,9 @@ dependencies {
     implementation(files("libs/mail.jar"))
     implementation(files("libs/additionnal.jar"))
     implementation(files("libs/activation.jar"))
+
+//    firebase
+    implementation("com.google.firebase:firebase-firestore:25.0.0")
+    // Firebase UI Firestore
+    implementation ("com.firebaseui:firebase-ui-firestore:8.0.1")
 }

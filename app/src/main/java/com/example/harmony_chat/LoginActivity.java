@@ -225,7 +225,6 @@ public class LoginActivity extends AppCompatActivity {
         if (checkNull(editEmail)) isOK = false;
         if (checkNull(editPassword)) isOK = false;
 
-
         if (isOK) {
             String email = editEmail.getText().toString();
             String password = editPassword.getText().toString();

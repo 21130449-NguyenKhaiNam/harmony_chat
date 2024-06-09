@@ -1,16 +1,18 @@
 package com.example.harmony_chat.model;
 
-import java.sql.Timestamp;
+
+import com.google.firebase.Timestamp;
 
 public class ChatMessageModel {
-    private String message, senderId;
+    private String message, roomId, senderId;
     private Timestamp timestamp;
 
     public ChatMessageModel() {
     }
 
-    public ChatMessageModel(String message, String senderId, Timestamp timestamp) {
+    public ChatMessageModel(String message, String roomId, String senderId, Timestamp timestamp) {
         this.message = message;
+        this.roomId = roomId;
         this.senderId = senderId;
         this.timestamp = timestamp;
     }
@@ -39,10 +41,19 @@ public class ChatMessageModel {
         this.timestamp = timestamp;
     }
 
+    public String getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(String roomId) {
+        this.roomId = roomId;
+    }
+
     @Override
     public String toString() {
         return "ChatMessageModel{" +
                 "message='" + message + '\'' +
+                ", roomId='" + roomId + '\'' +
                 ", senderId='" + senderId + '\'' +
                 ", timestamp=" + timestamp +
                 '}';

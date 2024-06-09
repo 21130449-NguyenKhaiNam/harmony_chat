@@ -1,9 +1,10 @@
 package com.example.harmony_chat.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.UUID;
 
-public class Room {
+public class Room implements Serializable {
     private long id;
 
     private String published;
