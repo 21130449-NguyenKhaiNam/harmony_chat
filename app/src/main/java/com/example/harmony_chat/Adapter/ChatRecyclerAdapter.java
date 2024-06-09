@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.harmony_chat.Item.ChatItem;
 import com.example.harmony_chat.R;
 import com.example.harmony_chat.model.ChatMessageModel;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -36,11 +35,11 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessageMod
 
     @Override
     protected void onBindViewHolder(@NonNull ChatModelViewHolder holder, int i, @NonNull ChatMessageModel model) {
-        if (model.getSenderId().equals(currentUserId)){
+        if (model.getSenderId().equals(currentUserId)) {
             holder.leftChatLayout.setVisibility(View.GONE);
             holder.rightChatLayout.setVisibility(View.VISIBLE);
             holder.rightChatTextview.setText(model.getMessage());
-        }else{
+        } else {
             holder.leftChatLayout.setVisibility(View.VISIBLE);
             holder.rightChatLayout.setVisibility(View.GONE);
             holder.leftChatTextview.setText(model.getMessage());
