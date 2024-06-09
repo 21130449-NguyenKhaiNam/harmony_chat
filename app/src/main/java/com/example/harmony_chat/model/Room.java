@@ -4,9 +4,9 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public class Room {
-    private String id;
+    private long id;
 
-    private LocalDate published;
+    private String published;
 
     private boolean visible;
 
@@ -16,19 +16,19 @@ public class Room {
     // Đường dẫn
     private String background;
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public LocalDate getPublished() {
+    public String getPublished() {
         return published;
     }
 
-    public void setPublished(LocalDate published) {
+    public void setPublished(String published) {
         this.published = published;
     }
 

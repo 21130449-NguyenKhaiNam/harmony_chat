@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:gravity="center"
-    android:padding="16dp"
+    android:layout_height="match_parent"
     android:background="@color/primary_blue"
-    android:layout_height="match_parent">
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
@@ -15,11 +15,11 @@
         app:cardCornerRadius="40dp">
 
         <ImageView
-        android:id="@+id/avatarImg"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:scaleType="centerCrop"
-        tools:srcCompat="@drawable/logo_black" />
+            android:id="@+id/avatarImg"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="centerCrop"
+            tools:srcCompat="@drawable/logo_black" />
 
     </androidx.cardview.widget.CardView>
 
@@ -27,48 +27,55 @@
 
         android:id="@+id/editEmail"
         style="@style/input_style"
+        android:layout_marginTop="60dp"
         android:drawableLeft="@drawable/email"
         android:drawablePadding="5dp"
         android:ems="10"
+        android:hint="@string/email"
         android:inputType="text"
-        android:layout_marginTop="60dp"
-        android:textColorHint="@color/primary_white"
-        android:hint="@string/email" />
+        android:textColorHint="@color/primary_white" />
 
     <EditText
-    android:id="@+id/editUsername"
-    style="@style/input_style"
-    android:drawableLeft="@drawable/account"
-    android:drawablePadding="5dp"
-    android:ems="10"
-    android:inputType="text"
-    android:layout_marginTop="10dp"
-    android:textColorHint="@color/primary_white"
-    android:hint="@string/username" />
+        android:id="@+id/editUsername"
+        style="@style/input_style"
+        android:layout_marginTop="10dp"
+        android:drawableLeft="@drawable/account"
+        android:drawablePadding="5dp"
+        android:ems="10"
+        android:hint="@string/username"
+        android:inputType="text"
+        android:textColorHint="@color/primary_white" />
 
     <EditText
         android:id="@+id/editPassword"
         style="@style/input_style"
+        android:layout_marginTop="10dp"
         android:drawableLeft="@drawable/password"
+        android:drawableRight="@drawable/unhide"
         android:drawablePadding="5dp"
         android:ems="10"
-        android:inputType="textPassword"
-        android:layout_marginTop="10dp"
-        android:textColorHint="#fff"
         android:hint="@string/password"
-        android:drawableRight="@drawable/unhide"/>
+        android:inputType="textPassword"
+        android:textColorHint="#fff" />
 
     <EditText
         android:id="@+id/editRePassword"
         style="@style/input_style"
+        android:layout_marginTop="10dp"
         android:drawableLeft="@drawable/password"
+        android:drawableRight="@drawable/unhide"
         android:drawablePadding="5dp"
         android:ems="10"
-        android:inputType="textPassword"
-        android:layout_marginTop="10dp"
-        android:textColorHint="#fff"
         android:hint="@string/reenterpwd"
-        android:drawableRight="@drawable/unhide"/>
+        android:inputType="textPassword"
+        android:textColorHint="#fff" />
+
+    <TextView
+        android:id="@+id/txtPasswordError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:textColor="@color/danger" />
 
     <Button
         android:id="@+id/signupBtn"
@@ -77,17 +84,17 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:text="@string/register"
-        android:textAllCaps="false"/>
+        android:textAllCaps="false" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/primary_white"
         android:layout_marginTop="50dp"
-        android:textSize="@dimen/text_2"
         android:gravity="center"
-        android:text="@string/hadaccount" />
+        android:text="@string/hadaccount"
+        android:textColor="@color/primary_white"
+        android:textSize="@dimen/text_2" />
 
     <Button
         android:id="@+id/gotoLoginBtn"
@@ -96,6 +103,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="@string/sign_in"
-        android:textAllCaps="false"/>
+        android:textAllCaps="false" />
 
 </LinearLayout>

@@ -15,4 +15,6 @@ public interface DefinePathApi {
     String OTHER_PROFILE = "/api/v1/relationship/other/profile";
     String OTHER_FRIENDS = "/api/v1/relationship/other/friends";
     String SEARCH_FRIEND_MESS = "/api/v1/search/friend/mess";
+    String BLACK_LIST = "/api/v1/relationship/blacklist";
+    String ROOM = "/api/v1/relationship/room";
 }

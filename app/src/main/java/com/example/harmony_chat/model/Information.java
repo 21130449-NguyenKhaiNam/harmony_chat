@@ -6,12 +6,12 @@ import com.google.gson.annotations.SerializedName;
 
 public class Information {
     private int code;
-    @SerializedName("content")
     private String json;
 
     public int getCode() {
         return code;
     }
+
     public String getJson() {
         return json;
     }
@@ -23,7 +23,6 @@ public class Information {
     public void setJson(String json) {
         this.json = json;
     }
-
 
     @NonNull
     @Override

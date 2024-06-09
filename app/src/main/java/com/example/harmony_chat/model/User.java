@@ -48,4 +48,23 @@ public class User implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
+
+    public static String encodePwd(String pwd) {
+        String code ="";
+        String temp = "";
+        for(int i=pwd.length() - 1 ; i>=0;i--){
+            code+= (int) pwd.charAt(i);
+        }
+
+        return code;
+    }
 }

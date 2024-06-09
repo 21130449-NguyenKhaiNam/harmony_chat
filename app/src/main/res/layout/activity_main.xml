@@ -25,6 +25,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+                android:id="@+id/avatar_image_view"
                 android:layout_width="@dimen/main_activity_avatar_size"
                 android:layout_height="@dimen/main_activity_avatar_size"
                 android:src="@drawable/avatar" />

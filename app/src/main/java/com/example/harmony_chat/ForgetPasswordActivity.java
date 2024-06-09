@@ -7,11 +7,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.harmony_chat.JavaMail.JavaMailAPI;
+import com.example.harmony_chat.model.User;
+import com.example.harmony_chat.service.CallService;
+import com.example.harmony_chat.util.InputHelper;
+import com.example.harmony_chat.util.RxHelper;
+import com.squareup.picasso.Picasso;
+
+import java.util.Random;
 public class ForgetPasswordActivity extends AppCompatActivity {
-    EditText editUsername, editEmail;
+    EditText editEmail;
     ImageView avatar;
     Button forgetPasswordBtn;
 
@@ -22,8 +31,6 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_forgetpassword);
 
         hideSystemUI();
-
-        editUsername = findViewById(R.id.editUsername);
         editEmail = findViewById(R.id.editEmail);
 
         avatar = findViewById(R.id.avatarImg);
@@ -38,6 +45,38 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                 gotoLogin();
             }
         });
+
+        forgetPasswordBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                forgetPassword();
+            }
+        });
+
+        loadLogo();
+    }
+
+    private void loadLogo() {
+        Picasso.get()
+                .load(R.drawable.logo_black)
+                .into((ImageView) findViewById(R.id.avatarImg));
+    }
+
+    public void forgetPassword() {
+        boolean isOK= true;
+        if(InputHelper.checkNull(editEmail)) isOK = false;
+
+        if(isOK ==true) {
+            String email = editEmail.getText().toString();
+            RxHelper.performImmediately(() -> {
+                CallService.getInstance().forgetAccount(email);
+                runOnUiThread(() -> {
+                    Toast.makeText(ForgetPasswordActivity.this, "Đã gửi thông tin tới tài khoản", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    startActivity(intent);
+                });
+            });
+        }
     }
 
     public void gotoLogin() {

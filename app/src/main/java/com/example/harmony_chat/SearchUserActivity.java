@@ -69,7 +69,6 @@ public class SearchUserActivity extends AppCompatActivity {
         });
     }
 
-
     public List<User1> getListUser() {
         List<User1> users = new ArrayList<>();
         User1 u1 = new User1(R.id.avatar,"To minh Nhat");
