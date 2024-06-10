@@ -30,7 +30,7 @@ public class Profile {
         List<String> params = mapper.getParam(json, DefinePropertyJson.USER_ID);
         return mapper.mapToJson(service.viewProfile(params.get(0)));
     }
-
+              
     @PostMapping(path = DefinePath.ACCOUNT_PROFILE_UPDATE)
     public String updateProfile(@RequestBody Map<String, String> json) {
         List<String> params = mapper.getParam(json, DefinePropertyJson.EMAIL, DefinePropertyJson.PASSWORD, DefinePropertyJson.GENDER, DefinePropertyJson.USERNAME, DefinePropertyJson.AVATAR, DefinePropertyJson.DOB
@@ -45,6 +45,7 @@ public class Profile {
     }
 
     public String viewBlockUsers(@RequestBody Map<String, String> json) {
-        return null;
+        List<String> params = mapper.getParam(json, DefinePropertyJson.USER_ID);
+        return mapper.mapToJson(null);
     }
 }

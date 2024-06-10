@@ -22,7 +22,6 @@ public class RoomService {
     private CheckInfomation checkInfomation;
 
     public Infomation getAllRoom(String userId) {
-        userId = userId.replaceAll("\"", "");
         Profile profile = infoAccountRepository.findByUserId(userId).orElse(null);
         Infomation info = new Infomation();
         if(checkInfomation.isEmpty(profile)) {

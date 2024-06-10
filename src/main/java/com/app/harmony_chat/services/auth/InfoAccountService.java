@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 public class InfoAccountService {
     @Autowired
     private InfoAccountRepository dao;
-    @Autowired
-    private CheckInfomation checkInfomation;
 
     /**
      * Lấy ra thông tin của tài khoản

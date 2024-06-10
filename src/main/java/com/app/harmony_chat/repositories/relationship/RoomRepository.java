@@ -12,9 +12,20 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface RoomRepository extends JpaRepository<Hierarchy, Long> {
+    @Modifying
+    @Transactional
+    @Query("SELECT r FROM Room r WHERE r.id = :roomId")
+    List<Room> findRoomById(@Param("roomId") Long roomId);
+
+    @Modifying
+    @Transactional
+    @Query("SELECT h FROM Hierarchy h WHERE h.room.id = :roomId")
+    List<Hierarchy> findByRoomId(@Param("roomId") Long roomId);
+
     @Modifying
     @Transactional
     @Query("SELECT h FROM Hierarchy h WHERE h.leader.id =:userId OR h.deputy.id = :userId")
@@ -32,14 +43,14 @@ public interface RoomRepository extends JpaRepository<Hierarchy, Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "insert into members (room_id, user_id) values (:roomId, :userId)",nativeQuery = true)
+    @Query(value = "insert into members (room_id, user_id) values (:roomId, :userId)", nativeQuery = true)
     void saveMember(@Param("roomId") long roomId, @Param("userId") String userId);
 
     default void saveRoom(Room room) {
         saveRoom(room.getId(), room.getPublished(), room.isVisible());
     }
 
-    default  void saveHierarchy(Hierarchy hierarchy) {
+    default void saveHierarchy(Hierarchy hierarchy) {
         saveHierarchy(hierarchy.getRoom().getId(), hierarchy.getLeader().getId(), hierarchy.getDeputy().getId());
     }
 

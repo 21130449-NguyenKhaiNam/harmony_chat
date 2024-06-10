@@ -33,6 +33,7 @@ public class FriendService {
 
     /**
      * Trả về mã mối quan hệ nếu có của 2 người
+     *
      * @param userID
      * @param otherID
      * @return
@@ -44,6 +45,7 @@ public class FriendService {
 
     /**
      * Thêm bạn với nhau
+     *
      * @param userID
      * @param otherID
      * @return
@@ -52,18 +54,27 @@ public class FriendService {
         User user = new User(userID);
         User otherUser = new User(otherID);
         Infomation info = selectRelationship(userID, otherID);
-        if(checkInfomation.checkOneWithAll(true, info.getCode(), DefineInfomation.SUCCESS_BUT_NOT_FOUND)) {
+        if (checkInfomation.checkOneWithAll(true, info.getCode(), DefineInfomation.SUCCESS_BUT_NOT_FOUND)) {
             Profile profileFriend = infoAccountDao.findByUserId(otherID).orElse(null); // Vẫn có thể lỗi nếu không kiểm soát tốt
             Relationship relationship = dao.save(new Relationship(user, otherUser, LocalDate.now(), profileFriend.getUsername()));
-            Room room = new Room(relationship.getId(), LocalDate.now(), true);
-            roomRepository.saveRoom(room);
+            int code = userID.hashCode();
+            List<Room> rooms = roomRepository.findRoomById(Long.parseLong(code + ""));
+            Room room = rooms.isEmpty() ? null : rooms.get(0);
+            if (room == null) {
+                room = new Room(Long.parseLong(code + ""), LocalDate.now(), true);
+                roomRepository.saveRoom(room);
+            }
             User lead = new User(userID);
             User deputy = new User(otherID);
-            Hierarchy hierarchy = new Hierarchy(room, lead, deputy);
-            roomRepository.saveHierarchy(hierarchy);
-            Member memberLeader = new Member(room, lead);
+            List<Hierarchy> hierarchies = roomRepository.findByRoomId(room.getId());
+            Hierarchy hierarchy = hierarchies.isEmpty() ? null : hierarchies.get(0);
+            if (hierarchy == null) {
+                hierarchy = new Hierarchy(room, lead, deputy);
+                roomRepository.saveHierarchy(hierarchy);
+                Member memberLeader = new Member(room, lead);
+                roomRepository.saveMember(memberLeader);
+            }
             Member memberDeputy = new Member(room, deputy);
-            roomRepository.saveMember(memberLeader);
             roomRepository.saveMember(memberDeputy);
             info.setCode(DefineInfomation.SUCCESS)
                     .setContent(relationship.getId() + "");
@@ -76,6 +87,7 @@ public class FriendService {
 
     /**
      * Xóa một người bạn
+     *
      * @param userID
      * @param otherID
      * @return
@@ -85,7 +97,7 @@ public class FriendService {
         User user = new User(userID);
         User otherUser = new User(otherID);
         Infomation info = selectRelationship(userID, otherID);
-        if(checkInfomation.checkOneWithAll(true, info.getCode(), DefineInfomation.SUCCESS)) {
+        if (checkInfomation.checkOneWithAll(true, info.getCode(), DefineInfomation.SUCCESS)) {
             dao.deleteFriend(new Relationship(user, otherUser));
             info.setContent(DefineInfomation.EMPTY);
         } else {
@@ -97,6 +109,7 @@ public class FriendService {
 
     /**
      * Cập nhật biệt danh cho người bạn
+     *
      * @param userID
      * @param otherID
      * @param nickname
@@ -104,7 +117,7 @@ public class FriendService {
      */
     public Infomation updateNickName(String userID, String otherID, String nickname) {
         Infomation info = selectRelationship(userID, otherID);
-        if(checkInfomation.checkOneWithAll(true, info.getCode(), DefineInfomation.SUCCESS)) {
+        if (checkInfomation.checkOneWithAll(true, info.getCode(), DefineInfomation.SUCCESS)) {
             String json = mapper.mapToJson(info.getContent());
             Relationship relationship = mapper.convertObject(json, Relationship.class);
             dao.setNickNameForFriend(relationship.getId(), nickname);
@@ -120,6 +133,7 @@ public class FriendService {
 
     /**
      * Lấy ra danh sách bạn của chính mình
+     *
      * @param userID
      * @return
      */
@@ -129,7 +143,7 @@ public class FriendService {
         relationships.forEach(relationship -> {
             Profile profile = infoAccountDao.findByUserId(relationship.getFriend().getId()).orElse(null);
             profile.setUser(null);
-            if(!checkInfomation.isEmpty(profile)) {
+            if (!checkInfomation.isEmpty(profile)) {
                 // Giả ảnh
                 profile.setAvatar(CloudinaryServices.getINSTANCE().getRandomAvatar());
                 profilesFriends.add(profile);

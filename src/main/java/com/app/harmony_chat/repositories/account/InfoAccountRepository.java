@@ -1,5 +1,6 @@
 package com.app.harmony_chat.repositories.account;
 
+import com.app.harmony_chat.models.BlackList;
 import com.app.harmony_chat.models.Profile;
 import com.app.harmony_chat.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
