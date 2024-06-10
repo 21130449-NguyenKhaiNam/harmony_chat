@@ -30,10 +30,9 @@ public class ProfileOther extends AppCompatActivity {
         colorPrimarySky = ContextCompat.getColor(this, R.color.primary_sky);
         colorWhite = ContextCompat.getColor(this, R.color.primary_white);
 
-        backBtn = findViewById(R.id.btn_back_other);
-        relationshipBtn = findViewById(R.id.btn_relationship_other);
-        sendMessageBtn = findViewById(R.id.btn_send_message);
-
+        backBtn = findViewById(R.id.btn_back);
+        relationshipBtn = findViewById(R.id.btn_relationship);
+        sendMessageBtn = findViewById(R.id.btn_message);
 
 //        thiet lap trang thai ban dau cho nut relation ship
 //        chua ket ban va chua gui ket ban
@@ -84,7 +83,7 @@ public class ProfileOther extends AppCompatActivity {
             relationshipBtn.setTextColor(colorWhite);
             relationshipBtn.setBackgroundResource(R.drawable.button_active);
         } else { //chua la ban
-            if(isSendAddFriend) {  //da gui ket ban
+            if(isSendAddFriend) {  // da gui ket ban
                 relationshipBtn.setText(R.string.cancelAddFriend);
                 relationshipBtn.setTextColor(colorPrimarySky);
                 relationshipBtn.setBackgroundResource(R.drawable.background_border);
@@ -101,7 +100,6 @@ public class ProfileOther extends AppCompatActivity {
 
 //    gui ket ban
     public void sendAddFriend() {
-
         relationshipBtn.setText(R.string.cancelAddFriend);
         relationshipBtn.setTextColor(colorPrimarySky);
         relationshipBtn.setBackgroundResource(R.drawable.background_border);

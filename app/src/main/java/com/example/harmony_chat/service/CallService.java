@@ -50,7 +50,7 @@ public class CallService {
      */
     public void generalCallApi(Response<DataResponsive> response, CallBack func) {
         Information info = new Information();
-        if (response.isSuccessful() && response.body() != null) {
+        if (response != null && response.isSuccessful() && response.body() != null) {
             DataResponsive dataResponsive = response.body();
             info.setCode(dataResponsive.getCode());
             info.setJson(dataResponsive.getContent());

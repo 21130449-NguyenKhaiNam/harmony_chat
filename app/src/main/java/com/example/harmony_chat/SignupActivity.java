@@ -82,7 +82,6 @@ public class SignupActivity extends AppCompatActivity {
                     }
                 }
                 return false;
-
             }
         });
 
@@ -105,7 +104,6 @@ public class SignupActivity extends AppCompatActivity {
                     }
                 }
                 return false;
-
             }
         });
 
@@ -171,7 +169,6 @@ public class SignupActivity extends AppCompatActivity {
                         Intent intent = new Intent(this, LoginActivity.class);
                         intent.putExtra("status", "signupSuccessful");
                         setResult(RESULT_OK, intent);
-
                         finish();
                     } else {
                         Toast.makeText(SignupActivity.this, "Tài khoản đã tồn tại hoặc thông tin không chính xác!!!", Toast.LENGTH_SHORT).show();

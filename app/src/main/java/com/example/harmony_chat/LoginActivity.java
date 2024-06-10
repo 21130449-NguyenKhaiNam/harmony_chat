@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText editEmail, editPassword;
     ImageView avatar;
     Button loginBtn, gotoSignupBtn;
-    private ImageButton btn_facebook, btn_github, btn_google;
+    private ImageButton btnFacebook, btnGithub, btn_google;
     TextView forgetPasswordBtn;
     String status;
     boolean isPasswordVisible;
@@ -67,8 +67,8 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn = findViewById(R.id.loginBtn);
         gotoSignupBtn = findViewById(R.id.gotoSignupBtn);
 
-        btn_facebook = findViewById(R.id.facebookBtn);
-        btn_github = findViewById(R.id.githubBtn);
+        btnFacebook = findViewById(R.id.facebookBtn);
+        btnGithub = findViewById(R.id.githubBtn);
         btn_google = findViewById(R.id.googleBtn);
 
         isPasswordVisible = false;
@@ -117,13 +117,11 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        btn_facebook.setOnClickListener(e -> {
+        btnFacebook.setOnClickListener(e -> {
             futureFeatures();
         });
-        btn_google.setOnClickListener(e -> {
-            futureFeatures();
-        });
-        btn_github.setOnClickListener(e -> {
+
+        btnGithub.setOnClickListener(e -> {
             futureFeatures();
         });
 
@@ -160,15 +158,32 @@ public class LoginActivity extends AppCompatActivity {
             }
         } else if (requestCode == 1000) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                task.getResult(ApiException.class);
-                Toast.makeText(getApplicationContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-//            finish();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-            } catch (ApiException e) {
-                Toast.makeText(getApplicationContext(), "Có gì đó hoạt động sai", Toast.LENGTH_SHORT).show();
-            }
+            RxHelper.performImmediately(() -> {
+                String email = task.getResult().getEmail();
+                User user = CallService.getInstance().loginAccount(email, "password");
+                runOnUiThread(() -> {
+                    if (user.getId() == null) {
+                        // Tài khoản không tồn tại
+                        Toast.makeText(LoginActivity.this, "Tài khoản chưa tồn tại", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(intent);
+                    } else {
+                        // Thiết lập session nếu đăng nhập thành công
+                        SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("id", user.getId());
+                        editor.commit();
+                        try {
+                            task.getResult(ApiException.class);
+                            Toast.makeText(getApplicationContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                        } catch (ApiException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
+            });
         } else if (requestCode == 2) {
             if (resultCode == RESULT_OK) {
                 String status = (String) data.getStringExtra("status");
@@ -211,18 +226,6 @@ public class LoginActivity extends AppCompatActivity {
     public void gotoForgetPassword() {
         Intent intent = new Intent(this, ForgetPasswordActivity.class);
         startActivityForResult(intent, 2);
-    }
-
-    public void gotoMain() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
-
-    public int checkLogin() {
-        int re = 0;
-        String password = editPassword.getText().toString();
-//        String email = editUsername
-        return re;
     }
 
     public void login() {
@@ -279,6 +282,5 @@ public class LoginActivity extends AppCompatActivity {
             return 1;
         }
         return 0;
-
     }
 }

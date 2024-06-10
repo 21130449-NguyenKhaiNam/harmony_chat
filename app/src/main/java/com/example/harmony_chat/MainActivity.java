@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +36,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
     private CardView avatarCardView;
     private ImageView avatarImageView;
     private ImageView find;
@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
         String userId = sharedPreferences.getString("id", null);
+        Log.i("id", userId);
         // Không có tài khoản
         if(CheckInfomation.isEmpty(userId)) {
             Intent intent = new Intent(this, LoginActivity.class);

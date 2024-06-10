@@ -71,8 +71,8 @@ public class SettingScreen extends AppCompatActivity {
             Intent intent = getIntent();
             String totalFriend =intent.getIntExtra("totalFriends", 0) + "";
             thong_so[1] = totalFriend;
-            List<BlackList> blackList = CallService.getInstance().getBlackList(sharedPreferences.getString("id", ""));
-            thong_so[2] = blackList.size() + "";
+//            List<BlackList> blackList = CallService.getInstance().getBlackList(sharedPreferences.getString("id", ""));
+//            thong_so[2] = blackList.size() + "";
             thong_so[3] = totalFriend;
             runOnUiThread(() -> {
                 work();
