@@ -1,11 +1,19 @@
 package com.example.harmony_chat.model;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private String id;
     private String email;
     private String password;
 
     public User() {
+    }
+
+    public User(String id, String email, String password) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
     }
 
     public User(String email, String password) {

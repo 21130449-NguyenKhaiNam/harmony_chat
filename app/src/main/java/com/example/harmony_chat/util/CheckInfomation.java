@@ -27,7 +27,7 @@ public class CheckInfomation {
     // Kiểm tra có giá trị nào rỗng không
     public static boolean isEmpty(Object... params) {
         if (params == null)
-            return false;
+            return true;
         for (Object param : params) {
             if (param == null)
                 return true;

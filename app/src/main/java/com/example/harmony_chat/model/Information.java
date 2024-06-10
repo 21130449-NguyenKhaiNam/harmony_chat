@@ -3,6 +3,7 @@ package com.example.harmony_chat.model;
 import androidx.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
+
 public class Information {
     private int code;
     private String json;
@@ -10,6 +11,7 @@ public class Information {
     public int getCode() {
         return code;
     }
+
     public String getJson() {
         return json;
     }

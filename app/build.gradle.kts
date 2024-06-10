@@ -1,5 +1,6 @@
 plugins {
     id("com.android.application")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -44,6 +45,7 @@ dependencies {
     // Thư viện tạo phần tử bo tròn
     implementation("com.makeramen:roundedimageview:2.3.0")
     implementation ("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation("com.google.firebase:firebase-common:21.0.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -61,7 +63,6 @@ dependencies {
     // RxJava
     implementation("io.reactivex.rxjava3:rxjava:3.0.13")
     implementation("io.reactivex.rxjava3:rxandroid:3.0.0")
-
 //    dang nhap bang google
     implementation ("com.google.android.gms:play-services-auth:20.4.0")
 
@@ -69,4 +70,9 @@ dependencies {
     implementation(files("libs/mail.jar"))
     implementation(files("libs/additionnal.jar"))
     implementation(files("libs/activation.jar"))
+
+//    firebase
+    implementation("com.google.firebase:firebase-firestore:25.0.0")
+    // Firebase UI Firestore
+    implementation ("com.firebaseui:firebase-ui-firestore:8.0.1")
 }

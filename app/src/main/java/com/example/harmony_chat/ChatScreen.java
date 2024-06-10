@@ -1,26 +1,43 @@
 package com.example.harmony_chat;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.squareup.picasso.Picasso;
+import com.example.harmony_chat.Adapter.ChatRecyclerAdapter;
+import com.example.harmony_chat.model.ChatMessageModel;
+import com.example.harmony_chat.model.Room;
+import com.example.harmony_chat.model.User;
+import com.example.harmony_chat.util.CheckInfomation;
+import com.example.harmony_chat.util.FirebaseUtil;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.Query;
 
 public class ChatScreen extends AppCompatActivity {
+    private TextView txtChatName;
+    private EditText txtChatMessage;
+    private ImageView img_avatar;
 
-    private boolean isFragmentDisplayed = false;
-    private Fragment reactsFragment, messageOptionsFragment;
-    private View options, reacts;
-    private TextView txtMessage;
+    private ImageButton backBtn, btn_send;
 
-    ImageButton backBtn;
+    private User primaryUser, secondaryUser;
+    private Room room;
+
+    private ChatRecyclerAdapter adapter;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstancestate) {
@@ -28,78 +45,8 @@ public class ChatScreen extends AppCompatActivity {
         setContentView(R.layout.activity_chat_screen);
 
         hideSystemUI();
-
-        String img_url = "https://images.unsplash.com/photo-1627087820883-7a102b79179a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
-        ImageView imageView = findViewById(R.id.img_avatar);
-
-        Picasso.get()
-                .load(img_url)
-                .into(imageView);
-
-        txtMessage = findViewById(R.id.message);
-        backBtn = findViewById(R.id.backBtn);
-        reactsFragment = getSupportFragmentManager().findFragmentById(R.id.reacts);
-        messageOptionsFragment = getSupportFragmentManager().findFragmentById(R.id.message_options_fragment);
-
-        txtMessage.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                showFragments();
-                return true;
-            }
-        });
-
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                back();
-            }
-        });
-
-    }
-
-    private void showFragments() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-
-        if (reactsFragment != null) {
-            transaction.show(reactsFragment);
-        }
-
-        if (messageOptionsFragment != null) {
-            transaction.show(messageOptionsFragment);
-        }
-
-        transaction.commit();
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (isFragmentsVisible()) {
-            hideFragments();
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    private boolean isFragmentsVisible() {
-        return reactsFragment != null && reactsFragment.isVisible() ||
-                messageOptionsFragment != null && messageOptionsFragment.isVisible();
-    }
-
-    private void hideFragments() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-
-        if (reactsFragment != null) {
-            transaction.hide(reactsFragment);
-        }
-
-        if (messageOptionsFragment != null) {
-            transaction.hide(messageOptionsFragment);
-        }
-
-        transaction.commit();
+        loadConfig();
+        process();
     }
 
     public void back() {
@@ -107,15 +54,121 @@ public class ChatScreen extends AppCompatActivity {
     }
 
     private void hideSystemUI() {
-        // Ẩn thanh trạng thái và thanh điều hướng
-        View decorView = getWindow().getDecorView();
-        decorView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        final View decorView = getWindow().getDecorView();
+
+        Runnable setSystemUiVisibility = new Runnable() {
+            @Override
+            public void run() {
+                decorView.setSystemUiVisibility(
+                        View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                );
+            }
+        };
+
+        setSystemUiVisibility.run();
+
+        decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+            @Override
+            public void onSystemUiVisibilityChange(int visibility) {
+                if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                    setSystemUiVisibility.run();
+                }
+            }
+        });
+    }
+
+    // Tìm và gán các phần tử của Context vào đối tượng tương ứng. Phải được gọi trước khi xử lý các phần tử của Context như là bắt sự kiện,...
+    private void loadConfig() {
+        // Lấy ra đối tượng Profile được gửi thông qua intent từ MainActivity.java
+        SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+        String userId = sharedPreferences.getString("id", null);
+        // Không có tài khoản
+        if (CheckInfomation.isEmpty(userId)) {
+            Log.e("ChatScreen UserId", userId);
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish(); // Thêm finish để ngăn người dùng quay lại màn hình này
+            return;
+        }
+
+        // Khởi tạo các view
+        txtChatName = findViewById(R.id.txt_chat_name);
+        txtChatMessage = findViewById(R.id.txt_chat_message);
+        recyclerView = findViewById(R.id.chat_recycler_view);
+        img_avatar = findViewById(R.id.img_avatar);
+//        AndroidUtil.loadImage(secondaryUser.get);
+        backBtn = findViewById(R.id.backBtn);
+        btn_send = findViewById(R.id.btn_send);
+
+        // Lấy thông tin bundle được gửi từ MainActivity.java
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if (bundle.isEmpty()) back();
+        room = (Room) bundle.getSerializable("room");
+        primaryUser = (User) bundle.getSerializable("primary_user");
+        secondaryUser = (User) bundle.getSerializable("secondary_user");
+
+        txtChatName.setText(secondaryUser.getEmail());
+
+        setupChatRecyclerView();
+    }
+
+    private void process() {
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                back();
+            }
+        });
+
+        btn_send.setOnClickListener(e -> {
+            String message = txtChatMessage.getText().toString().trim();
+            if (message.isEmpty()) return;
+            sendMessageToUser(message);
+        });
+    }
+
+    private void sendMessageToUser(String message) {
+        ChatMessageModel chatMessageModel = new ChatMessageModel(
+                message, room.getId() + "",
+                primaryUser.getId(), Timestamp.now()
         );
+
+        FirebaseUtil.getChatroomMessageReference(room.getId() + "")
+                .add(chatMessageModel)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        txtChatMessage.setText("");
+                    }else {
+                        Toast.makeText(this, "\""+message+"\" isn't send!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void setupChatRecyclerView() {
+        Query query = FirebaseUtil.getChatroomMessageReference(room.getId()+"")
+                .orderBy("timestamp", Query.Direction.DESCENDING);
+
+        FirestoreRecyclerOptions<ChatMessageModel> options = new FirestoreRecyclerOptions.Builder<ChatMessageModel>()
+                .setQuery(query, ChatMessageModel.class).build();
+
+        adapter = new ChatRecyclerAdapter(options, getApplicationContext(), primaryUser.getId());
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        manager.setReverseLayout(true);
+        recyclerView.setLayoutManager(manager);
+        recyclerView.setAdapter(adapter);
+        adapter.startListening();
+        adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                recyclerView.smoothScrollToPosition(0);
+            }
+        });
     }
 }

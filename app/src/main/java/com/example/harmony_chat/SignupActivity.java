@@ -6,8 +6,10 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +20,21 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+//<<<<<<< HEAD
+//import com.example.harmony_chat.model.Profile;
+//import com.example.harmony_chat.model.User;
+//import com.google.firebase.auth.FirebaseAuth;
+//import com.google.firebase.firestore.FirebaseFirestore;
+//
+//public class SignupActivity extends AppCompatActivity {
+//    private EditText editEmail, editUsername, editPassword, editRepassword;
+//    private ImageView avatar;
+//    private Button signupBtn, gotoLoginBtn;
+//    private FirebaseAuth mAuth;
+//    private boolean isPasswordVisible, isRePasswordVisible;
+//    private User user;
+//
+//=======
 import com.example.harmony_chat.model.User;
 import com.example.harmony_chat.service.CallService;
 import com.example.harmony_chat.util.RxHelper;
@@ -33,6 +50,7 @@ public class SignupActivity extends AppCompatActivity {
 
     boolean isPasswordVisible, isRePasswordVisible;
 
+//>>>>>>> view-merge
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +58,8 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
 
         hideSystemUI();
+
+//        mAuth = FirebaseAuth.getInstance();
 
         editEmail = findViewById(R.id.editEmail);
         editUsername = findViewById(R.id.editUsername);
@@ -107,6 +127,51 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
+//<<<<<<< HEAD
+////        Dang ky tai khoan nguoi dung
+//        signupBtn.setOnClickListener(e -> {
+//            String email = editEmail.getText().toString().trim(),
+//                    password = editPassword.getText().toString().trim(),
+//                    username = editUsername.getText().toString().trim(),
+//                    repassword = editRepassword.getText().toString().trim();
+////            Chua xu ly validation cho cac su kien
+//            if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+//                Toast.makeText(this, "Email or Password is empty!", Toast.LENGTH_SHORT).show();
+//            } else {
+//                mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+////      success
+//                        Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
+//
+////  Luu username cua nguoi dung dua vao UUID
+//                        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task1 -> {
+//                            if (task.isSuccessful()) {
+//                                String user_id = mAuth.getCurrentUser().getUid(); // get UUID cua User
+//                                user = new User(user_id, null, null);
+//                                Profile profile = new Profile();
+//                                profile.setUser(user);
+//                                profile.setUsername(username);
+//                                FirebaseFirestore.getInstance()
+//                                        .collection("PROFILES")
+//                                        .add(profile)
+//                                        .addOnCompleteListener(task2 -> {
+//                                            if (task2.isSuccessful()) {
+//                                                Toast.makeText(this, "Username is saved!", Toast.LENGTH_SHORT).show();
+//                                            } else {
+//                                                Log.e("FIRESTORE", task2.getException().toString());
+//                                            }
+//                                        });
+//                            }
+//                        });
+//                    } else {
+////      fail
+//                        Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//            }
+//        });
+//
+//=======
         signupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,6 +186,7 @@ public class SignupActivity extends AppCompatActivity {
         Picasso.get()
                 .load(R.drawable.logo_black)
                 .into((ImageView) findViewById(R.id.avatarImg));
+//>>>>>>> view-merge
     }
 
     public void gotoLogin() {
@@ -128,16 +194,32 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void hideSystemUI() {
-        // Ẩn thanh trạng thái và thanh điều hướng
-        View decorView = getWindow().getDecorView();
-        decorView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        );
+        final View decorView = getWindow().getDecorView();
+
+        Runnable setSystemUiVisibility = new Runnable() {
+            @Override
+            public void run() {
+                decorView.setSystemUiVisibility(
+                        View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                );
+            }
+        };
+
+        setSystemUiVisibility.run();
+
+        decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+            @Override
+            public void onSystemUiVisibilityChange(int visibility) {
+                if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                    setSystemUiVisibility.run();
+                }
+            }
+        });
     }
 
     public void signup() {

@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:weightSum="8"
     tools:context=".ChatScreen">
 
     <!--    Header-->
     <LinearLayout
+        android:id="@+id/chat_screen_header"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:gravity="center_vertical"
         android:paddingHorizontal="10dp"
         android:paddingVertical="16dp">
@@ -26,18 +25,19 @@
             android:src="@drawable/arrow_back_ios" />
 
         <!--Hien thi avatar cua nguoi dung-->
-        <com.google.android.material.card.MaterialCardView
+        <androidx.cardview.widget.CardView
             android:layout_width="40dp"
             android:layout_height="40dp"
             app:cardCornerRadius="20dp">
 
-            <com.google.android.material.imageview.ShapeableImageView
+            <ImageView
                 android:id="@+id/img_avatar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-        </com.google.android.material.card.MaterialCardView>
+        </androidx.cardview.widget.CardView>
 
         <TextView
+            android:id="@+id/txt_chat_name"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="6dp"
@@ -45,110 +45,51 @@
             android:textSize="@dimen/text_0"
             android:textStyle="bold" />
 
-        <ImageButton
-            android:id="@+id/calling"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/transparent"
-            android:scaleType="fitCenter"
-            android:src="@drawable/baseline_call_24" />
-
     </LinearLayout>
 
-    <!--    Hiển thị nội dung tin nhắn-->
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="6"
-        android:background="@color/primary_white"
-        android:orientation="vertical"
-        android:paddingHorizontal="20dp"
-        android:paddingVertical="15dp">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/chat_screen_header"
+        android:fitsSystemWindows="true">
 
-        <!--Message 1-->
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chat_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="5dp"
-            android:gravity="start"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:layout_above="@+id/chat_screen_footer"
+             />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+        <!--    Footer-->
+        <RelativeLayout
+            android:id="@+id/chat_screen_footer"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_alignParentBottom="true"
+            android:padding="10dp">
+
+            <EditText
+                android:id="@+id/txt_chat_message"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_centerInParent="true"
+                android:layout_margin="10dp"
+                android:layout_toLeftOf="@id/btn_send"
+                android:layout_weight="6"
+                android:hint="@string/message_hint"
+                android:textSize="@dimen/text_1" />
 
-                <fragment
-                    android:id="@+id/reacts"
-                    class="com.example.harmony_chat.Reacts"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    tools:layout="@layout/fragment_reacts"
-                    android:visibility="gone"/>
+            <ImageButton
+                android:id="@+id/btn_send"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:backgroundTint="@color/transparent"
+                android:drawableRight="@drawable/send"
+                android:src="@drawable/send" />
+        </RelativeLayout>
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="20dp">
+    </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/message"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@color/primary_sky"
-                        android:padding="10dp"
-                        android:text="@string/message_has_been_received"
-                        android:textSize="@dimen/text_0"
-                        android:textStyle="normal" />
-                </androidx.cardview.widget.CardView>
-
-                <fragment
-                    android:id="@+id/message_options_fragment"
-                    class="com.example.harmony_chat.MessageOptions"
-                    android:layout_width="160dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp"
-                    tools:layout="@layout/fragment_message_options"
-                    android:visibility="gone"/>
-            </LinearLayout>
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <!--    Footer-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        android:weightSum="8">
-
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="6"
-            android:hint="@string/message_hint"
-            android:maxHeight="40dp"
-            android:textSize="@dimen/text_1" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:backgroundTint="@color/transparent"
-            android:drawableEnd="@drawable/vector" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:backgroundTint="@color/transparent"
-            android:drawableRight="@drawable/outline" />
-
-    </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>

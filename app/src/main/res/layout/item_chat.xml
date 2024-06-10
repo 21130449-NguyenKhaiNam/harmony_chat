@@ -5,12 +5,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:padding="8dp"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    android:id="@+id/main_container_chat">
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/avatarImageView"
-        android:layout_width="@dimen/width_avatar_normal"
-        android:layout_height="@dimen/height_avatar_normal"
+        android:layout_width="@dimen/width_logo_other"
+        android:layout_height="@dimen/width_logo_other"
         android:src="@drawable/avatar"
         app:riv_corner_radius="100dp"
         android:scaleType="centerCrop" />

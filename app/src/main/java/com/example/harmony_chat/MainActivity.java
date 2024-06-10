@@ -1,5 +1,10 @@
 package com.example.harmony_chat;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,11 +19,10 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import com.example.harmony_chat.Adapter.ChatAdapter;
+import com.example.harmony_chat.Adapter.SelectListener;
+import com.example.harmony_chat.Item.ChatItem;
+import com.example.harmony_chat.util.AndroidUtil;
 import com.example.harmony_chat.model.Hierarchy;
 import com.example.harmony_chat.model.User;
 import com.example.harmony_chat.service.CallService;
@@ -31,24 +35,20 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.squareup.picasso.Picasso;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
-    private CardView avatarCardView;
-    private ImageView avatarImageView;
-    private ImageView find;
-    private TextView setting, profile, username;
+public class MainActivity extends AppCompatActivity implements SelectListener {
 
-//    TextView txtEmail, txtName;
+    private CardView avatarCardView;
+    private ImageView avatarImageView, find;
+    private TextView setting, profile;
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
 
-    private Button allButton;
-    private Button unreadButton;
-    private Button readButton;
-    private Button pinnedButton;
+    private Button allButton, unreadButton, readButton, pinnedButton;
     private Button requestButton;
     private List<Button> buttons;
 
@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
     private ChatAdapter chatAdapter;
     private List<ChatItem> chatItemList;
     private com.example.harmony_chat.model.Profile profileUser;
+    private String userId;
+//    private User primaryUser, secondaryUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,35 +65,34 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
-        String userId = sharedPreferences.getString("id", null);
-        Log.i("id", userId);
+        userId = sharedPreferences.getString("id", null);
+        Log.e("user id", userId);
         // Không có tài khoản
-        if(CheckInfomation.isEmpty(userId)) {
+        if (CheckInfomation.isEmpty(userId)) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
 
         hideSystemUI();
+
         boolean isSearchVisible = false;
 
         avatarCardView = findViewById(R.id.user_avatar);
         avatarImageView = findViewById(R.id.avatar_image_view);
-        avatarCardView.setOnClickListener(e -> createPopUpWindow());
+        avatarCardView.setOnClickListener(e -> {
+            createPopUpWindow();
+        });
 
         find = findViewById(R.id.search_icon);
         find.setVisibility(isSearchVisible ? View.GONE : View.VISIBLE);
-        username = findViewById(R.id.user_username);
-//        txtEmail = findViewById(R.id.txtEmail);
-//        txtName = findViewById(R.id.txtName);
 
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         gsc = GoogleSignIn.getClient(this, gso);
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if(account!=null) {
+        if (account != null) {
             String name = account.getDisplayName();
             String email = account.getEmail();
-            username.setText(name);
         }
         find.setOnClickListener(v -> gotoSearchUser());
 
@@ -116,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
         chatRecyclerView = findViewById(R.id.chat_recycler_view);
         chatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         chatItemList = new ArrayList<>();
+
         RxHelper.performImmediately(() -> {
             List<Hierarchy> rooms = CallService.getInstance().getRoom(userId);
             profileUser = CallService.getInstance().viewMyProfile(userId);
@@ -123,15 +125,24 @@ public class MainActivity extends AppCompatActivity {
             profileUser.setUser(user);
             for (int i = 0; i < rooms.size(); i++) {
                 Hierarchy hierarchy = rooms.get(i);
-                com.example.harmony_chat.model.Profile profileLeader = CallService.getInstance().viewOtherProfile(hierarchy.getLeader().getId());
-                chatItemList.add(new ChatItem(profileLeader.getUsername(), profileLeader.getUsername(), hierarchy.getRoom().getImage(), hierarchy.getRoom().getPublished()));
+//                whoAmI(hierarchy.getLeader(), hierarchy.getDeputy());
+                chatItemList.add(
+                        new ChatItem(
+                                (hierarchy.getLeader().getId().trim().equals(userId) ? hierarchy.getDeputy().getEmail() : hierarchy.getLeader().getEmail()),
+                                "",
+                                hierarchy.getRoom().getImage(),
+                                hierarchy.getRoom().getPublished(),
+                                "",
+                                hierarchy.getRoom(),
+                                hierarchy.getLeader(),
+                                hierarchy.getDeputy()
+                        ));
             }
             runOnUiThread(() -> {
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("profile", MapperJson.getInstance().convertObjToJson(profileUser));
-                editor.commit();
-                chatAdapter = new ChatAdapter(chatItemList);
+                chatAdapter = new ChatAdapter(chatItemList, this);
                 chatRecyclerView.setAdapter(chatAdapter);
+
+                // Load avatar from API
                 loadProfileData();
             });
         });
@@ -144,7 +155,10 @@ public class MainActivity extends AppCompatActivity {
         int width = getResources().getDimensionPixelSize(R.dimen.popup_options), height = ViewGroup.LayoutParams.WRAP_CONTENT;
         boolean focusable = true;
         PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-        avatarCardView.post(() -> popupWindow.showAsDropDown(avatarCardView, Gravity.AXIS_X_SHIFT, 5, 0));
+
+        avatarCardView.post(() -> {
+            popupWindow.showAsDropDown(avatarCardView, Gravity.AXIS_X_SHIFT, 5, 0);
+        });
 
         setting = popupView.findViewById(R.id.text_setting);
         profile = popupView.findViewById(R.id.text_profile);
@@ -182,21 +196,79 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadProfileData() {
-        username.setText(profileUser.getUsername());
-        Picasso.get()
-                .load(profileUser.getAvatar())
-                .into(avatarImageView);
+        AndroidUtil.loadImage(profileUser.getAvatar(), avatarImageView);
     }
 
     private void hideSystemUI() {
-        View decorView = getWindow().getDecorView();
-        decorView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        );
+        final View decorView = getWindow().getDecorView();
+
+        Runnable setSystemUiVisibility = new Runnable() {
+            @Override
+            public void run() {
+                decorView.setSystemUiVisibility(
+                        View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                );
+            }
+        };
+
+        setSystemUiVisibility.run();
+
+        decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+            @Override
+            public void onSystemUiVisibilityChange(int visibility) {
+                if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                    setSystemUiVisibility.run();
+                }
+            }
+        });
     }
+
+
+    // Khi người dùng nhấn vào từng dòng của RecycleView thì thực hiện chuyển màn hình tới ChatScreen tương ứng của cuộc trò chuyện
+    @Override
+    public void onItemClicked(ChatItem chatItem) {
+        Intent intent = new Intent(this, ChatScreen.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("room", chatItem.getRoom());
+
+        /**
+         * Trong trường hợp này vì của Nam chỉ cung cấp mỗi API /api/v1/relationship/room nên sẽ chỉ trả về được mỗi List<Hierarchy>
+         * Đối với cấu trúc của Hierarchy thì chỉ tồn tại một room_id trong table nên muốn xác định người truy cập
+         * vào trong cuộc trò chuyện là A hoặc B thì phải thực hiện kiểm tra user_id của 1 trong 2.
+         * Ví dụ:
+         * - Trong Hierarchy có 2 thuộc tính là leader: A và deputy: B
+         * - Khi A đăng nhập thì A sẽ truy cập vào cuộc trò chuyện này với vai trò là người GỬI, B là người NHẬN
+         * - Khi B đăng nhập thì B sẽ là người GỬI, A là người NHẬN
+         * - Vấn đề đặt ra là làm sao để biết khi nào thì A (B) đóng vai trò nào trong phiên đăng nhập? => so sánh id với user_id của phiên đăng nhập
+         * - Sau khi đã xác định được vai trò thì mặc định ở ChatScreen sẽ tự hiểu là primaryUser sẽ là người GỬI, secondaryUser sẽ là người NHẬN
+         */
+        User primaryUser = chatItem.getLeader(), secondaryUser = chatItem.getDeputy();
+        if (primaryUser.getId().equals(userId)) {
+            bundle.putSerializable("primary_user", primaryUser);
+            bundle.putSerializable("secondary_user", secondaryUser);
+        } else {
+            bundle.putSerializable("primary_user", secondaryUser);
+            bundle.putSerializable("secondary_user", primaryUser);
+        }
+
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
+//    private void whoAmI(User user1, User user2) {
+//        if (user1 != null && user2 != null && user1.getId() != null && user2.getId() != null) {
+//            if (user1.getId().equals(userId)) {
+//                primaryUser = user1;
+//                secondaryUser = user2;
+//            } else {
+//                primaryUser = user2;
+//                secondaryUser = user1;
+//            }
+//        }
+//    }
 }
