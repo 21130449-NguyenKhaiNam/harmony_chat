@@ -57,11 +57,11 @@ public class FriendService {
         if (checkInfomation.checkOneWithAll(true, info.getCode(), DefineInfomation.SUCCESS_BUT_NOT_FOUND)) {
             Profile profileFriend = infoAccountDao.findByUserId(otherID).orElse(null); // Vẫn có thể lỗi nếu không kiểm soát tốt
             Relationship relationship = dao.save(new Relationship(user, otherUser, LocalDate.now(), profileFriend.getUsername()));
-            int code = userID.hashCode();
+            long code = userID.hashCode() + otherID.hashCode();
             List<Room> rooms = roomRepository.findRoomById(Long.parseLong(code + ""));
             Room room = rooms.isEmpty() ? null : rooms.get(0);
             if (room == null) {
-                room = new Room(Long.parseLong(code + ""), LocalDate.now(), true);
+                room = new Room(code, LocalDate.now(), true);
                 roomRepository.saveRoom(room);
             }
             User lead = new User(userID);

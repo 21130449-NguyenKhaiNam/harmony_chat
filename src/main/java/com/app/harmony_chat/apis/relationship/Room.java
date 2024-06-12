@@ -20,9 +20,16 @@ public class Room {
     private RoomService service;
     @Autowired
     private MapperJson mapper;
+
     @PostMapping(DefinePath.ROOM)
     public String getAllRoom(@RequestBody Map<String, String> json) {
         List<String> params = mapper.getParam(json, DefinePropertyJson.USER_ID);
         return mapper.mapToJson(service.getAllRoom(params.get(0)));
+    }
+
+    @PostMapping(DefinePath.ROOM_ADD)
+    public String addRoom(@RequestBody Map<String, String> json) {
+        List<String> params = mapper.getParam(json, DefinePropertyJson.ROOM_ID, DefinePropertyJson.USER_ID);
+        return mapper.mapToJson(service.insertToRoom(params.get(0), params.get(1)));
     }
 }

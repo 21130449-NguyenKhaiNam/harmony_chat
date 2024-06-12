@@ -59,12 +59,14 @@ public class AuthServices {
                 info.setCode(DefineInfomation.SUCCESS);
                 // Không tồn tại tài khoản trong hệ thống
                 if (user == null) {
+                    info.setContent(DefineInfomation.SUCCESS_BUT_NOT_FOUND);
                     content.append(DefineInfomation.DEFAULT_NOT_ACCOUNT);
                 } else {
                     // Nếu có mật khẩu thì kiểm tra nó với mật khẩu mã hóa
                     if (password != null && encoder.isCorrect(password, user.getPassword())) {
                         content.append(user.getId().toString());
                     } else {
+                        info.setCode(DefineInfomation.SUCCESS_BUT_NOT_CORRECT);
                         content.append(DefineInfomation.DEFAULT_NOT_CORRECT_ACCOUNT);
                     }
                 }
@@ -79,9 +81,10 @@ public class AuthServices {
     public Infomation login(String email, String password) {
         Infomation info = new Infomation();
         if (password.equals("password")) {
-            User user = dao.findByEmail(email).get(0);
+            List<User> users = dao.findByEmail(email);
+            User user = users.isEmpty() ? null : users.get(0);
             if(user == null) {
-                info.setContent(DefineInfomation.SUCCESS_BUT_NOT_FOUND)
+                info.setCode(DefineInfomation.SUCCESS_BUT_NOT_FOUND)
                         .setContent(DefineInfomation.DEFAULT_NOT_ACCOUNT);
             } else {
                 info.setCode(DefineInfomation.SUCCESS)

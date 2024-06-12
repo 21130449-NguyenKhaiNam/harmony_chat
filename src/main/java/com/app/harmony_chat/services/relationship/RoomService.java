@@ -4,7 +4,6 @@ import com.app.harmony_chat.configs.DefineInfomation;
 import com.app.harmony_chat.models.*;
 import com.app.harmony_chat.repositories.account.InfoAccountRepository;
 import com.app.harmony_chat.repositories.relationship.RoomRepository;
-import com.app.harmony_chat.services.auth.AuthServices;
 import com.app.harmony_chat.services.image.CloudinaryServices;
 import com.app.harmony_chat.utils.infomation.CheckInfomation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,7 @@ public class RoomService {
     public Infomation getAllRoom(String userId) {
         Profile profile = infoAccountRepository.findByUserId(userId).orElse(null);
         Infomation info = new Infomation();
-        if(checkInfomation.isEmpty(profile)) {
+        if (checkInfomation.isEmpty(profile)) {
             info.setCode(DefineInfomation.SUCCESS_BUT_NOT_FOUND)
                     .setContent(DefineInfomation.DEFAULT_NO_FRIEND);
         } else {
@@ -42,5 +41,17 @@ public class RoomService {
                     .setContent(rooms);
         }
         return info;
+    }
+
+    public Infomation insertToRoom(String roomId, String otherId) {
+        Profile profile = infoAccountRepository.findByUserId(otherId).orElse(null);
+        if (checkInfomation.isEmpty(profile)) {
+            return (new Infomation()).setCode(DefineInfomation.SUCCESS_BUT_NOT_FOUND)
+                    .setContent(DefineInfomation.DEFAULT_NOT_ACCOUNT);
+        } else {
+            repository.saveMember(Long.parseLong(roomId), otherId);
+            return (new Infomation()).setCode(DefineInfomation.SUCCESS)
+                    .setContent(roomId);
+        }
     }
 }

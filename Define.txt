@@ -141,6 +141,7 @@
                 "code":200,
                 "content":[]
             }
+   + /api/v1/relationship/room/add: Thêm người dùng vào phòng: POST -> JSON {'room-id': '?', 'other-id': '?'}
 
 - Liên quan đến việc xem dữ liệu trên màn hình:
     + /api/v1/search/friend/mess: Tìm kiếm bạn bè trong danh sách tin nhắn POST -> JSON {'name': '?'}

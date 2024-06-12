@@ -19,6 +19,7 @@ public interface DefinePath {
     String FRIEND_RENAME_NICKNAME = "/friend/rename";
     String FRIEND_LIST = "/friend/list";
     String ROOM = "/room";
+    String ROOM_ADD = "/room/add";
 
     // Other
     String OTHER_PROFILE = "/other/profile";
