@@ -57,4 +57,7 @@ public interface ApiService {
 
     @POST(DefinePathApi.ROOM)
     Call<DataResponsive> getRoom(@Body Map<String, String> json);
+
+    @POST(DefinePathApi.ROOM_LIST)
+    Call<DataResponsive> getAllMembersRoom(@Body Map<String, String> json);
 }

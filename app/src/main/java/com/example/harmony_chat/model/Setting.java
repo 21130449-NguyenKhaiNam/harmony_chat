@@ -1,4 +1,4 @@
-package com.example.harmony_chat;
+package com.example.harmony_chat.model;
 
 public class Setting {
     private int icon;

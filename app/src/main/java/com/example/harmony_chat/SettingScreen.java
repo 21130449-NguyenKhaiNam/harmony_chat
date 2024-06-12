@@ -11,11 +11,9 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.example.harmony_chat.model.Profile;
+import com.example.harmony_chat.model.Setting;
 import com.example.harmony_chat.util.MapperJson;
 import com.example.harmony_chat.util.RxHelper;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.squareup.picasso.Picasso;
 
 import android.widget.AdapterView;
@@ -35,17 +33,12 @@ public class SettingScreen extends AppCompatActivity {
     ArrAdapterSetting adapter1, adapter2, adapter3;
     ListView lv1, lv2, lv3;
     private com.example.harmony_chat.model.Profile profile;
-    GoogleSignInOptions gso;
-    GoogleSignInClient gsc;
     private static final int REQUEST_FRIEND_LIST = 1;
     private static final int REQUEST_BLOCKED_USERS = 2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
-        gsc = GoogleSignIn.getClient(this,gso);
 
         hideSystemUI();
 

@@ -5,10 +5,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,13 +37,14 @@ public class ChatScreen extends AppCompatActivity {
     private EditText txtChatMessage;
     private ImageView img_avatar;
 
-    private ImageButton backBtn, btn_send;
+    private ImageButton backBtn, btn_send, btnMore;
 
     private User primaryUser, secondaryUser;
     private Room room;
 
     private ChatRecyclerAdapter adapter;
     private RecyclerView recyclerView;
+    private LinearLayout footer;
 
     @Override
     protected void onCreate(Bundle savedInstancestate) {
@@ -97,6 +104,7 @@ public class ChatScreen extends AppCompatActivity {
         }
 
         // Khởi tạo các view
+        footer = findViewById(R.id.chat_screen_footer);
         txtChatName = findViewById(R.id.txt_chat_name);
         txtChatMessage = findViewById(R.id.txt_chat_message);
         recyclerView = findViewById(R.id.chat_recycler_view);
@@ -104,6 +112,7 @@ public class ChatScreen extends AppCompatActivity {
 //        AndroidUtil.loadImage(secondaryUser.get);
         backBtn = findViewById(R.id.backBtn);
         btn_send = findViewById(R.id.btn_send);
+        btnMore = findViewById(R.id.btn_more);
 
         // Lấy thông tin bundle được gửi từ MainActivity.java
         Intent intent = getIntent();
@@ -131,6 +140,24 @@ public class ChatScreen extends AppCompatActivity {
             if (message.isEmpty()) return;
             sendMessageToUser(message);
         });
+
+        btnMore.setOnClickListener(e -> {
+            createPopupMoreFeatures();
+        });
+    }
+
+    private void createPopupMoreFeatures() {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.fragment_profile_settings, null);
+
+        int width = getResources().getDimensionPixelSize(R.dimen.popup_options), height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true;
+        PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        btnMore.post(() -> {
+            popupWindow.showAsDropDown(footer, Gravity.END, -Gravity.TOP * 2, Gravity.TOP);
+            popupWindow.setWindowLayoutType(WindowManager.LayoutParams.TYPE_APPLICATION_ATTACHED_DIALOG);
+        });
     }
 
     private void sendMessageToUser(String message) {
@@ -144,14 +171,14 @@ public class ChatScreen extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         txtChatMessage.setText("");
-                    }else {
-                        Toast.makeText(this, "\""+message+"\" isn't send!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "\"" + message + "\" isn't send!", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
     private void setupChatRecyclerView() {
-        Query query = FirebaseUtil.getChatroomMessageReference(room.getId()+"")
+        Query query = FirebaseUtil.getChatroomMessageReference(room.getId() + "")
                 .orderBy("timestamp", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<ChatMessageModel> options = new FirestoreRecyclerOptions.Builder<ChatMessageModel>()

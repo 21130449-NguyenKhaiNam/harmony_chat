@@ -17,6 +17,7 @@
         android:paddingHorizontal="10dp"
         android:paddingVertical="16dp">
 
+        <!--Hien thi avatar cua nguoi dung-->
         <ImageButton
             android:id="@+id/backBtn"
             android:layout_width="wrap_content"
@@ -24,7 +25,6 @@
             android:backgroundTint="@color/transparent"
             android:src="@drawable/arrow_back_ios" />
 
-        <!--Hien thi avatar cua nguoi dung-->
         <androidx.cardview.widget.CardView
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -61,7 +61,7 @@
              />
 
         <!--    Footer-->
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/chat_screen_footer"
             android:layout_width="match_parent"
             android:layout_height="80dp"
@@ -70,25 +70,29 @@
 
             <EditText
                 android:id="@+id/txt_chat_message"
-                android:layout_width="match_parent"
+                android:layout_width="276dp"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_margin="10dp"
-                android:layout_toLeftOf="@id/btn_send"
                 android:layout_weight="6"
                 android:hint="@string/message_hint"
+                android:layout_marginRight="10dp"
                 android:textSize="@dimen/text_1" />
+
+            <ImageButton
+                android:id="@+id/btn_more"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginRight="10dp"
+                android:backgroundTint="@color/transparent"
+                android:src="@drawable/emoticon" />
 
             <ImageButton
                 android:id="@+id/btn_send"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerInParent="true"
                 android:backgroundTint="@color/transparent"
                 android:drawableRight="@drawable/send"
                 android:src="@drawable/send" />
-        </RelativeLayout>
+        </LinearLayout>
 
     </RelativeLayout>
 

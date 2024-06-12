@@ -11,14 +11,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.harmony_chat.JavaMail.JavaMailAPI;
-import com.example.harmony_chat.model.User;
 import com.example.harmony_chat.service.CallService;
 import com.example.harmony_chat.util.InputHelper;
 import com.example.harmony_chat.util.RxHelper;
 import com.squareup.picasso.Picasso;
-
-import java.util.Random;
 public class ForgetPasswordActivity extends AppCompatActivity {
     EditText editEmail;
     ImageView avatar;

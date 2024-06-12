@@ -308,4 +308,21 @@ public class CallService {
         });
         return rooms;
     }
+
+    public List<User> getAllMembersRoom(String roomId) {
+        String[] keys = MapFactory.createArrayString(DefinePropertyJson.ROOM_ID);
+        String[] values = MapFactory.createArrayString(roomId);
+        Map<String, String> json = MapFactory.createMapJson(keys, values);
+        List<User> members = new ArrayList<>();
+        Response<DataResponsive> res = null;
+        try {
+            res = ApiService.service.getAllMembersRoom(json).execute();
+        } catch (IOException e) {
+            Log.e("Lỗi gọi api getAllMembersRoom", e.getMessage());
+        }
+        generalCallApi(res, (code, content) -> {
+            members.addAll(MapperJson.getInstance().convertListObjFromJson(content, User.class));
+        });
+        return members;
+    }
 }
