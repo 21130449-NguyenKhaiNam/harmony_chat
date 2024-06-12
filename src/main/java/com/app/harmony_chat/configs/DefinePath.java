@@ -20,6 +20,7 @@ public interface DefinePath {
     String FRIEND_LIST = "/friend/list";
     String ROOM = "/room";
     String ROOM_ADD = "/room/add";
+    String ROOM_LIST = "/room/list";
 
     // Other
     String OTHER_PROFILE = "/other/profile";

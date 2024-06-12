@@ -32,4 +32,10 @@ public class Room {
         List<String> params = mapper.getParam(json, DefinePropertyJson.ROOM_ID, DefinePropertyJson.USER_ID);
         return mapper.mapToJson(service.insertToRoom(params.get(0), params.get(1)));
     }
+
+    @PostMapping((DefinePath.ROOM_LIST))
+    public String viewMember(@RequestBody Map<String, String> json) {
+        List<String> params = mapper.getParam(json, DefinePropertyJson.ROOM_ID);
+        return mapper.mapToJson(service.getMembers(params.get(0)));
+    }
 }

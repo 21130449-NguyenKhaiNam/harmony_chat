@@ -3,6 +3,7 @@ package com.app.harmony_chat.repositories.relationship;
 import com.app.harmony_chat.models.Hierarchy;
 import com.app.harmony_chat.models.Member;
 import com.app.harmony_chat.models.Room;
+import com.app.harmony_chat.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -57,4 +58,9 @@ public interface RoomRepository extends JpaRepository<Hierarchy, Long> {
     default void saveMember(Member member) {
         saveMember(member.getRoom().getId(), member.getUser().getId());
     }
+
+    @Modifying
+    @Transactional
+    @Query("SELECT u FROM User u WHERE u.id IN (SELECT m.user.id FROM Member m WHERE m.room.id = :roomId)")
+    List<User> findMembersByRoomId(@Param("roomId") String roomId);
 }

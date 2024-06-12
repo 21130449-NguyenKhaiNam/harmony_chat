@@ -40,4 +40,9 @@ public class InfoAccountService {
         return null;
     }
 
+    public Infomation getViewBlock(String userId) {
+        // Chưa thực hiện
+        return null;
+    }
+
 }

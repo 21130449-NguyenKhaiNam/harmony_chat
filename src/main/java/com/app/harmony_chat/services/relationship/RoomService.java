@@ -54,4 +54,17 @@ public class RoomService {
                     .setContent(roomId);
         }
     }
+
+
+    public Infomation getMembers(String roomId) {
+        List<User> members = repository.findMembersByRoomId(roomId);
+        if(checkInfomation.isEmpty(members)) {
+            return (new Infomation()).setCode(DefineInfomation.SUCCESS_BUT_NOT_FOUND)
+                    .setContent(DefineInfomation.EMPTY);
+        } else {
+            members.forEach(member -> member.setPassword(null));
+            return (new Infomation()).setCode(DefineInfomation.SUCCESS)
+                    .setContent(members);
+        }
+    }
 }
