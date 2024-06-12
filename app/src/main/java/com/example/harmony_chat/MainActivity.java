@@ -37,6 +37,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+
 public class MainActivity extends AppCompatActivity implements SelectListener {
 
     private CardView avatarCardView;
@@ -118,8 +120,6 @@ public class MainActivity extends AppCompatActivity implements SelectListener {
             profileUser = CallService.getInstance().viewMyProfile(userId);
             for (int i = 0; i < rooms.size(); i++) {
                 Hierarchy hierarchy = rooms.get(i);
-//                whoAmI(hierarchy.getLeader(), hierarchy.getDeputy());
-
                 chatItemList.add(
                         new ChatItem(
                                 (hierarchy.getLeader().getId().trim().equals(userId) ? hierarchy.getDeputy().getEmail() : hierarchy.getLeader().getEmail()),
@@ -205,43 +205,33 @@ public class MainActivity extends AppCompatActivity implements SelectListener {
     // Khi người dùng nhấn vào từng dòng của RecycleView thì thực hiện chuyển màn hình tới ChatScreen tương ứng của cuộc trò chuyện
     @Override
     public void onItemClicked(ChatItem chatItem) {
-        Intent intent = new Intent(this, ChatScreen.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("room", chatItem.getRoom());
-
-        /**
-         * Trong trường hợp này vì của Nam chỉ cung cấp mỗi API /api/v1/relationship/room nên sẽ chỉ trả về được mỗi List<Hierarchy>
-         * Đối với cấu trúc của Hierarchy thì chỉ tồn tại một room_id trong table nên muốn xác định người truy cập
-         * vào trong cuộc trò chuyện là A hoặc B thì phải thực hiện kiểm tra user_id của 1 trong 2.
-         * Ví dụ:
-         * - Trong Hierarchy có 2 thuộc tính là leader: A và deputy: B
-         * - Khi A đăng nhập thì A sẽ truy cập vào cuộc trò chuyện này với vai trò là người GỬI, B là người NHẬN
-         * - Khi B đăng nhập thì B sẽ là người GỬI, A là người NHẬN
-         * - Vấn đề đặt ra là làm sao để biết khi nào thì A (B) đóng vai trò nào trong phiên đăng nhập? => so sánh id với user_id của phiên đăng nhập
-         * - Sau khi đã xác định được vai trò thì mặc định ở ChatScreen sẽ tự hiểu là primaryUser sẽ là người GỬI, secondaryUser sẽ là người NHẬN
-         */
         User primaryUser = chatItem.getLeader(), secondaryUser = chatItem.getDeputy();
-        if (primaryUser.getId().equals(userId)) {
-            bundle.putSerializable("primary_user", primaryUser);
-            bundle.putSerializable("secondary_user", secondaryUser);
-        } else {
-            bundle.putSerializable("primary_user", secondaryUser);
-            bundle.putSerializable("secondary_user", primaryUser);
-        }
+        String secondaryUserId = (primaryUser.getId().equals(userId)) ? secondaryUser.getId() : primaryUser.getId();
 
-        intent.putExtras(bundle);
-        startActivity(intent);
+        sendSecondaryUserProfile(chatItem, primaryUser, secondaryUser, secondaryUserId);
     }
 
-//    private void whoAmI(User user1, User user2) {
-//        if (user1 != null && user2 != null && user1.getId() != null && user2.getId() != null) {
-//            if (user1.getId().equals(userId)) {
-//                primaryUser = user1;
-//                secondaryUser = user2;
-//            } else {
-//                primaryUser = user2;
-//                secondaryUser = user1;
-//            }
-//        }
-//    }
+    private void sendSecondaryUserProfile(ChatItem chatItem, User primaryUser, User secondaryUser, String secondaryUserId) {
+        RxHelper.performImmediately(() -> {
+            com.example.harmony_chat.model.Profile secondaryProfile = CallService.getInstance().viewMyProfile(secondaryUserId);
+
+            runOnUiThread(() -> {
+                Intent intent = new Intent(this, ChatScreen.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("room", chatItem.getRoom());
+
+                if (primaryUser.getId().equals(userId)) {
+                    bundle.putSerializable("primary_user", primaryUser);
+                    bundle.putSerializable("secondary_user", secondaryUser);
+                } else {
+                    bundle.putSerializable("primary_user", secondaryUser);
+                    bundle.putSerializable("secondary_user", primaryUser);
+                }
+
+                bundle.putSerializable("secondary_profile", secondaryProfile);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            });
+        });
+    }
 }

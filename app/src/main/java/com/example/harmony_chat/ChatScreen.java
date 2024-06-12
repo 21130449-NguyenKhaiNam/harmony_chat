@@ -39,6 +39,7 @@ public class ChatScreen extends AppCompatActivity {
     private ImageButton backBtn, btn_send;
 
     private User primaryUser, secondaryUser;
+    private Profile secondaryProfile;
     private Room room;
 
     private ChatRecyclerAdapter adapter;
@@ -90,7 +91,6 @@ public class ChatScreen extends AppCompatActivity {
         txtChatMessage = findViewById(R.id.txt_chat_message);
         recyclerView = findViewById(R.id.chat_recycler_view);
         img_avatar = findViewById(R.id.img_avatar);
-//        AndroidUtil.loadImage(secondaryUser.get);
         backBtn = findViewById(R.id.backBtn);
         btn_send = findViewById(R.id.btn_send);
 
@@ -101,8 +101,10 @@ public class ChatScreen extends AppCompatActivity {
         room = (Room) bundle.getSerializable("room");
         primaryUser = (User) bundle.getSerializable("primary_user");
         secondaryUser = (User) bundle.getSerializable("secondary_user");
+        secondaryProfile = (Profile) bundle.getSerializable("secondary_profile");
 
         txtChatName.setText(secondaryUser.getEmail());
+        AndroidUtil.loadImage(secondaryProfile.getAvatar(), img_avatar);
 
         setupChatRecyclerView();
     }
