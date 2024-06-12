@@ -1,20 +1,16 @@
 package com.example.harmony_chat;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
-import com.example.harmony_chat.model.BlackList;
 import com.example.harmony_chat.model.Profile;
-import com.example.harmony_chat.service.CallService;
 import com.example.harmony_chat.util.MapperJson;
 import com.example.harmony_chat.util.RxHelper;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -26,7 +22,6 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class SettingScreen extends AppCompatActivity {
 
@@ -55,7 +50,7 @@ public class SettingScreen extends AppCompatActivity {
         hideSystemUI();
 
         avatar = findViewById(R.id.account_status);
-        username = findViewById(R.id.username);
+        username = findViewById(R.id.user_name);
 
         lv1 = findViewById(R.id.lv_group1);
         lv2 = findViewById(R.id.lv_group2);

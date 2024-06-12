@@ -21,5 +21,6 @@ public class LoadImgService {
                 .placeholder(R.drawable.avatar)
                 .error(R.drawable.user)
                 .into(target);
+        target.setTag(url);
     }
 }

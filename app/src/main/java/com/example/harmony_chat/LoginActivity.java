@@ -10,7 +10,6 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -39,7 +38,6 @@ public class LoginActivity extends AppCompatActivity {
     Button loginBtn, gotoSignupBtn;
     private ImageButton btnFacebook, btnGithub, btn_google;
     TextView forgetPasswordBtn;
-    String status;
     boolean isPasswordVisible;
 
     //    dang nhap bang google

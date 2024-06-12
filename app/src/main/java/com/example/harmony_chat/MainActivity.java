@@ -1,10 +1,5 @@
 package com.example.harmony_chat;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,38 +10,38 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.harmony_chat.Adapter.ChatAdapter;
 import com.example.harmony_chat.Adapter.SelectListener;
 import com.example.harmony_chat.Item.ChatItem;
-import com.example.harmony_chat.util.AndroidUtil;
 import com.example.harmony_chat.model.Hierarchy;
 import com.example.harmony_chat.model.User;
 import com.example.harmony_chat.service.CallService;
+import com.example.harmony_chat.service.LoadImgService;
+import com.example.harmony_chat.util.AndroidUtil;
 import com.example.harmony_chat.util.CheckInfomation;
-import com.example.harmony_chat.util.MapperJson;
 import com.example.harmony_chat.util.RxHelper;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.squareup.picasso.Picasso;
+import com.makeramen.roundedimageview.RoundedImageView;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SelectListener {
 
-    private CardView avatarCardView;
-    private ImageView avatarImageView, find;
-    private TextView setting, profile;
-    GoogleSignInOptions gso;
-    GoogleSignInClient gsc;
+    private FrameLayout avatarCardView;
+    private RoundedImageView avatarImageView;
+    private ImageView find;
+    private TextView setting, profile, username;
 
     private Button allButton, unreadButton, readButton, pinnedButton;
     private Button requestButton;
@@ -66,7 +61,6 @@ public class MainActivity extends AppCompatActivity implements SelectListener {
 
         SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
         userId = sharedPreferences.getString("id", null);
-        Log.e("user id", userId);
         // Không có tài khoản
         if (CheckInfomation.isEmpty(userId)) {
             Intent intent = new Intent(this, LoginActivity.class);
@@ -74,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements SelectListener {
         }
 
         hideSystemUI();
+
+        username = findViewById(R.id.user_name);
 
         boolean isSearchVisible = false;
 
@@ -85,15 +81,6 @@ public class MainActivity extends AppCompatActivity implements SelectListener {
 
         find = findViewById(R.id.search_icon);
         find.setVisibility(isSearchVisible ? View.GONE : View.VISIBLE);
-
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
-        gsc = GoogleSignIn.getClient(this, gso);
-
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if (account != null) {
-            String name = account.getDisplayName();
-            String email = account.getEmail();
-        }
         find.setOnClickListener(v -> gotoSearchUser());
 
         // Liên kết các nút với mã Java
@@ -132,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements SelectListener {
                                 "",
                                 hierarchy.getRoom().getImage(),
                                 hierarchy.getRoom().getPublished(),
-                                "",
+                                hierarchy.getDeputy().getId(),
                                 hierarchy.getRoom(),
                                 hierarchy.getLeader(),
                                 hierarchy.getDeputy()
@@ -141,8 +128,6 @@ public class MainActivity extends AppCompatActivity implements SelectListener {
             runOnUiThread(() -> {
                 chatAdapter = new ChatAdapter(chatItemList, this);
                 chatRecyclerView.setAdapter(chatAdapter);
-
-                // Load avatar from API
                 loadProfileData();
             });
         });
@@ -196,7 +181,8 @@ public class MainActivity extends AppCompatActivity implements SelectListener {
     }
 
     private void loadProfileData() {
-        AndroidUtil.loadImage(profileUser.getAvatar(), avatarImageView);
+        username.setText(profileUser.getUsername());
+        LoadImgService.getInstance().injectImage(profileUser.getAvatar(), avatarImageView);
     }
 
     private void hideSystemUI() {
