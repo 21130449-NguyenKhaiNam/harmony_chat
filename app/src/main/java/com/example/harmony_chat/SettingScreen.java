@@ -1,23 +1,30 @@
 package com.example.harmony_chat;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.example.harmony_chat.model.Profile;
+import com.example.harmony_chat.model.Setting;
+import com.example.harmony_chat.util.MapperJson;
+import com.example.harmony_chat.util.RxHelper;
+import com.squareup.picasso.Picasso;
+
 import android.widget.AdapterView;
+import android.widget.TextView;
+
 import java.util.ArrayList;
 
 public class SettingScreen extends AppCompatActivity {
 
-    ImageButton back, logoutButton;
+    ImageButton back, logoutButton, avatar;
+    private TextView username;
     int icon[] = {R.drawable.account_privacy, R.drawable.friends, R.drawable.block, R.drawable.chat, R.drawable.unfriend, R.drawable.font, R.drawable.add_user, R.drawable.chat, R.drawable.unfriend, R.drawable.font};
     String name[] = {"Quyền riêng tư tài khoản", "Danh sách bạn bè", "Bị chặn", "Tin nhắn", "Hạn chế", "Ẩn từ ngữ", "Thêm bạn bè", "Trợ giúp", "Trạng thái tài khoản", "Giới thiệu"};
     String thong_so[] = {"Public", "0", "0", "0", "20", "0", "0", "0", "Online", "0"};
@@ -25,10 +32,7 @@ public class SettingScreen extends AppCompatActivity {
     ArrayList<Setting> group1, group2, group3;
     ArrAdapterSetting adapter1, adapter2, adapter3;
     ListView lv1, lv2, lv3;
-
-    ImageButton logoutBtn;
-    GoogleSignInOptions gso;
-    GoogleSignInClient gsc;
+    private com.example.harmony_chat.model.Profile profile;
     private static final int REQUEST_FRIEND_LIST = 1;
     private static final int REQUEST_BLOCKED_USERS = 2;
     @Override
@@ -36,10 +40,10 @@ public class SettingScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
-        gsc = GoogleSignIn.getClient(this,gso);
-
         hideSystemUI();
+
+        avatar = findViewById(R.id.account_status);
+        username = findViewById(R.id.user_name);
 
         lv1 = findViewById(R.id.lv_group1);
         lv2 = findViewById(R.id.lv_group2);
@@ -47,6 +51,29 @@ public class SettingScreen extends AppCompatActivity {
         group1 = new ArrayList<>();
         group2 = new ArrayList<>();
         group3 = new ArrayList<>();
+
+        SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+        profile = MapperJson.getInstance().convertObjFromJson(sharedPreferences.getString("profile", ""), Profile.class);
+
+        RxHelper.performImmediately(() -> {
+            Intent intent = getIntent();
+            String totalFriend =intent.getIntExtra("totalFriends", 0) + "";
+            thong_so[1] = totalFriend;
+//            List<BlackList> blackList = CallService.getInstance().getBlackList(sharedPreferences.getString("id", ""));
+//            thong_so[2] = blackList.size() + "";
+            thong_so[3] = totalFriend;
+            runOnUiThread(() -> {
+                work();
+            });
+        });
+    }
+
+    public void work() {
+        Picasso.get()
+                .load(profile.getAvatar())
+                .into(avatar);
+
+        username.setText(profile.getUsername());
 
         for (int i = 0; i < name.length; i++) {
             if (i < 4) {
@@ -139,20 +166,40 @@ public class SettingScreen extends AppCompatActivity {
     }
 
     private void hideSystemUI() {
-        // Ẩn thanh trạng thái và thanh điều hướng
-        View decorView = getWindow().getDecorView();
-        decorView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        );
+        final View decorView = getWindow().getDecorView();
+
+        Runnable setSystemUiVisibility = new Runnable() {
+            @Override
+            public void run() {
+                decorView.setSystemUiVisibility(
+                        View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                );
+            }
+        };
+
+        setSystemUiVisibility.run();
+
+        decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+            @Override
+            public void onSystemUiVisibilityChange(int visibility) {
+                if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                    setSystemUiVisibility.run();
+                }
+            }
+        });
     }
 
     private void handleLogout() {
         Intent intent = new Intent(SettingScreen.this, LoginActivity.class);
+        // Xóa toàn bộ session
+        SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
         startActivity(intent);
         finish();
     }

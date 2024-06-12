@@ -37,15 +37,13 @@ public class LoginActivity extends AppCompatActivity {
     EditText editEmail, editPassword;
     ImageView avatar;
     Button loginBtn, gotoSignupBtn;
-    private ImageButton btn_facebook, btn_github, btn_google;
+    private ImageButton btnFacebook, btnGithub, btn_google;
     TextView forgetPasswordBtn;
-    String status;
     boolean isPasswordVisible;
 
     //    dang nhap bang google
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
-//>>>>>>> view-merge
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -63,8 +61,8 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn = findViewById(R.id.loginBtn);
         gotoSignupBtn = findViewById(R.id.gotoSignupBtn);
 
-        btn_facebook = findViewById(R.id.facebookBtn);
-        btn_github = findViewById(R.id.githubBtn);
+        btnFacebook = findViewById(R.id.facebookBtn);
+        btnGithub = findViewById(R.id.githubBtn);
         btn_google = findViewById(R.id.googleBtn);
 
         isPasswordVisible = false;
@@ -112,13 +110,11 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        btn_facebook.setOnClickListener(e -> {
+        btnFacebook.setOnClickListener(e -> {
             futureFeatures();
         });
-        btn_google.setOnClickListener(e -> {
-            futureFeatures();
-        });
-        btn_github.setOnClickListener(e -> {
+
+        btnGithub.setOnClickListener(e -> {
             futureFeatures();
         });
 
@@ -155,15 +151,32 @@ public class LoginActivity extends AppCompatActivity {
             }
         } else if (requestCode == 1000) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                task.getResult(ApiException.class);
-                Toast.makeText(getApplicationContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-//            finish();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-            } catch (ApiException e) {
-                Toast.makeText(getApplicationContext(), "Có gì đó hoạt động sai", Toast.LENGTH_SHORT).show();
-            }
+            RxHelper.performImmediately(() -> {
+                String email = task.getResult().getEmail();
+                User user = CallService.getInstance().loginAccount(email, "password");
+                runOnUiThread(() -> {
+                    if (user.getId() == null) {
+                        // Tài khoản không tồn tại
+                        Toast.makeText(LoginActivity.this, "Tài khoản chưa tồn tại", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(intent);
+                    } else {
+                        // Thiết lập session nếu đăng nhập thành công
+                        SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("id", user.getId());
+                        editor.commit();
+                        try {
+                            task.getResult(ApiException.class);
+                            Toast.makeText(getApplicationContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                        } catch (ApiException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
+            });
         } else if (requestCode == 2) {
             if (resultCode == RESULT_OK) {
                 String status = (String) data.getStringExtra("status");
@@ -176,16 +189,32 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void hideSystemUI() {
-        // Ẩn thanh trạng thái và thanh điều hướng
-        View decorView = getWindow().getDecorView();
-        decorView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        );
+        final View decorView = getWindow().getDecorView();
+
+        Runnable setSystemUiVisibility = new Runnable() {
+            @Override
+            public void run() {
+                decorView.setSystemUiVisibility(
+                        View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                );
+            }
+        };
+
+        setSystemUiVisibility.run();
+
+        decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+            @Override
+            public void onSystemUiVisibilityChange(int visibility) {
+                if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                    setSystemUiVisibility.run();
+                }
+            }
+        });
     }
 
     private void futureFeatures() {
@@ -208,26 +237,14 @@ public class LoginActivity extends AppCompatActivity {
         startActivityForResult(intent, 2);
     }
 
-    public void gotoMain() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
-
-    public int checkLogin() {
-        int re = 0;
-        String password = editPassword.getText().toString();
-//        String email = editUsername
-        return re;
-    }
-
     public void login() {
         boolean isOK = true;
         if (checkNull(editEmail)) isOK = false;
         if (checkNull(editPassword)) isOK = false;
-
         if (isOK) {
             String email = editEmail.getText().toString();
             String password = editPassword.getText().toString();
+            Log.e("LOGIN INPUT", "'" + email + "\t" + password + "'");
             RxHelper.performImmediately(() -> {
                 User user = CallService.getInstance().loginAccount(email, password);  // Phương thức chính thức khi dùng để get dữ liệu từ API của Khải Nam
                 runOnUiThread(() -> {
@@ -273,6 +290,5 @@ public class LoginActivity extends AppCompatActivity {
             return 1;
         }
         return 0;
-
     }
 }

@@ -17,4 +17,6 @@ public interface DefinePathApi {
     String SEARCH_FRIEND_MESS = "/api/v1/search/friend/mess";
     String BLACK_LIST = "/api/v1/relationship/blacklist";
     String ROOM = "/api/v1/relationship/room";
+    String ROOM_ADD = "/room/add";
+    String ROOM_LIST = "/room/list";
 }

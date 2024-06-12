@@ -28,20 +28,20 @@
             <!-- Ảnh đại diện -->
             <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/avatar"
-                android:layout_width="@dimen/width_avatar_normal"
-                android:layout_height="@dimen/height_avatar_normal"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:layout_gravity="bottom|center_horizontal"
                 android:layout_marginBottom="16dp"
-                app:riv_corner_radius="100dp"
-                android:src="@drawable/avatar"
+                android:padding="4dp"
                 android:scaleType="centerCrop"
-                android:padding="4dp" />
+                android:src="@drawable/avatar"
+                app:riv_corner_radius="100dp" />
 
             <!-- Button quay lại -->
             <ImageButton
                 android:id="@+id/btn_back"
-                android:layout_width="@dimen/profile_width_back"
-                android:layout_height="@dimen/profile_height_back"
+                android:layout_width="65dp"
+                android:layout_height="45dp"
                 android:layout_gravity="top|start"
                 android:layout_margin="16dp"
                 android:background="@android:color/transparent"
@@ -76,6 +76,36 @@
 
         </LinearLayout>
 
+        <!-- Nút Kết bạn và Nhắn tin -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:gravity="center">
+
+<!--            <Button-->
+<!--                android:id="@+id/btn_add_friend"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="@string/addFriend"-->
+<!--                android:background="@drawable/button"-->
+<!--                android:textColor="@android:color/white"-->
+<!--                android:layout_marginEnd="8dp"/>-->
+
+<!--            <Button-->
+<!--                android:id="@+id/btn_message"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="@string/send_message"-->
+<!--                android:textColor="@color/primary_sky"-->
+<!--                android:background="@drawable/background_border"-->
+<!--                android:layout_marginStart="8dp"/>-->
+
+        </LinearLayout>
+
         <!-- Danh sách bạn bè -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -104,339 +134,3 @@
         </LinearLayout>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
-
-<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    android:layout_marginLeft="@dimen/profile_margin_left"-->
-<!--    android:layout_marginRight="@dimen/profile_margin_right"-->
-<!--    android:orientation="vertical"-->
-<!--    android:weightSum="10"-->
-<!--    tools:context=".Profile">-->
-
-<!--    <LinearLayout-->
-<!--        android:id="@+id/con_header"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_marginTop="@dimen/profile_header_margin_top"-->
-<!--        android:layout_weight="2"-->
-<!--        android:orientation="vertical"-->
-<!--        android:weightSum="10">-->
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:layout_marginBottom="@dimen/profile_height_header_before_margin_bottom"-->
-<!--            android:layout_weight="7"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:weightSum="10">-->
-
-<!--            <ImageButton-->
-<!--                android:id="@+id/btn_back"-->
-<!--                android:layout_width="@dimen/profile_width_back"-->
-<!--                android:layout_height="@dimen/profile_height_back"-->
-<!--                android:layout_gravity="center"-->
-<!--                android:foregroundGravity="center"-->
-<!--                android:layout_weight="1"-->
-<!--                android:background="@color/transparent"-->
-<!--                android:contentDescription="@string/back"-->
-<!--                android:scaleType="fitCenter"-->
-<!--                android:src="@drawable/arrow_back_ios" />-->
-
-<!--            <com.makeramen.roundedimageview.RoundedImageView-->
-<!--                android:id="@+id/avatar"-->
-<!--                android:layout_width="@dimen/width_avatar_normal"-->
-<!--                android:layout_height="@dimen/height_avatar_normal"-->
-<!--                android:layout_weight="3"-->
-<!--                app:riv_corner_radius="100dp"-->
-<!--                android:scaleType="fitCenter"-->
-<!--                android:src="@drawable/avatar" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/text_username"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_weight="4"-->
-<!--                android:gravity="center_vertical"-->
-<!--                android:text="@string/example_username" />-->
-
-<!--            <ImageButton-->
-<!--                android:id="@+id/btn_edit_username"-->
-<!--                android:layout_marginLeft="@dimen/profile_margin_left"-->
-<!--                android:layout_width="@dimen/profile_width_edit"-->
-<!--                android:layout_height="@dimen/profile_height_edit"-->
-<!--                android:layout_gravity="center"-->
-<!--                android:background="@color/transparent"-->
-<!--                android:contentDescription="@string/edit"-->
-<!--                android:scaleType="fitCenter"-->
-<!--                android:src="@drawable/edit" />-->
-<!--        </LinearLayout>-->
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:layout_weight="3"-->
-<!--            android:orientation="horizontal">-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/text_description"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_weight="1"-->
-<!--                android:text="@string/example_description" />-->
-
-<!--            <ImageButton-->
-<!--                android:id="@+id/btn_edit_description"-->
-<!--                android:layout_width="@dimen/profile_width_edit"-->
-<!--                android:layout_height="@dimen/profile_height_edit"-->
-<!--                android:layout_gravity="center"-->
-<!--                android:background="@color/transparent"-->
-<!--                android:contentDescription="@string/edit"-->
-<!--                android:scaleType="fitCenter"-->
-<!--                android:src="@drawable/edit" />-->
-<!--        </LinearLayout>-->
-
-<!--    </LinearLayout>-->
-
-<!--    <LinearLayout-->
-<!--        android:id="@+id/con_friends"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_marginTop="@dimen/profile_margin_top"-->
-<!--        android:layout_weight="3.5"-->
-<!--        android:orientation="vertical"-->
-<!--        android:weightSum="10"-->
-<!--        tools:ignore="InvalidId">-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/text_friends"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:layout_weight="1"-->
-<!--            android:text="@string/friends" />-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/text_count_friends"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:layout_weight="1"-->
-<!--            android:text="@string/count_friends" />-->
-
-<!--        <GridView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:layout_weight="7"-->
-<!--            android:numColumns="4">-->
-
-<!--        </GridView>-->
-
-<!--        <Button-->
-<!--            android:id="@+id/btn_see_more"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:layout_weight="1"-->
-<!--            android:gravity="center"-->
-<!--            android:text="@string/more"-->
-<!--            android:textColor="@color/primary_sky" />-->
-
-<!--    </LinearLayout>-->
-
-<!--    <LinearLayout-->
-<!--        android:id="@+id/con_info"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_marginTop="@dimen/profile_margin_top"-->
-<!--        android:layout_weight="3.5"-->
-<!--        android:orientation="vertical"-->
-<!--        android:weightSum="10"-->
-<!--        tools:ignore="InvalidId">-->
-
-<!--        <LinearLayout-->
-<!--            android:id="@+id/con_info_email"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:layout_weight="2"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:weightSum="10">-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/text_email"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_weight="2"-->
-<!--                android:gravity="center"-->
-<!--                android:text="@string/email" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/user_email"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_weight="6"-->
-<!--                android:gravity="center"-->
-<!--                android:text="@string/example_email" />-->
-
-<!--            <ImageButton-->
-<!--                android:id="@+id/btn_edit_email"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_weight="2"-->
-<!--                android:background="@color/transparent"-->
-<!--                android:contentDescription="@string/edit"-->
-<!--                android:scaleType="fitCenter"-->
-<!--                android:src="@drawable/edit" />-->
-<!--        </LinearLayout>-->
-
-<!--        <LinearLayout-->
-<!--            android:id="@+id/con_info_phone"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:layout_weight="2"-->
-<!--            android:orientation="horizontal">-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/text_phone"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_weight="2"-->
-<!--                android:gravity="center"-->
-<!--                android:text="@string/phone" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/user_phone"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_weight="6"-->
-<!--                android:gravity="center"-->
-<!--                android:text="@string/example_phone" />-->
-
-<!--            <ImageButton-->
-<!--                android:id="@+id/btn_edit_phone"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_weight="2"-->
-<!--                android:background="@color/transparent"-->
-<!--                android:contentDescription="@string/edit"-->
-<!--                android:scaleType="fitCenter"-->
-<!--                android:src="@drawable/edit" />-->
-<!--        </LinearLayout>-->
-
-<!--        <LinearLayout-->
-<!--            android:id="@+id/con_info_birth_date"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:layout_weight="2"-->
-<!--            android:orientation="horizontal">-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/text_dob"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_weight="2"-->
-<!--                android:gravity="center"-->
-<!--                android:text="@string/birth_date" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/user_dob"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_weight="6"-->
-<!--                android:gravity="center"-->
-<!--                android:text="@string/example_birth_date" />-->
-
-<!--            <ImageButton-->
-<!--                android:id="@+id/btn_edit_dob"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_weight="2"-->
-<!--                android:background="@color/transparent"-->
-<!--                android:contentDescription="@string/edit"-->
-<!--                android:scaleType="fitCenter"-->
-<!--                android:src="@drawable/edit" />-->
-
-<!--        </LinearLayout>-->
-
-<!--        <LinearLayout-->
-<!--            android:id="@+id/con_info_sex"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:layout_weight="2"-->
-<!--            android:orientation="horizontal">-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/text_sex"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_weight="2"-->
-<!--                android:gravity="center"-->
-<!--                android:text="@string/sex" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/user_sex"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_weight="6"-->
-<!--                android:gravity="center"-->
-<!--                android:text="@string/example_sex" />-->
-
-<!--            <ImageButton-->
-<!--                android:id="@+id/btn_edit_sex"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_weight="2"-->
-<!--                android:background="@color/transparent"-->
-<!--                android:contentDescription="@string/edit"-->
-<!--                android:scaleType="fitCenter"-->
-<!--                android:src="@drawable/edit" />-->
-
-<!--        </LinearLayout>-->
-
-<!--        <LinearLayout-->
-<!--            android:id="@+id/con_info_address"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:layout_weight="2"-->
-<!--            android:orientation="horizontal">-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/text_address"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_weight="2"-->
-<!--                android:gravity="center"-->
-<!--                android:text="@string/address" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/user_address"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_weight="6"-->
-<!--                android:gravity="center"-->
-<!--                android:text="@string/example_address" />-->
-
-<!--            <ImageButton-->
-<!--                android:id="@+id/btn_edit_address"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_weight="2"-->
-<!--                android:background="@color/transparent"-->
-<!--                android:contentDescription="@string/edit"-->
-<!--                android:scaleType="fitCenter"-->
-<!--                android:src="@drawable/edit" />-->
-
-<!--        </LinearLayout>-->
-
-<!--    </LinearLayout>-->
-
-<!--    <Button-->
-<!--        android:id="@+id/btn_save"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="@dimen/profile_margin_top"-->
-<!--        android:background="@drawable/button"-->
-<!--        android:text="@string/save" />-->
-
-
-<!--</LinearLayout>-->
