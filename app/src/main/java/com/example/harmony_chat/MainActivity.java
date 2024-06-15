@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements SelectListener {
     private List<ChatItem> chatItemList;
     private com.example.harmony_chat.model.Profile profileUser;
     private String userId;
-//    private User primaryUser, secondaryUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

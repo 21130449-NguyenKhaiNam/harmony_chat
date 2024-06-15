@@ -18,6 +18,7 @@ public class LoadImgService {
     public void injectImage(String url, ImageView target) {
         Picasso.get()
                 .load(url)
+                .resize(target.getWidth(), target.getHeight())
                 .placeholder(R.drawable.avatar)
                 .error(R.drawable.user)
                 .into(target);
