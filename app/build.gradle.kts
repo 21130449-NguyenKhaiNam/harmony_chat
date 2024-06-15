@@ -76,4 +76,5 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore:25.0.0")
     // Firebase UI Firestore
     implementation ("com.firebaseui:firebase-ui-firestore:8.0.1")
+    implementation("com.android.support:support-emoji:28.0.0")
 }

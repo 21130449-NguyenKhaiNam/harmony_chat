@@ -271,15 +271,6 @@ public class CallService {
         String[] values = MapFactory.createArrayString(userId);
         Map<String, String> json = MapFactory.createMapJson(keys, values);
         ArrayList<BlackList> blackList = new ArrayList<>();
-//        RxHelper.performImmediately(() -> {
-//            ApiService.service.getBlackList(json).enqueue(callback);
-//            Information info = callback.getInfo();
-//            int code = info.getCode();
-//            String content = info.getJson();
-//            if (code == DefineStatusResponsive.SUCCESS) {
-//                blackList.addAll(MapperJson.getInstance().convertListObjFromJson(content, BlackList.class));
-//            }
-//        });
         Response<DataResponsive> res = null;
         try {
             res = ApiService.service.getBlackList(json).execute();
