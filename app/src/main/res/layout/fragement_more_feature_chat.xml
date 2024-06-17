@@ -106,4 +106,38 @@
             android:layout_weight="8"
             android:layout_gravity="center_vertical"/>
     </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/primary_grey" />
+
+    <LinearLayout
+        android:id="@+id/voice"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:gravity="start"
+        android:orientation="horizontal"
+        android:background="?android:attr/selectableItemBackground"
+        android:weightSum="10">
+
+        <!-- ImageView cho biểu tượng bên trái -->
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/emoticon"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dp"/>
+
+        <!-- TextView cho văn bản -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:text="@string/voice"
+            android:layout_weight="8"
+            android:layout_gravity="center_vertical"/>
+    </LinearLayout>
 </LinearLayout>

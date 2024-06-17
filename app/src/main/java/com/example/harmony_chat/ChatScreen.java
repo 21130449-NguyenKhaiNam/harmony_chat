@@ -1,19 +1,21 @@
 package com.example.harmony_chat;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
+import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.provider.Settings;
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -28,11 +30,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.WindowCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -53,11 +54,10 @@ import com.google.android.gms.location.LocationServices;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.Query;
 
-import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import okhttp3.MediaType;
@@ -70,6 +70,10 @@ import okhttp3.Response;
 public class ChatScreen extends AppCompatActivity {
 
     private TextView txtChatName;
+    private MediaRecorder mediaRecorder;
+    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
+    private SpeechRecognizer speechRecognizer;
+    private String voiceFilePath;
     private FusedLocationProviderClient fusedLocationClient;
     private EditText txtChatMessage;
     private ImageView img_avatar;
@@ -79,7 +83,7 @@ public class ChatScreen extends AppCompatActivity {
     private Room room;
     private ChatRecyclerAdapter adapter;
     private RecyclerView recyclerView;
-    private LinearLayout footer, shareLocation, emoji, sharePicture;
+    private LinearLayout footer, shareLocation, emoji, sharePicture, voice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,9 +91,99 @@ public class ChatScreen extends AppCompatActivity {
         setContentView(R.layout.activity_chat_screen);
 //       // Setup config
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        // Kiểm tra và yêu cầu quyền ghi âm nếu cần
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.RECORD_AUDIO)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.RECORD_AUDIO},
+                    REQUEST_RECORD_AUDIO_PERMISSION);
+        } else {
+            setupSpeechRecognizer();
+        }
         hideSystemUI();
         loadConfig();
         process();
+    }
+
+    private void setupSpeechRecognizer() {
+        if (SpeechRecognizer.isRecognitionAvailable(this)) {
+            speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
+            speechRecognizer.setRecognitionListener(new RecognitionListener() {
+                @Override
+                public void onReadyForSpeech(Bundle params) {
+                    // Đang chuẩn bị để bắt đầu nói
+                    Log.d("SpeechRecognizer", "Ready for speech");
+                }
+
+                @Override
+                public void onBeginningOfSpeech() {
+                    // Bắt đầu nhận diện giọng nói
+                    Log.d("SpeechRecognizer", "Beginning of speech");
+                }
+
+                @Override
+                public void onRmsChanged(float rmsdB) {
+                    // Độ mạnh của giọng nói thay đổi
+                }
+
+                @Override
+                public void onBufferReceived(byte[] buffer) {
+                    // Đã nhận được dữ liệu âm thanh
+                }
+
+                @Override
+                public void onEndOfSpeech() {
+                    // Kết thúc nhận diện giọng nói
+                    Log.d("SpeechRecognizer", "End of speech");
+                }
+
+                @Override
+                public void onError(int error) {
+                    // Xảy ra lỗi trong quá trình nhận diện
+                    Log.e("SpeechRecognizer", "Error: " + error);
+                }
+
+                @Override
+                public void onResults(Bundle results) {
+                    // Kết quả nhận diện giọng nói
+                    ArrayList<String> matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+                    if (matches != null && !matches.isEmpty()) {
+                        String text = matches.get(0); // Lấy kết quả nhận diện đầu tiên
+                        Toast.makeText(ChatScreen.this, "Recognized text: " + text, Toast.LENGTH_LONG).show();
+                        Log.d("SpeechRecognizer", "Recognized text: " + text);
+                        // Ở đây bạn có thể gửi `text` đi đâu đó, ví dụ lưu vào cơ sở dữ liệu hoặc gửi qua mạng.
+                        sendMessageToUser(text + "text");
+                    }
+                }
+
+                @Override
+                public void onPartialResults(Bundle partialResults) {
+                    // Kết quả nhận diện tạm thời
+                }
+
+                @Override
+                public void onEvent(int eventType, Bundle params) {
+                    // Sự kiện không xác định
+                }
+            });
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (speechRecognizer != null) {
+            speechRecognizer.destroy();
+        }
+    }
+
+    private void startSpeechToText() {
+        if (speechRecognizer != null) {
+            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-US"); // Chỉ định ngôn ngữ (ở đây là tiếng Anh)
+            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak something...");
+            speechRecognizer.startListening(intent);
+        }
     }
 
     private void hideSystemUI() {
@@ -179,12 +273,21 @@ public class ChatScreen extends AppCompatActivity {
             shareLocation();
         });
 
+        // Voice
+        voice = popupView.findViewById(R.id.voice);
+        voice.setOnClickListener(v -> {
+            popupWindow.dismiss();
+            // send voice
+            startRecording();
+        });
+
         // Share picture
         sharePicture = popupView.findViewById(R.id.share_picture);
         sharePicture.setOnClickListener(v -> {
             popupWindow.dismiss();
             openGallery();
         });
+
 
         // Send Emoji
         emoji = popupView.findViewById(R.id.emoji);
@@ -202,6 +305,85 @@ public class ChatScreen extends AppCompatActivity {
             }, 200); // Delay in milliseconds
         });
     }
+
+    private void startRecording() {
+        if (mediaRecorder != null) {
+            stopRecording();
+        } else if (checkPermission()) {
+            // Setup MediaRecorder
+            mediaRecorder = new MediaRecorder();
+            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+            voiceFilePath = getExternalCacheDir().getAbsolutePath() + "/voice_message.3gp";
+            mediaRecorder.setOutputFile(voiceFilePath);
+
+            try {
+                mediaRecorder.prepare();
+                mediaRecorder.start();
+                showStopRecordingDialog(); // Hiển thị popup
+                startSpeechToText();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            requestPermission();
+        }
+    }
+
+    private void showStopRecordingDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Đang ghi âm");
+        builder.setMessage("Nhấn 'Dừng lại' để dừng ghi âm.");
+        builder.setPositiveButton("Dừng lại", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                stopRecording();
+            }
+        });
+        builder.setCancelable(false); // Không cho phép tắt popup bằng cách khác
+        builder.show();
+    }
+
+    private void stopRecording() {
+        if (mediaRecorder != null) {
+            mediaRecorder.stop();
+            mediaRecorder.release();
+            mediaRecorder = null;
+            speechRecognizer.stopListening();
+        }
+    }
+
+    private boolean checkPermission() {
+        // Check if permissions are granted
+        return ContextCompat.checkSelfPermission(this, android.Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.RECORD_AUDIO}, 2);
+    }
+
+    private void sendMessageWithVoice(String filePath) {
+        // Upload the voice file to your server or cloud storage
+        // Example: Upload to Firebase Storage or your custom server
+
+        // After uploading, send a reference or URL of the voice message in the chat
+        // For example:
+        String voiceMessageUrl = uploadVoiceAndGetUrl(filePath);
+        if (voiceMessageUrl != null) {
+            sendMessageToUser(voiceMessageUrl);
+        } else {
+            Toast.makeText(this, "Failed to send voice message", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private String uploadVoiceAndGetUrl(String filePath) {
+        // Implement your logic to upload the voice file and get the URL
+        // Similar to how you uploaded images
+        // Example: Use Firebase Storage, or send directly to your server
+        return null; // Replace with actual URL or handle the error
+    }
+
 
     private void openGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -223,15 +405,6 @@ public class ChatScreen extends AppCompatActivity {
                 }
             }).start();
         }
-    }
-
-
-    private void sendImageToUser(Uri imageUri) {
-        // Convert the URI to a URL or path that can be sent to the chat
-        // Here, you would typically upload the image to your server or cloud storage
-        // and get the URL to send in the chat
-        String imageUrl = uploadImageAndGetUrl(imageUri);
-        sendMessageToUser(imageUrl);
     }
 
     private String uploadImageAndGetUrl(Uri imageUri) {
@@ -296,6 +469,22 @@ public class ChatScreen extends AppCompatActivity {
             getCurrentLocation();
         } else {
             Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+        }
+
+        if (requestCode == 2) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startRecording();
+            } else {
+                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        if (requestCode == REQUEST_RECORD_AUDIO_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                setupSpeechRecognizer();
+            } else {
+                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
