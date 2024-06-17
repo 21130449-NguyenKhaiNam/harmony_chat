@@ -324,6 +324,7 @@ public class CallService {
         generalCallApi(res, (code, content) -> {
             members.addAll(MapperJson.getInstance().convertListObjFromJson(content, User.class));
         });
+        Log.e("Tincoder", members.size()+"");
         return members;
     }
 

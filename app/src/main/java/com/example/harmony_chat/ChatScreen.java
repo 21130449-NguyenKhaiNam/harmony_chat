@@ -30,6 +30,7 @@ import com.example.harmony_chat.service.CallService;
 import com.example.harmony_chat.util.AndroidUtil;
 import com.example.harmony_chat.util.CheckInfomation;
 import com.example.harmony_chat.util.FirebaseUtil;
+import com.example.harmony_chat.util.RxHelper;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.Query;
@@ -66,7 +67,7 @@ public class ChatScreen extends AppCompatActivity {
         hideSystemUI();
         loadConfig();
         process();
-        callApi();
+//        callApi();
     }
 
     public void back() {
@@ -135,8 +136,18 @@ public class ChatScreen extends AppCompatActivity {
         secondaryUser = (User) bundle.getSerializable("secondary_user");
         secondaryProfile = (com.example.harmony_chat.model.Profile) bundle.getSerializable("secondary_profile");
 
-        txtChatName.setText(secondaryUser.getEmail());
-        AndroidUtil.loadImage(secondaryProfile.getAvatar(), img_avatar);
+//        txtChatName.setText(secondaryUser.getEmail());
+//        AndroidUtil.loadImage(secondaryProfile.getAvatar(), img_avatar);
+
+        RxHelper.performImmediately(() -> {
+            List<User> users = CallService.getInstance().getAllMembersRoom(String.valueOf(room.getId()));
+            for (User u:users){
+                Log.e("Tincoder", u.toString());
+            }
+            runOnUiThread(()->{
+                txtChatName.setText(String.valueOf(room.getId()));
+            });
+        });
 
         setupChatRecyclerView();
     }
@@ -213,30 +224,30 @@ public class ChatScreen extends AppCompatActivity {
         });
     }
 
-    private void callApi() {
-        CallService.getInstance().getAllMembersRoomWObservalbe(room.getId() + "")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<User>>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        
-                    }
-
-                    @Override
-                    public void onNext(@NonNull List<User> users) {
-
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-    }
+//    private void callApi() {
+//        CallService.getInstance().getAllMembersRoomWObservalbe(room.getId() + "")
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Observer<List<User>>() {
+//                    @Override
+//                    public void onSubscribe(@NonNull Disposable d) {
+//                        Log.e("Tincoder", "onSubscribe");
+//                    }
+//
+//                    @Override
+//                    public void onNext(@NonNull List<User> users) {
+//                        Log.e("Tincoder", "onNext "+ users.size());
+//                    }
+//
+//                    @Override
+//                    public void onError(@NonNull Throwable e) {
+//                        Log.e("Tincoder", "onError");
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//
+//                    }
+//                });
+//    }
 }
