@@ -1,6 +1,7 @@
 package com.app.harmony_chat.services.auth;
 
 import com.app.harmony_chat.configs.DefineInfomation;
+import com.app.harmony_chat.models.BlackList;
 import com.app.harmony_chat.models.Infomation;
 import com.app.harmony_chat.models.Profile;
 import com.app.harmony_chat.repositories.account.InfoAccountRepository;
@@ -8,6 +9,8 @@ import com.app.harmony_chat.services.image.CloudinaryServices;
 import com.app.harmony_chat.utils.infomation.CheckInfomation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class InfoAccountService {
@@ -41,8 +44,16 @@ public class InfoAccountService {
     }
 
     public Infomation getViewBlock(String userId) {
-        // Chưa thực hiện
-        return null;
+        List<BlackList> blackList = dao.findBlackListByUserId(userId);
+        Infomation info = new Infomation();
+        if(blackList == null) {
+            info.setCode(DefineInfomation.SUCCESS_BUT_NOT_FOUND)
+                    .setContent(DefineInfomation.EMPTY);
+        } else {
+            info.setCode(DefineInfomation.SUCCESS)
+                    .setContent(blackList);
+        }
+        return info;
     }
 
 }

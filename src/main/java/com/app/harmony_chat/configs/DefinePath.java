@@ -11,6 +11,7 @@ public interface DefinePath {
     String ACCOUNT_FORGET = "/forget";
     String ACCOUNT_PROFILE = "/profile";
     String ACCOUNT_PROFILE_UPDATE = "/profile/update";
+    String BLACK_LIST = "/profile/blacklist";
 
     // Relationship
     String RELATIONSHIP = "/api/v1/relationship";
@@ -29,4 +30,9 @@ public interface DefinePath {
     // View
     String SEARCH = "/api/v1/search";
     String SEARCH_FRIEND_MESS = "/friend/mess";
+
+    // Image
+    String IMAGE = "/api/v1/image";
+    String IMAGE_UPLOAD = "/upload";
+
 }

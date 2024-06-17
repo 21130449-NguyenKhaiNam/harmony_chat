@@ -132,7 +132,7 @@
 	+ /api/v1/relationship/other/friends: Xem bạn bè của người khác POST -> JSON {'other-id': '?'}
         . Danh sách trống:
             {
-                "other-id": "a095a050-abc4-4c55-a9c1-e75f3b09c01f"
+                "other-id": "?"
             }
 
    + /api/v1/relationship/room: Lấy danh sách người liên hệ POST -> JSON {'user-id': '?'}
@@ -143,6 +143,7 @@
             }
    + /api/v1/relationship/room/add: Thêm người dùng vào phòng: POST -> JSON {'room-id': '?', 'other-id': '?'}
    + /api/v1/relationship/room/list: Lấy danh sách thành viên trong phòng: POST -> JSON {'room-id': '?'}
+   + /api/v1/account/profile/blacklist: Xem danh sách người bị chặn: POST -> {'user-id': '?'}
 
 - Liên quan đến việc xem dữ liệu trên màn hình:
     + /api/v1/search/friend/mess: Tìm kiếm bạn bè trong danh sách tin nhắn POST -> JSON {'name': '?'}

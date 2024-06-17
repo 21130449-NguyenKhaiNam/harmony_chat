@@ -44,8 +44,9 @@ public class Profile {
         return mapper.mapToJson(service.updateProfile(profile));
     }
 
+    @PostMapping(DefinePath.BLACK_LIST)
     public String viewBlockUsers(@RequestBody Map<String, String> json) {
         List<String> params = mapper.getParam(json, DefinePropertyJson.USER_ID);
-        return mapper.mapToJson(null);
+        return mapper.mapToJson(service.getViewBlock(params.get(0)));
     }
 }

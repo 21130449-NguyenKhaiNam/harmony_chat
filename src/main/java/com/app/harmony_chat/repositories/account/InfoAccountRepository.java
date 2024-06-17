@@ -25,6 +25,11 @@ public interface InfoAccountRepository extends JpaRepository<Profile, Long> {
     @Query(value = "insert into profiles (user_id, username) VALUES (:user, :username)", nativeQuery = true)
     void saveBasic(@Param("user") String userId, @Param("username") String username);
 
+    @Modifying
+    @Transactional
+    @Query("SELECT b FROM BlackList b WHERE b.user.id=:userId")
+    List<BlackList> findBlackListByUserId(@Param("userId") String userId);
+
     default void saveBasic(Profile profile) {
         saveBasic(profile.getUser().getId(), profile.getUsername());
     }

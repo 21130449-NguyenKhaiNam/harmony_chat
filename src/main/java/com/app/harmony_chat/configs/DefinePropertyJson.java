@@ -18,4 +18,5 @@ public interface DefinePropertyJson {
     String PHONE = "phone";
     String AVATAR = "avatar";
     String ROOM_ID = "room-id";
+    String IMG_URL = "img-url";
 }
