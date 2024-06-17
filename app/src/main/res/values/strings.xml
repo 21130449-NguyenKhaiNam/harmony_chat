@@ -36,6 +36,7 @@
     <string name="friend">Bạn bè</string>
     <string name="deleteFriend">Hủy kết bạn</string>
     <string name="location">Vị trí</string>
+    <string name="icon">Biểu tượng</string>
 
     <!-- Mẫu nội dung -->
     <string name="example_username">Tên người dùng</string>
@@ -77,5 +78,6 @@
     <string name="unread">unread</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="picture">"Hình ảnh "</string>
 
 </resources>

@@ -4,9 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.location.Location;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.provider.Settings;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,6 +17,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -23,13 +27,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.harmony_chat.Adapter.ChatRecyclerAdapter;
+import com.example.harmony_chat.config.DefinePathApi;
 import com.example.harmony_chat.model.ChatMessageModel;
 import com.example.harmony_chat.model.Profile;
 import com.example.harmony_chat.model.Room;
@@ -42,9 +50,22 @@ import com.example.harmony_chat.util.RxHelper;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.Query;
+
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.UUID;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class ChatScreen extends AppCompatActivity {
 
@@ -58,12 +79,13 @@ public class ChatScreen extends AppCompatActivity {
     private Room room;
     private ChatRecyclerAdapter adapter;
     private RecyclerView recyclerView;
-    private LinearLayout footer, shareLocation;
+    private LinearLayout footer, shareLocation, emoji, sharePicture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_screen);
+//       // Setup config
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         hideSystemUI();
         loadConfig();
@@ -101,6 +123,8 @@ public class ChatScreen extends AppCompatActivity {
         footer = findViewById(R.id.chat_screen_footer);
         txtChatName = findViewById(R.id.txt_chat_name);
         txtChatMessage = findViewById(R.id.txt_chat_message);
+        txtChatMessage.setRawInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_AUTO_CORRECT);
+        txtChatMessage.setTextIsSelectable(true);
         recyclerView = findViewById(R.id.chat_recycler_view);
         img_avatar = findViewById(R.id.img_avatar);
         backBtn = findViewById(R.id.backBtn);
@@ -148,8 +172,110 @@ public class ChatScreen extends AppCompatActivity {
         int y = location[1];
         popupWindow.showAtLocation(footer, Gravity.NO_GRAVITY, x, y);
         popupWindow.setWindowLayoutType(WindowManager.LayoutParams.TYPE_APPLICATION_ATTACHED_DIALOG);
+        // Share location
         shareLocation = popupView.findViewById(R.id.share_location);
-        shareLocation.setOnClickListener(v -> shareLocation());
+        shareLocation.setOnClickListener(v -> {
+            popupWindow.dismiss();
+            shareLocation();
+        });
+
+        // Share picture
+        sharePicture = popupView.findViewById(R.id.share_picture);
+        sharePicture.setOnClickListener(v -> {
+            popupWindow.dismiss();
+            openGallery();
+        });
+
+        // Send Emoji
+        emoji = popupView.findViewById(R.id.emoji);
+        emoji.setOnClickListener(v -> {
+            txtChatMessage.requestFocus();
+            txtChatMessage.postDelayed(() -> {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    popupWindow.dismiss();
+//                    imm.showSoftInput(txtChatMessage, InputMethodManager.SHOW_IMPLICIT);
+                    imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
+//                    WindowCompat.getInsetsController(getWindow(), txtChatMessage).show(WindowInsetsCompat.Type.ime());
+//                    imm.hideSoftInputFromWindow(txtChatMessage.getWindowToken(), 0);
+                }
+            }, 200); // Delay in milliseconds
+        });
+    }
+
+    private void openGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/*");
+        startActivityForResult(intent, 2);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 2 && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri imageUri = data.getData();
+            new Thread(() -> {
+                String imageUrl = uploadImageAndGetUrl(imageUri);
+                if (imageUrl != null) {
+                    runOnUiThread(() -> sendMessageToUser(imageUrl));
+                } else {
+                    runOnUiThread(() -> Toast.makeText(ChatScreen.this, "Failed to upload image", Toast.LENGTH_SHORT).show());
+                }
+            }).start();
+        }
+    }
+
+
+    private void sendImageToUser(Uri imageUri) {
+        // Convert the URI to a URL or path that can be sent to the chat
+        // Here, you would typically upload the image to your server or cloud storage
+        // and get the URL to send in the chat
+        String imageUrl = uploadImageAndGetUrl(imageUri);
+        sendMessageToUser(imageUrl);
+    }
+
+    private String uploadImageAndGetUrl(Uri imageUri) {
+        try {
+            byte[] imageData = getBytesFromUri(imageUri);
+
+            OkHttpClient client = new OkHttpClient();
+
+            // Assuming your server API accepts multipart file upload
+            RequestBody requestBody = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("file", UUID.randomUUID().toString(),
+                            RequestBody.create(imageData, MediaType.parse("image/jpeg")))
+                    .build();
+
+            Request request = new Request.Builder()
+                    .url(DefinePathApi.URL + DefinePathApi.IMAGE_UPLOAD) // Replace with your server URL
+                    .post(requestBody)
+                    .build();
+
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful() && response.body() != null) {
+                // Assuming your server returns the URL of the uploaded image in the response
+                String url = response.body().string();
+                return url;
+            } else {
+                throw new IOException("Unexpected code " + response);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null; // Or handle the error appropriately
+        }
+    }
+
+    private byte[] getBytesFromUri(Uri uri) throws IOException {
+        InputStream inputStream = getContentResolver().openInputStream(uri);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int len;
+        while ((len = inputStream.read(buffer)) != -1) {
+            byteArrayOutputStream.write(buffer, 0, len);
+        }
+        return byteArrayOutputStream.toByteArray();
     }
 
     private void shareLocation() {
@@ -187,9 +313,9 @@ public class ChatScreen extends AppCompatActivity {
     }
 
     private void shareLocation(double latitude, double longitude) {
+        String mapUrl = "https://www.google.com/maps?q=" + latitude + "," + longitude;
         // Create a URI from the latitude and longitude
         Uri gmmIntentUri = Uri.parse("geo:" + latitude + "," + longitude);
-
         // Create an Intent with action ACTION_VIEW
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
 
@@ -199,11 +325,11 @@ public class ChatScreen extends AppCompatActivity {
         // Verify that the intent will resolve to an activity
         if (mapIntent.resolveActivity(getPackageManager()) != null) {
             // Start the Intent
+            sendMessageToUser(mapUrl);
             startActivity(mapIntent);
         } else {
             Toast.makeText(this, "Google Maps app is not installed", Toast.LENGTH_SHORT).show();
         }
-
         // Optionally, you can show a popup indicating the location has been shared
         showLocationSharedPopup();
     }
