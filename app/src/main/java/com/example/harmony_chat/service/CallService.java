@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.rxjava3.core.Observable;
 import retrofit2.Response;
 
 public class CallService {
@@ -324,5 +325,25 @@ public class CallService {
             members.addAll(MapperJson.getInstance().convertListObjFromJson(content, User.class));
         });
         return members;
+    }
+
+    public Observable<List<User>> getAllMembersRoomWObservalbe(String roomId) {
+        return Observable.fromCallable(() -> {
+            String[] keys = MapFactory.createArrayString(DefinePropertyJson.ROOM_ID);
+            String[] values = MapFactory.createArrayString(roomId);
+            Map<String, String> json = MapFactory.createMapJson(keys, values);
+            List<User> members = new ArrayList<>();
+            Response<DataResponsive> res = null;
+            try {
+                res = ApiService.service.getAllMembersRoom(json).execute();
+            } catch (IOException e) {
+                Log.e("Lỗi gọi api getAllMembersRoom", e.getMessage());
+                throw e; // Throw the exception to be handled by Observable
+            }
+            generalCallApi(res, (code, content) -> {
+                members.addAll(MapperJson.getInstance().convertListObjFromJson(content, User.class));
+            });
+            return members;
+        });
     }
 }

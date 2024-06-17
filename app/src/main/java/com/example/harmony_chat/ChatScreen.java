@@ -26,12 +26,22 @@ import com.example.harmony_chat.Adapter.ChatRecyclerAdapter;
 import com.example.harmony_chat.model.ChatMessageModel;
 import com.example.harmony_chat.model.Room;
 import com.example.harmony_chat.model.User;
+import com.example.harmony_chat.service.CallService;
 import com.example.harmony_chat.util.AndroidUtil;
 import com.example.harmony_chat.util.CheckInfomation;
 import com.example.harmony_chat.util.FirebaseUtil;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.Query;
+
+import java.util.List;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class ChatScreen extends AppCompatActivity {
     private TextView txtChatName;
@@ -56,6 +66,7 @@ public class ChatScreen extends AppCompatActivity {
         hideSystemUI();
         loadConfig();
         process();
+        callApi();
     }
 
     public void back() {
@@ -200,5 +211,32 @@ public class ChatScreen extends AppCompatActivity {
                 recyclerView.smoothScrollToPosition(0);
             }
         });
+    }
+
+    private void callApi() {
+        CallService.getInstance().getAllMembersRoomWObservalbe(room.getId() + "")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<User>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        
+                    }
+
+                    @Override
+                    public void onNext(@NonNull List<User> users) {
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }
