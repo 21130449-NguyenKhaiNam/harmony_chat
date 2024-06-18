@@ -54,6 +54,7 @@ public class FriendService {
         User user = new User(userID);
         User otherUser = new User(otherID);
         Infomation info = selectRelationship(userID, otherID);
+        System.out.println(info);
         if (checkInfomation.checkOneWithAll(true, info.getCode(), DefineInfomation.SUCCESS_BUT_NOT_FOUND)) {
             Profile profileFriend = infoAccountDao.findByUserId(otherID).orElse(null); // Vẫn có thể lỗi nếu không kiểm soát tốt
             Relationship relationship = dao.save(new Relationship(user, otherUser, LocalDate.now(), profileFriend.getUsername()));

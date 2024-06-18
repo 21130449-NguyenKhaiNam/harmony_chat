@@ -29,7 +29,7 @@ public class Room {
 
     @PostMapping(DefinePath.ROOM_ADD)
     public String addRoom(@RequestBody Map<String, String> json) {
-        List<String> params = mapper.getParam(json, DefinePropertyJson.ROOM_ID, DefinePropertyJson.USER_ID);
+        List<String> params = mapper.getParam(json, DefinePropertyJson.ROOM_ID, DefinePropertyJson.OTHER_ID);
         return mapper.mapToJson(service.insertToRoom(params.get(0), params.get(1)));
     }
 

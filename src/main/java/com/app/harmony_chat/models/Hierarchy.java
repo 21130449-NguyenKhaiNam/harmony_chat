@@ -17,7 +17,7 @@ public class Hierarchy {
     @JoinColumn(name = "room_id", referencedColumnName = "id")
     private Room room;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "leader_id", referencedColumnName = "id")
     private User leader;
 
