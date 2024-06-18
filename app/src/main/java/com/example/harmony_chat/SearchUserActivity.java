@@ -16,6 +16,10 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.harmony_chat.model.Profile;
+import com.example.harmony_chat.service.CallService;
+import com.example.harmony_chat.util.RxHelper;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,8 +49,6 @@ public class SearchUserActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         rcvUsers.setLayoutManager(linearLayoutManager);
 
-        userAdapter.setData(getListUser());
-
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,7 +61,16 @@ public class SearchUserActivity extends AppCompatActivity {
                 final int DRAWABLE_RIGHT = 2;
                 if(event.getAction() == MotionEvent.ACTION_UP) {
                     if(event.getRawX() >= (edtSearch.getRight() - edtSearch.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                        gotoOtherProfile();
+                        RxHelper.performImmediately(() -> {
+                            List<Profile> profileList = CallService.getInstance().searchUser(edtSearch.getText().toString());
+                            runOnUiThread(() -> {
+                                if(profileList == null || profileList.isEmpty()) {
+
+                                } else {
+
+                                }
+                            });
+                        });
                         return true;
                     }
                 }
@@ -69,24 +80,13 @@ public class SearchUserActivity extends AppCompatActivity {
         });
     }
 
-    public List<User1> getListUser() {
-        List<User1> users = new ArrayList<>();
-        User1 u1 = new User1(R.id.avatar,"To minh Nhat");
-        User1 u2 = new User1(R.id.avatar,"Tm nhat");
-        User1 u3 = new User1(R.id.avatar,"nhat minh");
-        users.add(u1);
-        users.add(u2);
-        users.add(u3);
-        System.out.println(users);
-        return users;
-    }
-
     public void back(){
         finish();;
     }
 
     public void gotoOtherProfile() {
         Intent intent = new Intent(this, ProfileOther.class);
+        intent.putExtra("name", edtSearch.getText().toString());
         startActivity(intent);
     }
 

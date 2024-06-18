@@ -60,4 +60,7 @@ public interface ApiService {
 
     @POST(DefinePathApi.ROOM_LIST)
     Call<DataResponsive> getAllMembersRoom(@Body Map<String, String> json);
+
+    @POST(DefinePathApi.SEARCH_FRIEND_MESS)
+    Call<DataResponsive> searchUser(@Body Map<String, String> json);
 }

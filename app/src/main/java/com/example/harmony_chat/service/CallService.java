@@ -2,6 +2,7 @@ package com.example.harmony_chat.service;
 
 import android.util.Log;
 
+import com.example.harmony_chat.ProfileOther;
 import com.example.harmony_chat.config.DefinePropertyJson;
 import com.example.harmony_chat.config.DefineStatusResponsive;
 import com.example.harmony_chat.model.BlackList;
@@ -281,6 +282,23 @@ public class CallService {
             blackList.addAll(MapperJson.getInstance().convertListObjFromJson(content, BlackList.class));
         });
         return blackList;
+    }
+
+    public List<Profile> searchUser(String name) {
+        String[] keys = MapFactory.createArrayString(DefinePropertyJson.USERNAME);
+        String[] values = MapFactory.createArrayString(name);
+        Map<String, String> json = MapFactory.createMapJson(keys, values);
+        ArrayList<Profile> profiles = new ArrayList<>();
+        Response<DataResponsive> res = null;
+        try {
+            res = ApiService.service.searchUser(json).execute();
+        } catch (IOException e) {
+            Log.e("Lỗi gọi api searchUser", e.getMessage());
+        }
+        generalCallApi(res, (code, content) -> {
+            profiles.addAll(MapperJson.getInstance().convertListObjFromJson(content, Profile.class));
+        });
+        return profiles;
     }
 
     public List<Hierarchy> getRoom(String userId) {
