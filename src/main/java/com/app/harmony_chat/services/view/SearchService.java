@@ -2,6 +2,7 @@ package com.app.harmony_chat.services.view;
 
 import com.app.harmony_chat.configs.DefineInfomation;
 import com.app.harmony_chat.models.Infomation;
+import com.app.harmony_chat.models.Profile;
 import com.app.harmony_chat.repositories.view.SearchRepository;
 import com.app.harmony_chat.utils.infomation.CheckInfomation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,19 +23,16 @@ public class SearchService {
      * @return
      */
     public Infomation searchFriendMess(String name) {
-        StringBuilder builder = new StringBuilder(name.trim());
-        Infomation info = new Infomation();
-        info.setCode(DefineInfomation.SUCCESS);
-        if(builder.isEmpty()) {
-            info.setContent(DefineInfomation.EMPTY);
-        } else {
-            List<String> usernames = dao.findByUserName(name);
-            if(usernames.isEmpty()) {
-                info.setContent(DefineInfomation.EMPTY);
-            } else {
-                info.setContent(usernames);
-            }
-        }
-        return info;
+       List<Profile> profiles = dao.findByUserName(name);
+       Infomation info = new Infomation();
+       if(profiles == null || profiles.isEmpty()) {
+           info.setCode(DefineInfomation.SUCCESS_BUT_NOT_FOUND)
+                   .setContent(DefineInfomation.EMPTY);
+       } else {
+           profiles.forEach(profile -> profile.getUser().setPassword(null));
+           info.setCode(DefineInfomation.SUCCESS)
+                   .setContent(profiles);
+       }
+       return info;
     }
 }

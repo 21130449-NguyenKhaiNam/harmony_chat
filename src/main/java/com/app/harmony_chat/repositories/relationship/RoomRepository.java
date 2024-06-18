@@ -29,7 +29,7 @@ public interface RoomRepository extends JpaRepository<Hierarchy, Long> {
 
     @Modifying
     @Transactional
-    @Query("SELECT h FROM Hierarchy h WHERE h.leader.id =:userId OR h.deputy.id = :userId")
+    @Query("SELECT h FROM Hierarchy h WHERE h.room.id IN (SELECT m.room.id FROM Member m WHERE m.user.id = :userId)")
     List<Hierarchy> findAllByUserId(@Param("userId") String userId);
 
     @Modifying

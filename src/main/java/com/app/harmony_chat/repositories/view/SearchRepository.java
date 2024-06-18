@@ -12,6 +12,6 @@ import java.util.UUID;
 
 @Repository
 public interface SearchRepository extends JpaRepository<Profile, Long> {
-    @Query("SELECT p.username FROM Profile p WHERE p.username LIKE '%:username%'")
-    List<String> findByUserName(@Param("username") String username);
+    @Query("SELECT p FROM Profile p WHERE p.username LIKE '%:username%'")
+    List<Profile> findByUserName(@Param("username") String username);
 }
