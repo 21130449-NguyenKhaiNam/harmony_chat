@@ -10,6 +10,7 @@ import com.example.harmony_chat.model.Information;
 import com.example.harmony_chat.model.Profile;
 import com.example.harmony_chat.model.Relationship;
 import com.example.harmony_chat.model.User;
+import com.example.harmony_chat.util.AndroidUtil;
 import com.example.harmony_chat.util.MapFactory;
 import com.example.harmony_chat.util.MapperJson;
 
@@ -324,7 +325,7 @@ public class CallService {
         generalCallApi(res, (code, content) -> {
             members.addAll(MapperJson.getInstance().convertListObjFromJson(content, User.class));
         });
-        Log.e("Tincoder", members.size()+"");
+        AndroidUtil.showError("Khuongvo2105", members.size()+"");
         return members;
     }
 

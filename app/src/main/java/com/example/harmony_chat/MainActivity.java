@@ -54,15 +54,13 @@ public class MainActivity extends AppCompatActivity implements SelectListener {
     private List<ChatItem> chatItemList;
     private com.example.harmony_chat.model.Profile profileUser;
     private String userId;
-//    private User primaryUser, secondaryUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
-        userId = sharedPreferences.getString("id", null);
+        userId = AndroidUtil.getUserId(this);
         // Không có tài khoản
         if (CheckInfomation.isEmpty(userId)) {
             Intent intent = new Intent(this, LoginActivity.class);
@@ -116,7 +114,8 @@ public class MainActivity extends AppCompatActivity implements SelectListener {
                 Hierarchy hierarchy = rooms.get(i);
                 chatItemList.add(
                         new ChatItem(
-                                (hierarchy.getLeader().getId().trim().equals(userId) ? hierarchy.getDeputy().getEmail() : hierarchy.getLeader().getEmail()),
+//                                (hierarchy.getLeader().getId().trim().equals(userId) ? hierarchy.getDeputy().getEmail() : hierarchy.getLeader().getEmail()),
+                                "#"+hierarchy.getRoom().getId(),
                                 "",
                                 hierarchy.getRoom().getImage(),
                                 hierarchy.getRoom().getPublished(),
@@ -215,37 +214,13 @@ public class MainActivity extends AppCompatActivity implements SelectListener {
         });
     }
 
-
     // Khi người dùng nhấn vào từng dòng của RecycleView thì thực hiện chuyển màn hình tới ChatScreen tương ứng của cuộc trò chuyện
     @Override
     public void onItemClicked(ChatItem chatItem) {
-        User primaryUser = chatItem.getLeader(), secondaryUser = chatItem.getDeputy();
-        String secondaryUserId = (primaryUser.getId().equals(userId)) ? secondaryUser.getId() : primaryUser.getId();
-
-        sendSecondaryUserProfile(chatItem, primaryUser, secondaryUser, secondaryUserId);
-    }
-
-    private void sendSecondaryUserProfile(ChatItem chatItem, User primaryUser, User secondaryUser, String secondaryUserId) {
-        RxHelper.performImmediately(() -> {
-            com.example.harmony_chat.model.Profile secondaryProfile = CallService.getInstance().viewMyProfile(secondaryUserId);
-
-            runOnUiThread(() -> {
-                Intent intent = new Intent(this, ChatScreen.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("room", chatItem.getRoom());
-
-                if (primaryUser.getId().equals(userId)) {
-                    bundle.putSerializable("primary_user", primaryUser);
-                    bundle.putSerializable("secondary_user", secondaryUser);
-                } else {
-                    bundle.putSerializable("primary_user", secondaryUser);
-                    bundle.putSerializable("secondary_user", primaryUser);
-                }
-
-                bundle.putSerializable("secondary_profile", secondaryProfile);
-                intent.putExtras(bundle);
-                startActivity(intent);
-            });
-        });
+        Intent intent = new Intent(this, ChatScreen.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("room", chatItem.getRoom());
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }

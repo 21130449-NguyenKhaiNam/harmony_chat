@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.harmony_chat.Adapter.ChatRecyclerAdapter;
 import com.example.harmony_chat.model.ChatMessageModel;
+import com.example.harmony_chat.model.Profile;
 import com.example.harmony_chat.model.Room;
 import com.example.harmony_chat.model.User;
 import com.example.harmony_chat.service.CallService;
@@ -35,6 +36,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.Query;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -50,14 +52,12 @@ public class ChatScreen extends AppCompatActivity {
     private ImageView img_avatar;
 
     private ImageButton backBtn, btn_send, btnMore;
-
-    private User primaryUser, secondaryUser;
-    private com.example.harmony_chat.model.Profile secondaryProfile;
     private Room room;
-
     private ChatRecyclerAdapter adapter;
     private RecyclerView recyclerView;
     private LinearLayout footer;
+    private List<Profile> profiles = new ArrayList<>();
+    private String roomId, userId;
 
     @Override
     protected void onCreate(Bundle savedInstancestate) {
@@ -66,8 +66,6 @@ public class ChatScreen extends AppCompatActivity {
 
         hideSystemUI();
         loadConfig();
-        process();
-//        callApi();
     }
 
     public void back() {
@@ -105,12 +103,10 @@ public class ChatScreen extends AppCompatActivity {
 
     // Tìm và gán các phần tử của Context vào đối tượng tương ứng. Phải được gọi trước khi xử lý các phần tử của Context như là bắt sự kiện,...
     private void loadConfig() {
-        // Lấy ra đối tượng Profile được gửi thông qua intent từ MainActivity.java
-        SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
-        String userId = sharedPreferences.getString("id", null);
+        userId = AndroidUtil.getUserId(this);
         // Không có tài khoản
         if (CheckInfomation.isEmpty(userId)) {
-            Log.e("ChatScreen UserId", userId);
+            AndroidUtil.showError("UserId", userId);
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             finish(); // Thêm finish để ngăn người dùng quay lại màn hình này
@@ -132,24 +128,30 @@ public class ChatScreen extends AppCompatActivity {
         Bundle bundle = intent.getExtras();
         if (bundle.isEmpty()) back();
         room = (Room) bundle.getSerializable("room");
-        primaryUser = (User) bundle.getSerializable("primary_user");
-        secondaryUser = (User) bundle.getSerializable("secondary_user");
-        secondaryProfile = (com.example.harmony_chat.model.Profile) bundle.getSerializable("secondary_profile");
-
-//        txtChatName.setText(secondaryUser.getEmail());
-//        AndroidUtil.loadImage(secondaryProfile.getAvatar(), img_avatar);
+        roomId = String.valueOf(room.getId());
 
         RxHelper.performImmediately(() -> {
-            List<User> users = CallService.getInstance().getAllMembersRoom(String.valueOf(room.getId()));
-            for (User u:users){
-                Log.e("Tincoder", u.toString());
+            List<User> users = CallService.getInstance().getAllMembersRoom(roomId);
+            for (User u : users) {
+                Profile userPro5 = CallService.getInstance().viewMyProfile(u.getId());
+                if (userPro5.getUser().getId().equals(userId)) {
+                    profiles.add(0, userPro5);
+                } else
+                    profiles.add(userPro5);
             }
-            runOnUiThread(()->{
+            runOnUiThread(() -> {
                 txtChatName.setText(String.valueOf(room.getId()));
+                process();
+                loadImage4Chatroom();
+                setupChatRecyclerView();
             });
         });
 
-        setupChatRecyclerView();
+    }
+
+    private void loadImage4Chatroom() {
+        String url = "https://uploads.dailydot.com/2018/10/olli-the-polite-cat.jpg?auto=compress&fm=pjpg";
+        AndroidUtil.loadImage(room.getImage(), img_avatar);
     }
 
     private void process() {
@@ -187,8 +189,7 @@ public class ChatScreen extends AppCompatActivity {
 
     private void sendMessageToUser(String message) {
         ChatMessageModel chatMessageModel = new ChatMessageModel(
-                message, room.getId() + "",
-                primaryUser.getId(), Timestamp.now()
+                message, roomId, userId, Timestamp.now()
         );
 
         FirebaseUtil.getChatroomMessageReference(room.getId() + "")
@@ -197,19 +198,21 @@ public class ChatScreen extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         txtChatMessage.setText("");
                     } else {
-                        Toast.makeText(this, "\"" + message + "\" isn't send!", Toast.LENGTH_SHORT).show();
+                        String m = "\"" + message + "\" isn't send!";
+                        AndroidUtil.showToast(this, m);
+                        AndroidUtil.showError("Khuongvo2105", m);
                     }
                 });
     }
 
     private void setupChatRecyclerView() {
-        Query query = FirebaseUtil.getChatroomMessageReference(room.getId() + "")
+        Query query = FirebaseUtil.getChatroomMessageReference(roomId)
                 .orderBy("timestamp", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<ChatMessageModel> options = new FirestoreRecyclerOptions.Builder<ChatMessageModel>()
                 .setQuery(query, ChatMessageModel.class).build();
 
-        adapter = new ChatRecyclerAdapter(options, getApplicationContext(), primaryUser.getId());
+        adapter = new ChatRecyclerAdapter(options, getApplicationContext(), profiles.get(0).getUser().getId());
         LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setReverseLayout(true);
         recyclerView.setLayoutManager(manager);
@@ -223,31 +226,4 @@ public class ChatScreen extends AppCompatActivity {
             }
         });
     }
-
-//    private void callApi() {
-//        CallService.getInstance().getAllMembersRoomWObservalbe(room.getId() + "")
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Observer<List<User>>() {
-//                    @Override
-//                    public void onSubscribe(@NonNull Disposable d) {
-//                        Log.e("Tincoder", "onSubscribe");
-//                    }
-//
-//                    @Override
-//                    public void onNext(@NonNull List<User> users) {
-//                        Log.e("Tincoder", "onNext "+ users.size());
-//                    }
-//
-//                    @Override
-//                    public void onError(@NonNull Throwable e) {
-//                        Log.e("Tincoder", "onError");
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//
-//                    }
-//                });
-//    }
 }

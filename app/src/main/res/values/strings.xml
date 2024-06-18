@@ -47,7 +47,7 @@
     <string name="example_relationship">Mối quan hệ</string>
 
     <!--    activity_chat_screen - 21130407 -->
-    <string name="conversation_name">Tôi là KhươngVõ2105</string>
+    <string name="conversation_name">Tên cuộc trò chuyện</string>
     <!--    message_has_been_received: là tin nhắn mà client nhận được từ người khác
     Phân biệt với
     message_is_sent: là tin nhắn được client gửi đi
