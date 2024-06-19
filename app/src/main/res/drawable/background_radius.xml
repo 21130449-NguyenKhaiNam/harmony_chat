@@ -6,5 +6,5 @@
         android:color="@color/primary_sky"/>
 
     <corners
-        android:radius="@dimen/corner_radius" />
+        android:radius="@dimen/corner_radius"/>
 </shape>

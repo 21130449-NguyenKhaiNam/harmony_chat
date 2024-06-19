@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:weightSum="10"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp">
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/item_friend_avatar"
-        android:layout_width="@dimen/width_avatar_normal"
-        android:layout_height="0dp"
-        app:riv_corner_radius="@dimen/corner_radius"
-        android:layout_weight="8"
-        android:scaleType="fitCenter"
-        android:layout_gravity="center"
-        app:srcCompat="@drawable/avatar" />
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/avatar"
+        android:layout_marginEnd="16dp"/>
 
     <TextView
         android:id="@+id/item_friend_text_name"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:gravity="center"
-        android:text="TextView" />
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:gravity="center_vertical"
+        android:text="Friend Name" />
+
 </LinearLayout>

@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="7dp"
-    >
-    <ImageButton
+    android:padding="7dp">
+
+    <ImageView
         android:id="@+id/icon"
         android:layout_width="25dp"
         android:layout_height="25dp"
@@ -14,6 +14,7 @@
         android:foregroundGravity="center"
         android:scaleType="fitCenter"
         android:src="@drawable/account_privacy" />
+
     <TextView
         android:id="@+id/name"
         android:layout_width="200dp"
@@ -22,6 +23,7 @@
         android:layout_weight="1"
         android:text=" Account privacy"
         android:textSize="18dp" />
+
     <TextView
         android:id="@+id/amount"
         android:layout_width="50dp"
@@ -32,7 +34,8 @@
         android:text="public"
         android:textColor="#999999"
         android:textSize="19dp" />
-    <ImageButton
+
+    <ImageView
         android:id="@+id/greater_than"
         android:layout_width="18dp"
         android:layout_height="18dp"

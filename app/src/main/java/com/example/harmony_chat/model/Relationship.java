@@ -18,7 +18,8 @@ public class Relationship {
         this.friend = friend;
         this.established = established;
     }
-
+    public Relationship() {
+    }
     public Relationship(User user, User friend) {
         this.user = user;
         this.friend = friend;

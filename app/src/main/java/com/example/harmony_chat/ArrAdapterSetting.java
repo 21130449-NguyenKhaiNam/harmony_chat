@@ -12,6 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.harmony_chat.model.Setting;
+
 import java.util.ArrayList;
 
 public class ArrAdapterSetting extends ArrayAdapter<Setting> {

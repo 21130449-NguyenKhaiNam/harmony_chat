@@ -1,11 +1,19 @@
 package com.example.harmony_chat.model;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private String id;
     private String email;
     private String password;
 
     public User() {
+    }
+
+    public User(String id, String email, String password) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
     }
 
     public User(String email, String password) {
@@ -39,5 +47,24 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
+
+    public static String encodePwd(String pwd) {
+        String code ="";
+        String temp = "";
+        for(int i=pwd.length() - 1 ; i>=0;i--){
+            code+= (int) pwd.charAt(i);
+        }
+
+        return code;
     }
 }

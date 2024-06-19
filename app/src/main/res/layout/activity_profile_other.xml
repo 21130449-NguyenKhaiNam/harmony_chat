@@ -1,284 +1,421 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="@dimen/profile_margin_left"
-    android:layout_marginRight="@dimen/profile_margin_right"
-    android:orientation="vertical"
-    android:weightSum="10"
+    android:fillViewport="true"
     tools:context=".Profile">
 
     <LinearLayout
-        android:id="@+id/con_header_other"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/profile_header_margin_top"
-        android:layout_weight="2"
-        android:orientation="vertical"
-        android:weightSum="10">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <!-- Header với ảnh bìa và ảnh đại diện -->
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="@dimen/profile_height_header_before_margin_bottom"
-            android:layout_weight="5"
-            android:orientation="horizontal"
-            android:weightSum="10">
+            android:layout_height="300dp">
 
+            <!-- Ảnh bìa -->
+            <ImageView
+                android:id="@+id/background"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/avatar" />
+
+            <!-- Ảnh đại diện -->
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/avatar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginBottom="16dp"
+                android:padding="4dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/avatar"
+                app:riv_corner_radius="100dp" />
+
+            <!-- Button quay lại -->
             <ImageButton
-                android:id="@+id/btn_back_other"
-                android:layout_width="@dimen/profile_width_back"
-                android:layout_height="@dimen/profile_height_back"
-                android:layout_gravity="center"
-                android:foregroundGravity="center"
-                android:layout_weight="1"
-                android:background="@color/transparent"
+                android:id="@+id/btn_back"
+                android:layout_width="65dp"
+                android:layout_height="45dp"
+                android:layout_gravity="top|start"
+                android:layout_margin="16dp"
+                android:background="@android:color/transparent"
                 android:contentDescription="@string/back"
                 android:scaleType="fitCenter"
                 android:src="@drawable/arrow_back_ios" />
 
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:id="@+id/avatar_other"
-                android:layout_width="@dimen/width_avatar_normal"
-                android:layout_height="@dimen/height_avatar_normal"
-                android:layout_weight="3"
-                app:riv_corner_radius="100dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/avatar" />
+        </FrameLayout>
+
+        <!-- Thông tin người dùng -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <TextView
-                android:id="@+id/text_username_other"
+                android:id="@+id/text_username"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="4"
-                android:gravity="center_vertical"
-                android:text="@string/example_username" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:text="@string/example_username"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/text_description_other"
+                android:id="@+id/text_description"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@string/example_description" />
+                android:layout_height="wrap_content"
+                android:text="@string/example_description"
+                android:textSize="14sp"
+                android:paddingTop="4dp" />
+
         </LinearLayout>
 
+        <!-- Nút Kết bạn và Nhắn tin -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3"
-            android:weightSum="10"
-            android:orientation="horizontal">
-        
-            <Button
-                android:id="@+id/btn_relationship_other"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="5"
-                android:layout_marginRight="@dimen/profile_margin_right"
-                android:background="@drawable/button"
-                android:text="@string/friend">
-            </Button>
-
-            <Button
-                android:id="@+id/btn_send_message"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="5"
-                android:textColor="@color/primary_sky"
-                android:background="@drawable/background_border"
-                android:text="@string/send_message">
-            </Button>
-            
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/con_friends_other"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/profile_margin_top"
-        android:layout_weight="3.5"
-        android:orientation="vertical"
-        android:weightSum="10"
-        tools:ignore="InvalidId">
-
-        <TextView
-            android:id="@+id/text_friends_other"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:text="@string/friends" />
-
-        <TextView
-            android:id="@+id/text_count_friends_other"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:text="@string/count_friends" />
-
-        <GridView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="7"
-            android:numColumns="4">
-
-        </GridView>
-
-        <Button
-            android:id="@+id/btn_see_more_other"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/more"
-            android:textColor="@color/primary_sky" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/con_info_other"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/profile_margin_top"
-        android:layout_weight="3.5"
-        android:orientation="vertical"
-        android:weightSum="10"
-        tools:ignore="InvalidId">
-
-        <LinearLayout
-            android:id="@+id/con_info_email_other"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="10">
+            android:padding="16dp"
+            android:gravity="center">
 
-            <TextView
-                android:id="@+id/text_email_other"
+            <Button
+                android:id="@+id/btn_relationship"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:text="@string/email" />
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/button"
+                android:text="@string/addFriend"
+                android:textColor="@android:color/white" />
 
-            <TextView
-                android:id="@+id/user_email_other"
+            <Button
+                android:id="@+id/btn_message"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="6"
-                android:gravity="center"
-                android:text="@string/example_email" />
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/background_border"
+                android:text="@string/send_message"
+                android:textColor="@color/primary_sky" />
+
         </LinearLayout>
 
+        <!-- Danh sách bạn bè -->
         <LinearLayout
-            android:id="@+id/con_info_phone_other"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <TextView
-                android:id="@+id/text_phone_other"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:text="@string/phone" />
+                android:id="@+id/text_friends"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/friends"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:paddingBottom="8dp" />
 
-            <TextView
-                android:id="@+id/user_phone_other"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="6"
-                android:gravity="center"
-                android:text="@string/example_phone" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/con_info_birth_date_other"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/text_dob_other"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:text="@string/birth_date" />
-
-            <TextView
-                android:id="@+id/user_dob_other"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="6"
-                android:gravity="center"
-                android:text="@string/example_birth_date" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/con_friends"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:scrollbars="vertical"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="3"/>
 
         </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/con_info_sex_other"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/text_sex_other"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:text="@string/sex" />
-
-            <TextView
-                android:id="@+id/user_sex_other"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="6"
-                android:gravity="center"
-                android:text="@string/example_sex" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/con_info_address_other"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/text_address_other"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:text="@string/address" />
-
-            <TextView
-                android:id="@+id/user_address_other"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="6"
-                android:gravity="center"
-                android:text="@string/example_address" />
-
-        </LinearLayout>
-
     </LinearLayout>
-</LinearLayout>
+</androidx.core.widget.NestedScrollView>
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:layout_marginLeft="@dimen/profile_margin_left"-->
+<!--    android:layout_marginRight="@dimen/profile_margin_right"-->
+<!--    android:orientation="vertical"-->
+<!--    android:weightSum="10"-->
+<!--    tools:context=".Profile">-->
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/con_header_other"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_marginTop="@dimen/profile_header_margin_top"-->
+<!--        android:layout_weight="2"-->
+<!--        android:orientation="vertical"-->
+<!--        android:weightSum="10">-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_marginBottom="@dimen/profile_height_header_before_margin_bottom"-->
+<!--            android:layout_weight="5"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:weightSum="10">-->
+
+<!--            <ImageButton-->
+<!--                android:id="@+id/btn_back_other"-->
+<!--                android:layout_width="@dimen/profile_width_back"-->
+<!--                android:layout_height="@dimen/profile_height_back"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:foregroundGravity="center"-->
+<!--                android:layout_weight="1"-->
+<!--                android:background="@color/transparent"-->
+<!--                android:contentDescription="@string/back"-->
+<!--                android:scaleType="fitCenter"-->
+<!--                android:src="@drawable/arrow_back_ios" />-->
+
+<!--            <com.makeramen.roundedimageview.RoundedImageView-->
+<!--                android:id="@+id/avatar_other"-->
+<!--                android:layout_width="@dimen/width_avatar_normal"-->
+<!--                android:layout_height="@dimen/height_avatar_normal"-->
+<!--                android:layout_weight="3"-->
+<!--                app:riv_corner_radius="100dp"-->
+<!--                android:scaleType="fitCenter"-->
+<!--                android:src="@drawable/avatar" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/text_username_other"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="4"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:text="@string/example_username" />-->
+<!--        </LinearLayout>-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_weight="2"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/text_description_other"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="@string/example_description" />-->
+<!--        </LinearLayout>-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_weight="3"-->
+<!--            android:weightSum="10"-->
+<!--            android:orientation="horizontal">-->
+<!--        -->
+<!--            <Button-->
+<!--                android:id="@+id/btn_relationship_other"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="5"-->
+<!--                android:layout_marginRight="@dimen/profile_margin_right"-->
+<!--                android:background="@drawable/button"-->
+<!--                android:text="@string/friend">-->
+<!--            </Button>-->
+
+<!--            <Button-->
+<!--                android:id="@+id/btn_send_message"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="5"-->
+<!--                android:textColor="@color/primary_sky"-->
+<!--                android:background="@drawable/background_border"-->
+<!--                android:text="@string/send_message">-->
+<!--            </Button>-->
+<!--            -->
+<!--        </LinearLayout>-->
+
+<!--    </LinearLayout>-->
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/con_friends_other"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_marginTop="@dimen/profile_margin_top"-->
+<!--        android:layout_weight="3.5"-->
+<!--        android:orientation="vertical"-->
+<!--        android:weightSum="10"-->
+<!--        tools:ignore="InvalidId">-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/text_friends_other"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="@string/friends" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/text_count_friends_other"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="@string/count_friends" />-->
+
+<!--        <GridView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_weight="7"-->
+<!--            android:numColumns="4">-->
+
+<!--        </GridView>-->
+
+<!--        <Button-->
+<!--            android:id="@+id/btn_see_more_other"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_weight="1"-->
+<!--            android:gravity="center"-->
+<!--            android:text="@string/more"-->
+<!--            android:textColor="@color/primary_sky" />-->
+
+<!--    </LinearLayout>-->
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/con_info_other"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_marginTop="@dimen/profile_margin_top"-->
+<!--        android:layout_weight="3.5"-->
+<!--        android:orientation="vertical"-->
+<!--        android:weightSum="10"-->
+<!--        tools:ignore="InvalidId">-->
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/con_info_email_other"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_weight="2"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:weightSum="10">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/text_email_other"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="2"-->
+<!--                android:gravity="center"-->
+<!--                android:text="@string/email" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/user_email_other"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="6"-->
+<!--                android:gravity="center"-->
+<!--                android:text="@string/example_email" />-->
+<!--        </LinearLayout>-->
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/con_info_phone_other"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_weight="2"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/text_phone_other"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="2"-->
+<!--                android:gravity="center"-->
+<!--                android:text="@string/phone" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/user_phone_other"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="6"-->
+<!--                android:gravity="center"-->
+<!--                android:text="@string/example_phone" />-->
+<!--        </LinearLayout>-->
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/con_info_birth_date_other"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_weight="2"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/text_dob_other"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="2"-->
+<!--                android:gravity="center"-->
+<!--                android:text="@string/birth_date" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/user_dob_other"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="6"-->
+<!--                android:gravity="center"-->
+<!--                android:text="@string/example_birth_date" />-->
+
+<!--        </LinearLayout>-->
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/con_info_sex_other"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_weight="2"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/text_sex_other"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="2"-->
+<!--                android:gravity="center"-->
+<!--                android:text="@string/sex" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/user_sex_other"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="6"-->
+<!--                android:gravity="center"-->
+<!--                android:text="@string/example_sex" />-->
+
+<!--        </LinearLayout>-->
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/con_info_address_other"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_weight="2"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/text_address_other"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="2"-->
+<!--                android:gravity="center"-->
+<!--                android:text="@string/address" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/user_address_other"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="6"-->
+<!--                android:gravity="center"-->
+<!--                android:text="@string/example_address" />-->
+
+<!--        </LinearLayout>-->
+
+<!--    </LinearLayout>-->
+<!--</LinearLayout>-->
