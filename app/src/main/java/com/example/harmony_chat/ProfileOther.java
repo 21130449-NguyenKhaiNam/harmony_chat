@@ -9,6 +9,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import com.example.harmony_chat.model.Profile;
+import com.example.harmony_chat.service.CallService;
+import com.example.harmony_chat.util.RxHelper;
+
+import java.util.List;
+
 public class ProfileOther extends AppCompatActivity {
 
     ImageButton backBtn;
@@ -26,7 +32,7 @@ public class ProfileOther extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_other);
-
+        String name = getIntent().getStringExtra("name");
         colorPrimarySky = ContextCompat.getColor(this, R.color.primary_sky);
         colorWhite = ContextCompat.getColor(this, R.color.primary_white);
 
@@ -36,6 +42,7 @@ public class ProfileOther extends AppCompatActivity {
 
 //        thiet lap trang thai ban dau cho nut relation ship
 //        chua ket ban va chua gui ket ban
+
         setRelationshipBtnState(isFriend, isSendAddFriend);
 
         backBtn.setOnClickListener(new View.OnClickListener() {
