@@ -112,10 +112,11 @@ public class MainActivity extends AppCompatActivity implements SelectListener {
             profileUser.setUser(user);
             for (int i = 0; i < rooms.size(); i++) {
                 Hierarchy hierarchy = rooms.get(i);
+                String roomId = hierarchy.getRoom().getId() + "";
+                List<User> users = CallService.getInstance().getAllMembersRoom(roomId);
                 chatItemList.add(
                         new ChatItem(
-//                                (hierarchy.getLeader().getId().trim().equals(userId) ? hierarchy.getDeputy().getEmail() : hierarchy.getLeader().getEmail()),
-                                "#"+hierarchy.getRoom().getId(),
+                                AndroidUtil.getChatname(users, userId, roomId),
                                 "",
                                 hierarchy.getRoom().getImage(),
                                 hierarchy.getRoom().getPublished(),
@@ -220,6 +221,8 @@ public class MainActivity extends AppCompatActivity implements SelectListener {
         Intent intent = new Intent(this, ChatScreen.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("room", chatItem.getRoom());
+        bundle.putString("chatname",chatItem.getTitle());
+        bundle.putString("image",chatItem.getAvatarUrl());
         intent.putExtras(bundle);
         startActivity(intent);
     }

@@ -46,6 +46,8 @@ dependencies {
     implementation("com.makeramen:roundedimageview:2.3.0")
     implementation ("com.squareup.okhttp3:okhttp:4.9.3")
     implementation("com.google.firebase:firebase-common:21.0.0")
+    implementation("androidx.emoji:emoji:1.1.0")
+    implementation("androidx.emoji2:emoji2-views:1.4.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -64,6 +66,7 @@ dependencies {
     implementation("io.reactivex.rxjava3:rxjava:3.0.13")
     implementation("io.reactivex.rxjava3:rxandroid:3.0.0")
 //    dang nhap bang google
+    implementation ("com.google.android.gms:play-services-location:21.0.1")
     implementation ("com.google.android.gms:play-services-auth:20.4.0")
 
 //    mail

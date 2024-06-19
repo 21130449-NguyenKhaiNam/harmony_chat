@@ -9,7 +9,11 @@ import android.widget.Toast;
 
 import com.example.harmony_chat.R;
 import com.example.harmony_chat.model.Profile;
+import com.example.harmony_chat.model.User;
+import com.example.harmony_chat.service.CallService;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 public class AndroidUtil {
     public static void showToast(Context context, String message) {
@@ -17,9 +21,10 @@ public class AndroidUtil {
     }
 
     public static void showError(String label, String message) {
-        Log.e("HarmonyChat_"+label, message);
+        Log.e("HarmonyChat_" + label, message);
     }
-    public static void showError(String message){
+
+    public static void showError(String message) {
         showError("UndefinedError", message);
     }
 
@@ -30,7 +35,7 @@ public class AndroidUtil {
         try {
             Picasso.get()
                     .load(src)
-                    .resize(width,height)
+                    .resize(width, height)
                     .centerCrop()
                     .placeholder(placeholder)
                     .error(error)
@@ -41,24 +46,34 @@ public class AndroidUtil {
     }
 
     public static void loadImage(String srcImg, ImageView view) {
-        loadImage(srcImg, view, R.drawable.account, R.drawable.account,40, 40);
+        loadImage(srcImg, view, R.drawable.account, R.drawable.account, 40, 40);
     }
 
     /**
      * Lấy ID của người dùng từ SharedPreferences.
-     *
+     * <p>
      * Phương thức này truy cập vào SharedPreferences với tên "user",
      * lấy giá trị của khóa "id", loại bỏ dấu ngoặc kép và khoảng trắng dư thừa xung quanh ID.
      *
      * @param context Ngữ cảnh (Context) của ứng dụng, được sử dụng để truy cập vào SharedPreferences.
      * @return ID của người dùng dưới dạng chuỗi (String), hoặc null nếu không tìm thấy ID.
      */
-    public static String getUserId(Context context){
-        SharedPreferences sharedPreferences = context.getSharedPreferences("user",Context.MODE_PRIVATE);
-        return sharedPreferences.getString("id",null).replaceAll("\"", "").trim();
+    public static String getUserId(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
+        return reformatString(sharedPreferences.getString("id", null));
     }
 
-    public static String getChatname(){
-        return "";
+    private static String reformatString(String input) {
+        return input.replaceAll("\"", "").trim();
+    }
+
+    public static String getChatname(List<User> users, String currentUserId, String roomId) {
+        if (users.size() <= 2) {
+            return reformatString(users.get(0).getId()).equals(currentUserId) ?
+                    users.get(1).getEmail()
+                    : users.get(0).getEmail();
+        } else {
+            return roomId + "("+users.size()+")";
+        }
     }
 }

@@ -10,36 +10,134 @@
     tools:context=".ProfileSettingsFragment"
     android:id="@+id/popup_options">
 
-    <TextView
-        android:id="@+id/text_setting"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/share_location"
         android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
-        android:drawableLeft="@drawable/setting"
-        android:drawableRight="@drawable/greater_than"
-        android:gravity="start"
-        android:onClick="onSettingClicked"
+        android:layout_width="match_parent"
         android:paddingHorizontal="16dp"
         android:paddingVertical="8dp"
-        android:text="   Settings"
-        android:textSize="@dimen/text_0" />
+        android:gravity="start"
+        android:orientation="horizontal"
+        android:background="?android:attr/selectableItemBackground"
+        android:weightSum="10">
+
+        <!-- ImageView cho biểu tượng bên trái -->
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/location"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dp"/>
+
+        <!-- TextView cho văn bản -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:text="@string/location"
+            android:layout_weight="8"
+            android:layout_gravity="center_vertical"/>
+    </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="@color/primary_grey" />
 
-    <TextView
-        android:id="@+id/text_profile"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/emoji"
         android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
-        android:drawableLeft="@drawable/user"
-        android:drawableRight="@drawable/greater_than"
-        android:gravity="start"
-        android:onClick="onMyProfileClicked"
+        android:layout_width="match_parent"
         android:paddingHorizontal="16dp"
         android:paddingVertical="8dp"
-        android:text="   My Profile"
-        android:textSize="@dimen/text_0" />
+        android:gravity="start"
+        android:orientation="horizontal"
+        android:background="?android:attr/selectableItemBackground"
+        android:weightSum="10">
+
+        <!-- ImageView cho biểu tượng bên trái -->
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/emoticon"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dp"/>
+
+        <!-- TextView cho văn bản -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:text="@string/icon"
+            android:layout_weight="8"
+            android:layout_gravity="center_vertical"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/primary_grey" />
+
+    <LinearLayout
+        android:id="@+id/share_picture"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:gravity="start"
+        android:orientation="horizontal"
+        android:background="?android:attr/selectableItemBackground"
+        android:weightSum="10">
+
+        <!-- ImageView cho biểu tượng bên trái -->
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/emoticon"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dp"/>
+
+        <!-- TextView cho văn bản -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:text="@string/picture"
+            android:layout_weight="8"
+            android:layout_gravity="center_vertical"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/primary_grey" />
+
+    <LinearLayout
+        android:id="@+id/voice"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:gravity="start"
+        android:orientation="horizontal"
+        android:background="?android:attr/selectableItemBackground"
+        android:weightSum="10">
+
+        <!-- ImageView cho biểu tượng bên trái -->
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/emoticon"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dp"/>
+
+        <!-- TextView cho văn bản -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:text="@string/voice"
+            android:layout_weight="8"
+            android:layout_gravity="center_vertical"/>
+    </LinearLayout>
 </LinearLayout>

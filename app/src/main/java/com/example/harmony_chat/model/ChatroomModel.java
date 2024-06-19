@@ -5,7 +5,7 @@ import com.google.firebase.Timestamp;
 import java.util.List;
 
 public class ChatroomModel {
-    private  Room room;
+    private String roomId;
     private List<String> userIds;
     private Timestamp lastMessageTimestamp;
     private String lastMessageSenderId;
@@ -13,19 +13,19 @@ public class ChatroomModel {
     public ChatroomModel() {
     }
 
-    public ChatroomModel(Room room, List<String> userIds, Timestamp lastMessageTimestamp, String lastMessageSenderId) {
-        this.room = room;
+    public ChatroomModel(String roomId, List<String> userIds, Timestamp lastMessageTimestamp, String lastMessageSenderId) {
+        this.roomId = roomId;
         this.userIds = userIds;
         this.lastMessageTimestamp = lastMessageTimestamp;
         this.lastMessageSenderId = lastMessageSenderId;
     }
 
-    public Room getRoom() {
-        return room;
+    public String getRoomId() {
+        return roomId;
     }
 
-    public void setRoom(Room room) {
-        this.room = room;
+    public void setRoomId(String roomId) {
+        this.roomId = roomId;
     }
 
     public List<String> getUserIds() {
@@ -55,7 +55,7 @@ public class ChatroomModel {
     @Override
     public String toString() {
         return "ChatroomModel{" +
-                "roomId='" + room + '\'' +
+                "roomId='" + roomId + '\'' +
                 ", userIds=" + userIds +
                 ", lastMessageTimestamp=" + lastMessageTimestamp +
                 ", lastMessageSenderId='" + lastMessageSenderId + '\'' +

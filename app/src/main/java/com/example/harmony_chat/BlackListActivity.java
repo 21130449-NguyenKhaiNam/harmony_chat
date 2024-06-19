@@ -28,7 +28,7 @@ public class BlackListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_block_list);
-//        back.findViewById(R.id.btnBackBlackList);
+        back = findViewById(R.id.btnBackBlackList);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
