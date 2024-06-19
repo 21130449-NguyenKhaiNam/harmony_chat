@@ -1,5 +1,7 @@
 package com.example.harmony_chat.Adapter;
 
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +41,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         ChatItem chatItem = chatList.get(position);
         holder.nameTextView.setText(chatItem.getTitle());
         holder.messageTextView.setText(chatItem.getMessage());
+
+        Linkify.addLinks(holder.messageTextView,Linkify.WEB_URLS);
+        holder.messageTextView.setMovementMethod(LinkMovementMethod.getInstance());
+
         holder.timeTextView.setText(chatItem.getTime());
 
         Picasso.get()
