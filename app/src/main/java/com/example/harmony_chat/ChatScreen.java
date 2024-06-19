@@ -1,8 +1,6 @@
 package com.example.harmony_chat;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -16,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.harmony_chat.Adapter.ChatRecyclerAdapter;
 import com.example.harmony_chat.model.ChatMessageModel;
+import com.example.harmony_chat.model.ChatroomModel;
 import com.example.harmony_chat.model.Profile;
 import com.example.harmony_chat.model.Room;
 import com.example.harmony_chat.model.User;
@@ -34,17 +32,12 @@ import com.example.harmony_chat.util.FirebaseUtil;
 import com.example.harmony_chat.util.RxHelper;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
+import com.google.firebase.firestore.Query;
 
 public class ChatScreen extends AppCompatActivity {
     private TextView txtChatName;
@@ -58,6 +51,7 @@ public class ChatScreen extends AppCompatActivity {
     private LinearLayout footer;
     private List<Profile> profiles = new ArrayList<>();
     private String roomId, userId;
+    private ChatroomModel chatroomModel;
 
     @Override
     protected void onCreate(Bundle savedInstancestate) {
@@ -140,17 +134,43 @@ public class ChatScreen extends AppCompatActivity {
                     profiles.add(userPro5);
             }
             runOnUiThread(() -> {
-                txtChatName.setText(String.valueOf(room.getId()));
+                txtChatName.setText(bundle.getString("chatname"));
                 process();
                 loadImage4Chatroom();
                 setupChatRecyclerView();
+                getOrCreateChatroomModel();
             });
         });
 
     }
 
+    private void getOrCreateChatroomModel() {
+        List<String> userIds = new ArrayList<>();
+        RxHelper.performImmediately(() -> {
+            List<User> users = CallService.getInstance().getAllMembersRoom(roomId);
+            users.forEach(user -> {
+                userIds.add(user.getId());
+            });
+            runOnUiThread(() -> {
+                FirebaseUtil.getChatroomReference(roomId).get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        chatroomModel = task.getResult().toObject(ChatroomModel.class);
+                        if (chatroomModel == null) {
+                            chatroomModel = new ChatroomModel(
+                                    roomId,
+                                    userIds,
+                                    Timestamp.now(),
+                                    ""
+                            );
+                            FirebaseUtil.getChatroomReference(roomId).set(chatroomModel);
+                        }
+                    }
+                });
+            });
+        });
+    }
+
     private void loadImage4Chatroom() {
-        String url = "https://uploads.dailydot.com/2018/10/olli-the-polite-cat.jpg?auto=compress&fm=pjpg";
         AndroidUtil.loadImage(room.getImage(), img_avatar);
     }
 
@@ -188,11 +208,14 @@ public class ChatScreen extends AppCompatActivity {
     }
 
     private void sendMessageToUser(String message) {
-        ChatMessageModel chatMessageModel = new ChatMessageModel(
-                message, roomId, userId, Timestamp.now()
-        );
 
-        FirebaseUtil.getChatroomMessageReference(room.getId() + "")
+        chatroomModel.setLastMessageTimestamp(Timestamp.now());
+        chatroomModel.setLastMessageSenderId(userId);
+        FirebaseUtil.getChatroomReference(roomId).set(chatroomModel);
+
+        ChatMessageModel chatMessageModel = new ChatMessageModel(message, roomId, userId, Timestamp.now());
+
+        FirebaseUtil.getChatroomMessageReference(roomId)
                 .add(chatMessageModel)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -200,17 +223,30 @@ public class ChatScreen extends AppCompatActivity {
                     } else {
                         String m = "\"" + message + "\" isn't send!";
                         AndroidUtil.showToast(this, m);
-                        AndroidUtil.showError("Khuongvo2105", m);
+                        AndroidUtil.showError("Can't send message", m);
                     }
                 });
     }
 
     private void setupChatRecyclerView() {
+        AndroidUtil.showError("Firebase", roomId);
         Query query = FirebaseUtil.getChatroomMessageReference(roomId)
                 .orderBy("timestamp", Query.Direction.DESCENDING);
 
+        query.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (DocumentSnapshot document : task.getResult()) {
+                    Log.d("FirestoreQuery", document.getId() + " => " + document.getData());
+                }
+            } else {
+                Log.d("FirestoreQuery", "Error getting documents: ", task.getException());
+            }
+        });
+
         FirestoreRecyclerOptions<ChatMessageModel> options = new FirestoreRecyclerOptions.Builder<ChatMessageModel>()
-                .setQuery(query, ChatMessageModel.class).build();
+                .setQuery(query, ChatMessageModel.class)
+                .setLifecycleOwner(this)
+                .build();
 
         adapter = new ChatRecyclerAdapter(options, getApplicationContext(), profiles.get(0).getUser().getId());
         LinearLayoutManager manager = new LinearLayoutManager(this);
