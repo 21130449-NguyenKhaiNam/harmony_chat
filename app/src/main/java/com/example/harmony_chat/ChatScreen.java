@@ -573,6 +573,7 @@ public class ChatScreen extends AppCompatActivity {
     }
 
     private void back() {
-        finish();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }

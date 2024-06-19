@@ -29,6 +29,7 @@ import com.example.harmony_chat.service.CallService;
 import com.example.harmony_chat.service.LoadImgService;
 import com.example.harmony_chat.util.AndroidUtil;
 import com.example.harmony_chat.util.CheckInfomation;
+import com.example.harmony_chat.util.MapperJson;
 import com.example.harmony_chat.util.RxHelper;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -107,11 +108,13 @@ public class MainActivity extends AppCompatActivity implements SelectListener {
         RxHelper.performImmediately(() -> {
             List<Hierarchy> rooms = CallService.getInstance().getRoom(userId);
             profileUser = CallService.getInstance().viewMyProfile(userId);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("profile", MapperJson.getInstance().convertObjToJson(profileUser));
+            editor.commit();
             User user = new User(userId);
             profileUser.setUser(user);
             for (int i = 0; i < rooms.size(); i++) {
                 Hierarchy hierarchy = rooms.get(i);
-//                whoAmI(hierarchy.getLeader(), hierarchy.getDeputy());
                 chatItemList.add(
                         new ChatItem(
                                 (hierarchy.getLeader().getId().trim().equals(userId) ? hierarchy.getDeputy().getEmail() : hierarchy.getLeader().getEmail()),

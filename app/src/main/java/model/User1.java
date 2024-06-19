@@ -1,22 +1,21 @@
 package model;
 
 public class User1 {
-    private int imageID;
+    private String id;
+    private String imageID;
     private String name;
 
-    public User1(int imageID, String name) {
+    public User1(String id, String imageID, String name) {
+        this.id = id;
         this.imageID = imageID;
         this.name = name;
     }
 
-    public User1() {
-    }
-
-    public int getImageID() {
+    public String getImageID() {
         return imageID;
     }
 
-    public void setImageID(int imageID) {
+    public void setImageID(String imageID) {
         this.imageID = imageID;
     }
 
