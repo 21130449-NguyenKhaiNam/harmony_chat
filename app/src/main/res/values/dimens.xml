@@ -110,5 +110,5 @@
     <dimen name="main_activity_layout_margin_top">16dp</dimen>
     <!--    End 21130467-->
 
-    <dimen name="popup_options">180dp</dimen>
+    <dimen name="popup_options">140dp</dimen>
 </resources>

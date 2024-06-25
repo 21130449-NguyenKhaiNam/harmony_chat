@@ -2,142 +2,76 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/popup_options"
     android:layout_width="@dimen/popup_options"
     android:layout_height="wrap_content"
     android:background="@drawable/rounded_corner"
     android:elevation="20dp"
     android:orientation="vertical"
-    tools:context=".ProfileSettingsFragment"
-    android:id="@+id/popup_options">
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="6dp"
+    tools:context=".ProfileSettingsFragment">
 
-    <LinearLayout
+    <!-- TextView cho văn bản -->
+    <TextView
         android:id="@+id/share_location"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp"
-        android:gravity="start"
-        android:orientation="horizontal"
-        android:background="?android:attr/selectableItemBackground"
-        android:weightSum="10">
-
-        <!-- ImageView cho biểu tượng bên trái -->
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/location"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="8dp"/>
-
-        <!-- TextView cho văn bản -->
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textSize="13sp"
-            android:text="@string/location"
-            android:layout_weight="8"
-            android:layout_gravity="center_vertical"/>
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/location"
+        android:drawablePadding="6dp"
+        android:gravity="center_vertical"
+        android:paddingVertical="6dp"
+        android:text="@string/location"
+        android:textSize="13sp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="@color/primary_grey" />
 
-    <LinearLayout
+    <!-- TextView cho văn bản -->
+    <TextView
         android:id="@+id/emoji"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp"
-        android:gravity="start"
-        android:orientation="horizontal"
-        android:background="?android:attr/selectableItemBackground"
-        android:weightSum="10">
-
-        <!-- ImageView cho biểu tượng bên trái -->
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/emoticon"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="8dp"/>
-
-        <!-- TextView cho văn bản -->
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textSize="13sp"
-            android:text="@string/icon"
-            android:layout_weight="8"
-            android:layout_gravity="center_vertical"/>
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/emoticon"
+        android:drawablePadding="6dp"
+        android:gravity="center_vertical"
+        android:paddingVertical="6dp"
+        android:text="@string/icon"
+        android:textSize="13sp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="@color/primary_grey" />
 
-    <LinearLayout
+    <!-- TextView cho văn bản -->
+    <TextView
         android:id="@+id/share_picture"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp"
-        android:gravity="start"
-        android:orientation="horizontal"
-        android:background="?android:attr/selectableItemBackground"
-        android:weightSum="10">
-
-        <!-- ImageView cho biểu tượng bên trái -->
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/emoticon"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="8dp"/>
-
-        <!-- TextView cho văn bản -->
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textSize="13sp"
-            android:text="@string/picture"
-            android:layout_weight="8"
-            android:layout_gravity="center_vertical"/>
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/gallery"
+        android:drawablePadding="6dp"
+        android:gravity="center_vertical"
+        android:paddingVertical="6dp"
+        android:text="@string/picture"
+        android:textSize="13sp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="@color/primary_grey" />
 
-    <LinearLayout
+    <!-- TextView cho văn bản -->
+    <TextView
         android:id="@+id/voice"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp"
-        android:gravity="start"
-        android:orientation="horizontal"
-        android:background="?android:attr/selectableItemBackground"
-        android:weightSum="10">
-
-        <!-- ImageView cho biểu tượng bên trái -->
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/emoticon"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="8dp"/>
-
-        <!-- TextView cho văn bản -->
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textSize="13sp"
-            android:text="@string/voice"
-            android:layout_weight="8"
-            android:layout_gravity="center_vertical"/>
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/microphone"
+        android:drawablePadding="6dp"
+        android:gravity="center_vertical"
+        android:paddingVertical="6dp"
+        android:text="@string/voice"
+        android:textSize="13sp" />
 </LinearLayout>

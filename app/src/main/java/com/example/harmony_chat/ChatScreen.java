@@ -75,7 +75,7 @@ import okhttp3.Response;
 
 public class ChatScreen extends AppCompatActivity implements OnMapReadyCallback {
 
-    private TextView txtChatName;
+    private TextView txtChatName, shareLocation, emoji, sharePicture, voice;
     private MediaRecorder mediaRecorder;
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
     private SpeechRecognizer speechRecognizer;
@@ -91,7 +91,7 @@ public class ChatScreen extends AppCompatActivity implements OnMapReadyCallback 
     private String roomId, userId;
     private ChatroomModel chatroomModel;
     private static final int REQUEST_LOCATION_PERMISSION = 1;
-    private LinearLayout footer, shareLocation, emoji, sharePicture, voice;
+    private LinearLayout footer;
     private GoogleMap gMap;
 
     @Override
