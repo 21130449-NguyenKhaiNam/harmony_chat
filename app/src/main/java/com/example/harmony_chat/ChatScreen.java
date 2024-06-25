@@ -17,6 +17,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -51,6 +52,9 @@ import com.example.harmony_chat.util.RxHelper;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
@@ -69,7 +73,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class ChatScreen extends AppCompatActivity {
+public class ChatScreen extends AppCompatActivity implements OnMapReadyCallback {
 
     private TextView txtChatName;
     private MediaRecorder mediaRecorder;
@@ -88,6 +92,7 @@ public class ChatScreen extends AppCompatActivity {
     private ChatroomModel chatroomModel;
     private static final int REQUEST_LOCATION_PERMISSION = 1;
     private LinearLayout footer, shareLocation, emoji, sharePicture, voice;
+    private GoogleMap gMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -299,16 +304,19 @@ public class ChatScreen extends AppCompatActivity {
     private void createPopupMoreFeatures() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.fragement_more_feature_chat, null);
+
         int width = getResources().getDimensionPixelSize(R.dimen.popup_options);
         int height = ViewGroup.LayoutParams.WRAP_CONTENT;
         boolean focusable = true;
         PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
         int[] location = new int[2];
-        footer.getLocationOnScreen(location);
-        int x = location[0] + width;
-        int y = location[1];
-        popupWindow.showAtLocation(footer, Gravity.NO_GRAVITY, x, y);
-        popupWindow.setWindowLayoutType(WindowManager.LayoutParams.TYPE_APPLICATION_ATTACHED_DIALOG);
+        btnMore.getLocationOnScreen(location);  // get btnMore location
+
+        popupWindow.showAtLocation(btnMore, Gravity.NO_GRAVITY,
+                location[0] - width + btnMore.getWidth(),
+                location[1] - 350);
+
         // Share location
         shareLocation = popupView.findViewById(R.id.share_location);
         shareLocation.setOnClickListener(v -> {
@@ -443,8 +451,7 @@ public class ChatScreen extends AppCompatActivity {
                 String imageUrl = uploadImageAndGetUrl(imageUri);
                 if (imageUrl != null) {
                     runOnUiThread(() -> sendMessageToUser(imageUrl));
-                }
-                else {
+                } else {
                     runOnUiThread(() -> Toast.makeText(ChatScreen.this, "Failed to upload image", Toast.LENGTH_SHORT).show());
                 }
             }).start();
@@ -642,5 +649,15 @@ public class ChatScreen extends AppCompatActivity {
 
     private void back() {
         finish();
+    }
+
+    private void showFragmentGGMap() {
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+    }
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+
     }
 }
