@@ -62,6 +62,14 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessageMod
             holder.leftChatLayout.setVisibility(View.VISIBLE);
             holder.rightChatLayout.setVisibility(View.GONE);
             holder.leftChatTextview.setText(model.getMessage());
+            holder.leftChatTextview.setOnClickListener(v->{
+                String url = ((TextView) v).getText().toString();
+
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            });
         }
     }
 
