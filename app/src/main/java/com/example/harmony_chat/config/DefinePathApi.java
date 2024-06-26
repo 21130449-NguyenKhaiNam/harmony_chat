@@ -19,5 +19,5 @@ public interface DefinePathApi {
     String ROOM = "/api/v1/relationship/room";
     String ROOM_ADD = "/api/v1/relationship/room/add";
     String ROOM_LIST = "/api/v1/relationship/room/list";
-    String IMAGE_UPLOAD = "/api/v1/image/upload";
+    String IMAGE_UPLOAD = "api/v1/image/upload";
 }

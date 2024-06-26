@@ -1,9 +1,11 @@
 package com.example.harmony_chat;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,11 +25,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -52,9 +56,6 @@ import com.example.harmony_chat.util.RxHelper;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
@@ -73,7 +74,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class ChatScreen extends AppCompatActivity implements OnMapReadyCallback {
+public class ChatScreen extends AppCompatActivity {
 
     private TextView txtChatName, shareLocation, emoji, sharePicture, voice;
     private MediaRecorder mediaRecorder;
@@ -439,7 +440,7 @@ public class ChatScreen extends AppCompatActivity implements OnMapReadyCallback 
 
 
     private void openGallery() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
         startActivityForResult(intent, GALLERY_REQ_CODE);
     }
@@ -453,10 +454,10 @@ public class ChatScreen extends AppCompatActivity implements OnMapReadyCallback 
                 String imageUrl = uploadImageAndGetUrl(imageUri);
                 if (imageUrl != null) {
                     AndroidUtil.showError("UploadImage", "image url isn't null");
-                    runOnUiThread(() -> sendMessageToUser(imageUrl));
+                     sendMessageToUser(imageUrl);
                 } else {
                     AndroidUtil.showError("UploadImage", "image url is null");
-                    runOnUiThread(() -> AndroidUtil.showToast(this, "Failed to upload image"));
+                    AndroidUtil.showToast(this, "Failed to upload image");
                 }
             });
         }
@@ -580,7 +581,6 @@ public class ChatScreen extends AppCompatActivity implements OnMapReadyCallback 
         showLocationSharedPopup();
     }
 
-
     private void showLocationSharedPopup() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.popup_message, null);
@@ -656,10 +656,5 @@ public class ChatScreen extends AppCompatActivity implements OnMapReadyCallback 
 
     private void back() {
         finish();
-    }
-
-    @Override
-    public void onMapReady(@NonNull GoogleMap googleMap) {
-
     }
 }
