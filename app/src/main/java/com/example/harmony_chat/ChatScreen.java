@@ -90,9 +90,7 @@ public class ChatScreen extends AppCompatActivity implements OnMapReadyCallback 
     private List<Profile> profiles = new ArrayList<>();
     private String roomId, userId;
     private ChatroomModel chatroomModel;
-    private static final int REQUEST_LOCATION_PERMISSION = 1;
-    private LinearLayout footer;
-    private GoogleMap gMap;
+    private static final int REQUEST_LOCATION_PERMISSION = 1, GALLERY_REQ_CODE = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -222,7 +220,6 @@ public class ChatScreen extends AppCompatActivity implements OnMapReadyCallback 
             finish();
             return;
         }
-        footer = findViewById(R.id.chat_screen_footer);
         txtChatName = findViewById(R.id.txt_chat_name);
         txtChatMessage = findViewById(R.id.txt_chat_message);
         txtChatMessage.setRawInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_AUTO_CORRECT);
@@ -251,10 +248,10 @@ public class ChatScreen extends AppCompatActivity implements OnMapReadyCallback 
             }
             runOnUiThread(() -> {
                 txtChatName.setText(bundle.getString("chatname"));
-                process();
                 loadImage4Chatroom();
                 setupChatRecyclerView();
                 getOrCreateChatroomModel();
+                process();
             });
         });
 
@@ -336,7 +333,12 @@ public class ChatScreen extends AppCompatActivity implements OnMapReadyCallback 
         sharePicture = popupView.findViewById(R.id.share_picture);
         sharePicture.setOnClickListener(v -> {
             popupWindow.dismiss();
-            openGallery();
+            try {
+                openGallery();
+            } catch (Exception e) {
+                AndroidUtil.showError(e.getClass().getName(), e.getMessage());
+                AndroidUtil.showToast(this, "Gallery is not responding");
+            }
         });
 
 
@@ -439,22 +441,24 @@ public class ChatScreen extends AppCompatActivity implements OnMapReadyCallback 
     private void openGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
-        startActivityForResult(intent, 2);
+        startActivityForResult(intent, GALLERY_REQ_CODE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 2 && resultCode == RESULT_OK && data != null && data.getData() != null) {
+        if (resultCode == RESULT_OK && requestCode == GALLERY_REQ_CODE && data != null && data.getData() != null) {
             Uri imageUri = data.getData();
-            new Thread(() -> {
+            RxHelper.performImmediately(() -> {
                 String imageUrl = uploadImageAndGetUrl(imageUri);
                 if (imageUrl != null) {
+                    AndroidUtil.showError("UploadImage", "image url isn't null");
                     runOnUiThread(() -> sendMessageToUser(imageUrl));
                 } else {
-                    runOnUiThread(() -> Toast.makeText(ChatScreen.this, "Failed to upload image", Toast.LENGTH_SHORT).show());
+                    AndroidUtil.showError("UploadImage", "image url is null");
+                    runOnUiThread(() -> AndroidUtil.showToast(this, "Failed to upload image"));
                 }
-            }).start();
+            });
         }
     }
 
@@ -483,9 +487,11 @@ public class ChatScreen extends AppCompatActivity implements OnMapReadyCallback 
                 String url = response.body().string();
                 return url;
             } else {
+                AndroidUtil.showError("UnexpectedCode", response.message());
                 throw new IOException("Unexpected code " + response);
             }
         } catch (Exception e) {
+            AndroidUtil.showError(e.getMessage());
             e.printStackTrace();
             return null; // Or handle the error appropriately
         }
@@ -603,6 +609,7 @@ public class ChatScreen extends AppCompatActivity implements OnMapReadyCallback 
                 .add(chatMessageModel)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
+                        AndroidUtil.showError("SendMessegaToFirebase", "Send is successfully");
                         txtChatMessage.setText("");
                     } else {
                         String m = "\"" + message + "\" isn't send!";
@@ -613,7 +620,7 @@ public class ChatScreen extends AppCompatActivity implements OnMapReadyCallback 
     }
 
     private void setupChatRecyclerView() {
-        AndroidUtil.showError("Firebase", roomId);
+        AndroidUtil.showError("FirebaseRoomId", roomId);
         Query query = FirebaseUtil.getChatroomMessageReference(roomId)
                 .orderBy("timestamp", Query.Direction.DESCENDING);
 
@@ -632,7 +639,7 @@ public class ChatScreen extends AppCompatActivity implements OnMapReadyCallback 
                 .setLifecycleOwner(this)
                 .build();
 
-        adapter = new ChatRecyclerAdapter(options, getApplicationContext(), profiles.get(0).getUser().getId());
+        adapter = new ChatRecyclerAdapter(options, this, profiles.get(0).getUser().getId());
         LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setReverseLayout(true);
         recyclerView.setLayoutManager(manager);
@@ -649,11 +656,6 @@ public class ChatScreen extends AppCompatActivity implements OnMapReadyCallback 
 
     private void back() {
         finish();
-    }
-
-    private void showFragmentGGMap() {
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
     }
 
     @Override
