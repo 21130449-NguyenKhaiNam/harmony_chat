@@ -1,41 +1,55 @@
 package com.app.harmony_chat.models;
 
+import com.app.harmony_chat.configs.DefineTableDatabase;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Entity
-@Getter
-@Setter
 @Data
 @NoArgsConstructor
-@Table(name = "profiles")
+@Table(name = DefineTableDatabase.PROFILE)
 public class Profile {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
     @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
+    @Column(nullable = false)
+    private String username;
+
     // Lưu đường dẫn
-    @Column
     private String avatar;
 
-    @Column
     @Temporal(TemporalType.DATE)
     private LocalDate dob;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "gender_id", referencedColumnName = "id")
     private Gender gender;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "coutries_id", referencedColumnName = "id")
     private Country country;
 
-    @Column
     private String phone;
+
+    public Profile(User user, String username, String avatar, LocalDate dob, Gender gender, Country country, String phone) {
+        this.user = user;
+        this.username = username;
+        this.avatar = avatar;
+        this.dob = dob;
+        this.gender = gender;
+        this.country = country;
+        this.phone = phone;
+    }
+
+    public Profile(User user, String username) {
+        this.user = user;
+        this.username = username;
+    }
 }

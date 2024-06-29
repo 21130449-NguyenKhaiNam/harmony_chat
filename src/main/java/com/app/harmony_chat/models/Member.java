@@ -1,5 +1,6 @@
 package com.app.harmony_chat.models;
 
+import com.app.harmony_chat.configs.DefineTableDatabase;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -7,11 +8,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Getter
-@Setter
 @Data
 @NoArgsConstructor
-@Table(name = "menbers")
+@Table(name = DefineTableDatabase.MEMBER)
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,4 +23,9 @@ public class Member {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
+    public Member(Room room, User user) {
+        this.room = room;
+        this.user = user;
+    }
 }

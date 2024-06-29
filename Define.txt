@@ -1,0 +1,149 @@
+@Người tạo: Nguyễn Khải Nam - 21130449
+@Ngày tạo: 29 / 04/ 2024
+
+@Phiên bản: 1.0
+    + Chưa có gửi mail -> Các chức năng liên quan đến email sẽ chưa có
+    + Chưa có ghi nhớ đăng nhập -> Chỉ có ghi nhớ bằng session bên fontend
+    + Chưa có phản hồi bằng token -> Chưa được bảo mật tốt
+
+# Tổng quan
+- File được dùng để mô tả tổng thể mô hình backend được xây dựng.
+- Kiến thức: Spring Boot Web, JPA, JQPL, Lombok, Hibernate, Mô hình MVC Spring, MySQL
+
+# Cấu trúc
+- Gồm 3 tầng (tự custom lại theo ý thích của người sáng tạo):
+	+ API (apis): Cung cấp đường dẫn cho các chương trình gọi tới
+	+ Xử lý (services): Xử lý nội dung được trả về
+	+ Lấy dữ liệu (repositories): Lấy dữ liệu dưới Database
+- utils: Cung cấp các công cụ mà cả hệ thống có thể sử dụng
+- models: Cung cấp mô hình và dùng để khởi tạo entity dưới database
+- configs: Thông tin cho dự án
+
+# Giải thích api:
+
+- Lỗi trong json: {"code":400,"content":null} - Có thể kèm nội dung nếu có
+- Lỗi do server: {"code":500,"content":null} - Có thể kèm nội dung nếu có
+- Một số lỗi sai khác:
+    + Sai loại action:
+        {
+          "timestamp": "2024-05-19T05:52:40.597+00:00",
+          "status": 405,
+          "error": "Method Not Allowed",
+          "path": "/api/v1/relationship/friend/add"
+        }
+    + Lỗi hệ thống:
+        {
+            "timestamp": "2024-05-19T05:53:53.632+00:00",
+            "status": 500,
+            "error": "Internal Server Error",
+            "path": "/api/v1/relationship/friend/add"
+        }
+
+- Liên quan đến truy cập:
+	+ /api/v1/account/login: Đăng nhập POST -> JSON {'email':'?', 'password': '?'} -> Phản hồi
+	    . Tài khoản không tồn tại: {"code":202,"content":"Tài khoản không tồn tại"}
+	    . Sai tài khoản: {"code":201,"content":"Tài khoản không đúng"}
+	    . Đăng nhập thành công: {"code":200,"content":"--token--"}
+	+ /api/v1/account/register: Đăng ký POST -> JSON {'email':'?', 'password': '?'} -> Phản hồi
+	    . Đăng ký thành công: {"code":200,"content":"--token--"}
+        . Tài khoản đã tồn tại: {"code":203,"content":"Tài khoản đã tồn tại"}
+	+ /api/v1/account/forPOST: Quên mật khẩu POST -> JSON {'email':'?'}
+        . Tài khoản không có trong hệ thống: {"code":202,"content":"Tài khoản không tồn tại"}
+        . Thành công: {"code":200, "content": null}, Mật khẩu mới gửi về mail
+	+ /api/v1/account/profile: Xem trang cá nhân của mình POST -> JSON {'user-id': ?}
+        . Lỗi không tồn tại: {"code":400,"content":"Tài khoản không tồn tại"}
+        . Thành công:
+            {
+              "code": 200,
+              "content": {
+                "id": 4,
+                "user": null,
+                "username": "khainam",
+                "avatar": null,
+                "dob": null,
+                "gender": null,
+                "country": null,
+                "phone": null
+              }
+            }
+
+	+ /api/v1/account/profile/update: Cập nhật thông tin trang cá nhân của mình
+	    POST -> JSON {
+	        'email': '?',
+	        'password': '?',
+	        'gender': '?',
+	        'username': '?',
+	        'avatar': '?',
+	        'dob': '?',
+	        'country-street-number': '?',
+	        'country-street-name': '?',
+	        'city': '?',
+	        'district': '?',
+	        'state': '?',
+	        'phone': '?'
+	    }
+
+- Liên quan đến mối quan hệ:
+	+ /api/v1/relationship/friend/add: Thêm mối quan hệ bạn bè POST -> JSON {'user-id':'?', 'other-id': '?'}
+        . Đã kết bạn với nhau:
+            {"code":400,"content":"Đã kết bạn"}
+        . Thành công:
+            {"code":200,"content":"1"}
+	+ /api/v1/relationship/friend/unfriend: Hủy kết bạn POST -> JSON {'user-id':'?', 'other-id': '?'}
+        . Thành công
+            {"code":200,"content":"empty"}
+        . Danh sách trống:
+            {"code":400,"content":"Danh sách bạn bè trống"}
+    + /api/v1/relationship/friend/rename: Đổi biệt danh bạn bè POST -> JSON {'user-id':'?', 'other-id': '?', 'nickname': '?'}
+        . Thành công:
+            {"code":200,"content":"Đổi biệt danh thành công"}
+	+ /api/v1/relationship/friend/list: Lấy ra danh sách bạn bè POST -> JSON {'user-id':'?'}
+        . Thành công:
+            {
+              "code": 200,
+              "content": [
+                {
+                  "id": 3,
+                  "user": null,
+                  "username": "khainam",
+                  "avatar": null,
+                  "dob": null,
+                  "gender": null,
+                  "country": null,
+                  "phone": null
+                }
+              ]
+            }
+	+ /api/v1/relationship/other/profile: Xem thông tin của người dùng khác POST -> JSON {'other-id': '?'}
+        . Thành công:
+            {
+              "code": 200,
+              "content": {
+                "id": 3,
+                "user": null,
+                "username": "khainam",
+                "avatar": null,
+                "dob": null,
+                "gender": null,
+                "country": null,
+                "phone": null
+              }
+            }
+	+ /api/v1/relationship/other/friends: Xem bạn bè của người khác POST -> JSON {'other-id': '?'}
+        . Danh sách trống:
+            {
+                "other-id": "?"
+            }
+
+   + /api/v1/relationship/room: Lấy danh sách người liên hệ POST -> JSON {'user-id': '?'}
+        . Gọi thành công:
+            {
+                "code":200,
+                "content":[]
+            }
+   + /api/v1/relationship/room/add: Thêm người dùng vào phòng: POST -> JSON {'room-id': '?', 'other-id': '?'}
+   + /api/v1/relationship/room/list: Lấy danh sách thành viên trong phòng: POST -> JSON {'room-id': '?'}
+   + /api/v1/account/profile/blacklist: Xem danh sách người bị chặn: POST -> {'user-id': '?'}
+
+- Liên quan đến việc xem dữ liệu trên màn hình:
+    + /api/v1/search/friend/mess: Tìm kiếm bạn bè trong danh sách tin nhắn POST -> JSON {'name': '?'}

@@ -1,5 +1,6 @@
 package com.app.harmony_chat.models;
 
+import com.app.harmony_chat.configs.DefineTableDatabase;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -10,27 +11,27 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
-@Getter
-@Setter
 @Data
 @NoArgsConstructor
-@Table(name = "rooms")
+@Table(name = DefineTableDatabase.ROOM)
 public class Room {
     @Id
-    private UUID id;
-
-    @Column
+    private long id;
+    
     @Temporal(TemporalType.DATE)
     private LocalDate published;
 
-    @Column
     private boolean visible;
 
     // Đường dẫn
-    @Column
     private String image;
 
     // Đường dẫn
-    @Column
     private String background;
+
+    public Room(long id, LocalDate published, boolean visible) {
+        this.id = id;
+        this.published = published;
+        this.visible = visible;
+    }
 }
