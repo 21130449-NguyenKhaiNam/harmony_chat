@@ -19,7 +19,8 @@ public class Search {
     private SearchService service;
 
     @PostMapping(path = DefinePath.SEARCH_FRIEND_MESS)
-    public String search(@RequestParam Map<String, String> json) {
+    public String search(@RequestBody Map<String, String> json) {
+        System.out.println(json);
         List<String> params = mapper.getParam(json, DefinePropertyJson.USERNAME);
         return mapper.mapToJson(service.searchFriendMess(params.get(0)));
     }
