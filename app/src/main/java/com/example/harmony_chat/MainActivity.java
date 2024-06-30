@@ -16,7 +16,6 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,14 +28,13 @@ import com.example.harmony_chat.service.CallService;
 import com.example.harmony_chat.service.LoadImgService;
 import com.example.harmony_chat.util.AndroidUtil;
 import com.example.harmony_chat.util.CheckInfomation;
+import com.example.harmony_chat.util.MapperJson;
 import com.example.harmony_chat.util.RxHelper;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 
 public class MainActivity extends AppCompatActivity implements SelectListener {
 
@@ -60,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements SelectListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
         userId = AndroidUtil.getUserId(this);
         // Không có tài khoản
         if (CheckInfomation.isEmpty(userId)) {
@@ -108,6 +107,9 @@ public class MainActivity extends AppCompatActivity implements SelectListener {
         RxHelper.performImmediately(() -> {
             List<Hierarchy> rooms = CallService.getInstance().getRoom(userId);
             profileUser = CallService.getInstance().viewMyProfile(userId);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("profile", MapperJson.getInstance().convertObjToJson(profileUser));
+            editor.commit();
             User user = new User(userId);
             profileUser.setUser(user);
             for (int i = 0; i < rooms.size(); i++) {
@@ -126,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements SelectListener {
                                 hierarchy.getDeputy()
                         ));
             }
+
             runOnUiThread(() -> {
                 chatAdapter = new ChatAdapter(chatItemList, this);
                 chatRecyclerView.setAdapter(chatAdapter);
@@ -221,8 +224,8 @@ public class MainActivity extends AppCompatActivity implements SelectListener {
         Intent intent = new Intent(this, ChatScreen.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("room", chatItem.getRoom());
-        bundle.putString("chatname",chatItem.getTitle());
-        bundle.putString("image",chatItem.getAvatarUrl());
+        bundle.putString("chatname", chatItem.getTitle());
+        bundle.putString("image", chatItem.getAvatarUrl());
         intent.putExtras(bundle);
         startActivity(intent);
     }
