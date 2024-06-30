@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+        Quy tắc đặt tên:
+            + Tên dài cũng không sao miễn thể hiện đúng chức năng
+            + Chia cắt từng phần theo chú thích (Xem mẫu bên dưới)
+            + Tọa độ sử dụng các tên: top - left - bottom - right (không sử dụng end - start)
+            + Đối với các tham số chung (tùy lựa chọn phù hợp):
+                - tên_thứtự
+                - kíchthước_thứtự
+                - kíchthước_tên_thứtự
+                - kíchthước_tên_loại
+            + Đối với từng trang:
+                - trang_tên_loại
+                - trang_kíchthước : Các biến xài chung
+                - trang_tên_kíchthước : Biến xài riêng
+    -->
+
+    <!-- Tiêu đề -->
+    <dimen name="heading_0">24sp</dimen>
+    <dimen name="heading_1">18sp</dimen>
+
+    <dimen name="reacts_size_0">26sp</dimen>
+    <!-- Chữ cái -->
+    <dimen name="text_0">@dimen/heading_1</dimen>
+    <dimen name="text_1">16sp</dimen>
+    <dimen name="text_2">14sp</dimen>
+    <dimen name="text_3">12sp</dimen>
+    <dimen name="text_4">10sp</dimen>
+
+    <!-- Nút bấm -->
+    <dimen name="width_button">355dp</dimen>
+    <dimen name="height_button">60dp</dimen>
+
+    <!-- Thanh nhập liệu -->
+    <dimen name="width_input">355dp</dimen>
+    <dimen name="height_input">60dp</dimen>
+
+    <!-- Thanh tìm kiếm -->
+    <dimen name="width_search">355dp</dimen>
+    <dimen name="height_search">37dp</dimen>
+
+    <!-- Kích thước logo -->
+    <dimen name="width_logo">80dp</dimen>
+    <dimen name="height_logo">80dp</dimen>
+    <dimen name="width_logo_other">50dp</dimen>
+    <dimen name="height_logo_other">50dp</dimen>
+
+    <!-- Kích thước icons trong ứng dụng-->
+    <dimen name="width_icon_normal">24dp</dimen>
+    <dimen name="height_icon_normal">24dp</dimen>
+
+    <!-- Kích thước ảnh người dùng -->
+    <dimen name="width_avatar_min">30dp</dimen>
+    <dimen name="height_avatar_min">30dp</dimen>
+    <dimen name="width_avatar_normal">60dp</dimen>
+    <dimen name="height_avatar_normal">60dp</dimen>
+
+    <!-- Màn hình truy cập -->
+    <dimen name="access_logo_margin_top">100dp</dimen>
+    <dimen name="access_margin_top">25dp</dimen>
+    <dimen name="access_margin_right">40dp</dimen>
+
+    <!-- Màn hình thông tin cá nhân -->
+    <dimen name="profile_header_margin_top">57dp</dimen>
+    <dimen name="profile_height_header_before_margin_bottom">10dp</dimen>
+    <dimen name="profile_width_back">25dp</dimen>
+    <dimen name="profile_height_back">25dp</dimen>
+    <dimen name="profile_width_edit">25dp</dimen>
+    <dimen name="profile_height_edit">25dp</dimen>
+    <dimen name="profile_margin_left">20dp</dimen>
+    <dimen name="profile_margin_right">20dp</dimen>
+    <dimen name="profile_margin_top">20dp</dimen>
+    <dimen name="profile_margin_bottom">10dp</dimen>
+
+    <!-- Tham số khác -->
+    <dimen name="corner_radius">40dp</dimen>
+    <dimen name="width_stroke">2dp</dimen>
+    <dimen name="corner_radius_round">50%</dimen>
+    <dimen name="text_margin">16dp</dimen>
+
+    <!--    Quy định padding-->
+    <dimen name="padding_1">10dp</dimen>
+
+    <!--    21130467-->
+    <!-- Màn hình chính -->
+    <dimen name="main_activity_avatar_size">40dp</dimen>
+    <dimen name="main_activity_avatar_margin_start">36dp</dimen>
+    <dimen name="main_activity_avatar_margin_top">52dp</dimen>
+
+    <!-- Icon search của màn hình chính-->
+    <dimen name="main_activity_width_search">30dp</dimen>
+    <dimen name="main_activity_height_search">50dp</dimen>
+    <dimen name="main_activity_search_margin_start">52dp</dimen>
+    <dimen name="main_activity_search_margin_top">36dp</dimen>
+
+    <!--Button Scroll View của màn hình chính-->
+    <dimen name="main_activity_width_scroll_view">0dp</dimen>
+    <dimen name="main_activity_scroll_view_margon_top">16dp</dimen>
+
+    <!--Button của màn hình chính-->
+    <dimen name="main_activity_width_button">80dp</dimen>
+    <dimen name="main_activity_height_button">45dp</dimen>
+    <dimen name="main_activity_button_margin_start">10dp</dimen>
+    <dimen name="main_activity_button_margin_end">10dp</dimen>
+
+    <!--Recycle View của màn hình chính-->
+    <dimen name="main_activity_width_layout">0dp</dimen>
+    <dimen name="main_activity_height_layout">0dp</dimen>
+    <dimen name="main_activity_layout_margin_top">16dp</dimen>
+    <!--    End 21130467-->
+
+    <dimen name="popup_options">180dp</dimen>
+</resources>

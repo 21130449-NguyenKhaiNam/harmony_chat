@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary_blue"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="40dp">
+
+        <ImageView
+            android:id="@+id/avatarImg"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="centerCrop"
+            tools:srcCompat="@drawable/logo_black" />
+
+    </androidx.cardview.widget.CardView>
+
+    <EditText
+
+        android:id="@+id/editEmail"
+        style="@style/input_style"
+        android:layout_marginTop="60dp"
+        android:drawableLeft="@drawable/email"
+        android:drawablePadding="5dp"
+        android:ems="10"
+        android:hint="@string/email"
+        android:inputType="text"
+        android:textColorHint="@color/primary_white" />
+
+    <EditText
+        android:id="@+id/editUsername"
+        style="@style/input_style"
+        android:layout_marginTop="10dp"
+        android:drawableLeft="@drawable/account"
+        android:drawablePadding="5dp"
+        android:ems="10"
+        android:hint="@string/username"
+        android:inputType="text"
+        android:textColorHint="@color/primary_white" />
+
+    <EditText
+        android:id="@+id/editPassword"
+        style="@style/input_style"
+        android:layout_marginTop="10dp"
+        android:drawableLeft="@drawable/password"
+        android:drawableRight="@drawable/unhide"
+        android:drawablePadding="5dp"
+        android:ems="10"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:textColorHint="#fff" />
+
+    <EditText
+        android:id="@+id/editRePassword"
+        style="@style/input_style"
+        android:layout_marginTop="10dp"
+        android:drawableLeft="@drawable/password"
+        android:drawableRight="@drawable/unhide"
+        android:drawablePadding="5dp"
+        android:ems="10"
+        android:hint="@string/reenterpwd"
+        android:inputType="textPassword"
+        android:textColorHint="#fff" />
+
+    <TextView
+        android:id="@+id/txtPasswordError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:textColor="@color/danger" />
+
+    <Button
+        android:id="@+id/signupBtn"
+        style="@style/long_input_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="@string/register"
+        android:textAllCaps="false" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:text="@string/hadaccount"
+        android:textColor="@color/primary_white"
+        android:textSize="@dimen/text_2" />
+
+    <Button
+        android:id="@+id/gotoLoginBtn"
+        style="@style/second_long_input_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/sign_in"
+        android:textAllCaps="false" />
+
+</LinearLayout>

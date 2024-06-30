@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "678408887181",
+    "firebase_url": "https://chatapp-37d72-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "chatapp-37d72",
+    "storage_bucket": "chatapp-37d72.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:678408887181:android:0b9755959e1ddbe6f13bc4",
+        "android_client_info": {
+          "package_name": "com.example.firebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBhGK85LeRMR1ch1lUEo4gyap8WusuIdo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:678408887181:android:500348b301649588f13bc4",
+        "android_client_info": {
+          "package_name": "com.example.harmony_chat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBhGK85LeRMR1ch1lUEo4gyap8WusuIdo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
