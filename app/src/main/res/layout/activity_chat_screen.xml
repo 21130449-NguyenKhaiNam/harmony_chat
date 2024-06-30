@@ -84,7 +84,7 @@
                 android:layout_height="48dp"
                 android:layout_marginRight="10dp"
                 android:backgroundTint="@color/transparent"
-                android:src="@drawable/emoticon" />
+                android:src="@drawable/ph__dots_three_outline" />
 
             <ImageButton
                 android:id="@+id/btn_send"

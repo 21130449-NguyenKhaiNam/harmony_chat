@@ -41,8 +41,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         ChatItem chatItem = chatList.get(position);
         holder.nameTextView.setText(chatItem.getTitle());
         holder.messageTextView.setText(chatItem.getMessage());
-
-        Linkify.addLinks(holder.messageTextView,Linkify.WEB_URLS);
         holder.messageTextView.setMovementMethod(LinkMovementMethod.getInstance());
 
         holder.timeTextView.setText(chatItem.getTime());

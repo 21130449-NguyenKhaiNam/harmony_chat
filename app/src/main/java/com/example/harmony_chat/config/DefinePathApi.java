@@ -1,8 +1,8 @@
 package com.example.harmony_chat.config;
 
 public interface DefinePathApi {
-    //    String URL = "http://192.168.1.58:8080/";
-    String URL = "http://10.0.2.2:8080";
+        String URL = "http://192.168.1.58:8080/";
+//    String URL = "http://10.0.2.2:8080";
     String LOGIN = "/api/v1/account/login";
     String REGISTER = "/api/v1/account/register";
     String FORGET = "/api/v1/account/forget";
@@ -19,5 +19,5 @@ public interface DefinePathApi {
     String ROOM = "/api/v1/relationship/room";
     String ROOM_ADD = "/api/v1/relationship/room/add";
     String ROOM_LIST = "/api/v1/relationship/room/list";
-    String IMAGE_UPLOAD = "/api/v1/image/upload";
+    String IMAGE_UPLOAD = "api/v1/image/upload";
 }
