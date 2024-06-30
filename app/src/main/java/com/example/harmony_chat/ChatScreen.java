@@ -89,6 +89,21 @@ public class ChatScreen extends AppCompatActivity {
     private static final int REQUEST_LOCATION_PERMISSION = 1;
     private LinearLayout footer, shareLocation, emoji, sharePicture, voice;
 
+    class WrapContentLinearLayoutManager extends LinearLayoutManager {
+        public WrapContentLinearLayoutManager(Context context, int orientation, boolean reverseLayout) {
+            super(context, orientation, reverseLayout);
+        }
+
+        @Override
+        public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+            try {
+                super.onLayoutChildren(recycler, state);
+            } catch (IndexOutOfBoundsException e) {
+                Log.e("TAG", "meet a IOOBE in RecyclerView");
+            }
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -245,11 +260,13 @@ public class ChatScreen extends AppCompatActivity {
                     profiles.add(userPro5);
             }
             runOnUiThread(() -> {
-                txtChatName.setText(bundle.getString("chatname"));
-                process();
-                loadImage4Chatroom();
-                setupChatRecyclerView();
-                getOrCreateChatroomModel();
+               if(adapter == null) {
+                   txtChatName.setText(bundle.getString("chatname"));
+                   process();
+                   loadImage4Chatroom();
+                   setupChatRecyclerView(); // Hàm cập nhật RecyclerView
+                   getOrCreateChatroomModel();
+               }
             });
         });
 
@@ -626,9 +643,7 @@ public class ChatScreen extends AppCompatActivity {
                 .build();
 
         adapter = new ChatRecyclerAdapter(options, getApplicationContext(), profiles.get(0).getUser().getId());
-        LinearLayoutManager manager = new LinearLayoutManager(this);
-        manager.setReverseLayout(true);
-        recyclerView.setLayoutManager(manager);
+        recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
         recyclerView.setAdapter(adapter);
         adapter.startListening();
         adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
@@ -641,6 +656,7 @@ public class ChatScreen extends AppCompatActivity {
     }
 
     private void back() {
-        finish();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }

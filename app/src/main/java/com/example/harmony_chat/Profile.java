@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.harmony_chat.service.CallService;
 import com.example.harmony_chat.service.LoadImgService;
+import com.example.harmony_chat.util.MapperJson;
 import com.example.harmony_chat.util.RxHelper;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -41,6 +44,9 @@ public class Profile extends AppCompatActivity {
         avatar = findViewById(R.id.avatar);
         conFriends = findViewById(R.id.con_friends);
 
+        SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+        profile = MapperJson.getInstance().convertObjFromJson(sharedPreferences.getString("profile", null), com.example.harmony_chat.model.Profile.class);
+
         work();
     }
 
@@ -51,8 +57,7 @@ public class Profile extends AppCompatActivity {
 
         // Lấy dữ liệu
         RxHelper.performImmediately(() -> {
-            profile = CallService.getInstance().viewMyProfile("316199df-4227-4efb-8af3-42e4a5dd8c4a");
-            listFriends = CallService.getInstance().getMyListFriends("316199df-4227-4efb-8af3-42e4a5dd8c4a");
+            listFriends = CallService.getInstance().getMyListFriends(profile.getUser().getId());
             runOnUiThread(() -> injectData());
         });
     }
