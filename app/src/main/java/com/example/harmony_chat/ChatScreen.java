@@ -265,10 +265,10 @@ public class ChatScreen extends AppCompatActivity {
             runOnUiThread(() -> {
                if(adapter == null) {
                    txtChatName.setText(bundle.getString("chatname"));
-                   process();
                    loadImage4Chatroom();
                    setupChatRecyclerView(); // Hàm cập nhật RecyclerView
                    getOrCreateChatroomModel();
+                   process();
                }
             });
         });
@@ -656,7 +656,7 @@ public class ChatScreen extends AppCompatActivity {
                 .setLifecycleOwner(this)
                 .build();
 
-        adapter = new ChatRecyclerAdapter(options, getApplicationContext(), profiles.get(0).getUser().getId());
+        adapter = new ChatRecyclerAdapter(options, this, profiles.get(0).getUser().getId());
         recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
         recyclerView.setAdapter(adapter);
         adapter.startListening();
