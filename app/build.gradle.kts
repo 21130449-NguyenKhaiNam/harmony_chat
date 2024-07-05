@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("com.google.gms.google-services")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -27,7 +28,7 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility =JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     buildFeatures {
@@ -44,7 +45,7 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.0")
     // Thư viện tạo phần tử bo tròn
     implementation("com.makeramen:roundedimageview:2.3.0")
-    implementation ("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
     implementation("com.google.firebase:firebase-common:21.0.0")
     implementation("androidx.emoji:emoji:1.1.0")
     implementation("androidx.emoji2:emoji2-views:1.4.0")
@@ -53,7 +54,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
 //    implement loading library
-    implementation ("com.squareup.picasso:picasso:2.71828")
+    implementation("com.squareup.picasso:picasso:2.71828")
 //    thư viện thêm - 21130463
     implementation("androidx.cardview:cardview:1.0.0")
     // Retrofit
@@ -66,8 +67,8 @@ dependencies {
     implementation("io.reactivex.rxjava3:rxjava:3.0.13")
     implementation("io.reactivex.rxjava3:rxandroid:3.0.0")
 //    dang nhap bang google
-    implementation ("com.google.android.gms:play-services-location:21.0.1")
-    implementation ("com.google.android.gms:play-services-auth:20.4.0")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation("com.google.android.gms:play-services-auth:20.4.0")
 
 //    mail
     implementation(files("libs/mail.jar"))
@@ -77,5 +78,8 @@ dependencies {
 //    firebase
     implementation("com.google.firebase:firebase-firestore:25.0.0")
     // Firebase UI Firestore
-    implementation ("com.firebaseui:firebase-ui-firestore:8.0.1")
+    implementation("com.firebaseui:firebase-ui-firestore:8.0.1")
+
+// Google Maps Services
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
 }

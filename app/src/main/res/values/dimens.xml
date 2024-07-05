@@ -111,4 +111,5 @@
     <!--    End 21130467-->
 
     <dimen name="popup_options">180dp</dimen>
+    <dimen name="popup_features">140dp</dimen>
 </resources>

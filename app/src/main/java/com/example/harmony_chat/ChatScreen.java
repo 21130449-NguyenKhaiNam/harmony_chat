@@ -1,9 +1,11 @@
 package com.example.harmony_chat;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,16 +19,19 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -71,7 +76,7 @@ import okhttp3.Response;
 
 public class ChatScreen extends AppCompatActivity {
 
-    private TextView txtChatName;
+    private TextView txtChatName, shareLocation, emoji, sharePicture, voice;
     private MediaRecorder mediaRecorder;
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
     private SpeechRecognizer speechRecognizer;
@@ -86,8 +91,7 @@ public class ChatScreen extends AppCompatActivity {
     private List<Profile> profiles = new ArrayList<>();
     private String roomId, userId;
     private ChatroomModel chatroomModel;
-    private static final int REQUEST_LOCATION_PERMISSION = 1;
-    private LinearLayout footer, shareLocation, emoji, sharePicture, voice;
+    private static final int REQUEST_LOCATION_PERMISSION = 1, GALLERY_REQ_CODE = 1000;
 
     class WrapContentLinearLayoutManager extends LinearLayoutManager {
         public WrapContentLinearLayoutManager(Context context, int orientation, boolean reverseLayout) {
@@ -232,7 +236,6 @@ public class ChatScreen extends AppCompatActivity {
             finish();
             return;
         }
-        footer = findViewById(R.id.chat_screen_footer);
         txtChatName = findViewById(R.id.txt_chat_name);
         txtChatMessage = findViewById(R.id.txt_chat_message);
         txtChatMessage.setRawInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_AUTO_CORRECT);
@@ -262,10 +265,10 @@ public class ChatScreen extends AppCompatActivity {
             runOnUiThread(() -> {
                if(adapter == null) {
                    txtChatName.setText(bundle.getString("chatname"));
-                   process();
                    loadImage4Chatroom();
                    setupChatRecyclerView(); // Hàm cập nhật RecyclerView
                    getOrCreateChatroomModel();
+                   process();
                }
             });
         });
@@ -316,16 +319,19 @@ public class ChatScreen extends AppCompatActivity {
     private void createPopupMoreFeatures() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.fragement_more_feature_chat, null);
+
         int width = getResources().getDimensionPixelSize(R.dimen.popup_options);
         int height = ViewGroup.LayoutParams.WRAP_CONTENT;
         boolean focusable = true;
         PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
         int[] location = new int[2];
-        footer.getLocationOnScreen(location);
-        int x = location[0] + width;
-        int y = location[1];
-        popupWindow.showAtLocation(footer, Gravity.NO_GRAVITY, x, y);
-        popupWindow.setWindowLayoutType(WindowManager.LayoutParams.TYPE_APPLICATION_ATTACHED_DIALOG);
+        btnMore.getLocationOnScreen(location);  // get btnMore location
+
+        popupWindow.showAtLocation(btnMore, Gravity.NO_GRAVITY,
+                location[0] - width + btnMore.getWidth(),
+                location[1] - 350);
+
         // Share location
         shareLocation = popupView.findViewById(R.id.share_location);
         shareLocation.setOnClickListener(v -> {
@@ -345,7 +351,12 @@ public class ChatScreen extends AppCompatActivity {
         sharePicture = popupView.findViewById(R.id.share_picture);
         sharePicture.setOnClickListener(v -> {
             popupWindow.dismiss();
-            openGallery();
+            try {
+                openGallery();
+            } catch (Exception e) {
+                AndroidUtil.showError(e.getClass().getName(), e.getMessage());
+                AndroidUtil.showToast(this, "Gallery is not responding");
+            }
         });
 
 
@@ -448,23 +459,24 @@ public class ChatScreen extends AppCompatActivity {
     private void openGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
-        startActivityForResult(intent, 2);
+        startActivityForResult(intent, GALLERY_REQ_CODE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 2 && resultCode == RESULT_OK && data != null && data.getData() != null) {
+        if (resultCode == RESULT_OK && requestCode == GALLERY_REQ_CODE && data != null && data.getData() != null) {
             Uri imageUri = data.getData();
-            new Thread(() -> {
+            RxHelper.performImmediately(() -> {
                 String imageUrl = uploadImageAndGetUrl(imageUri);
                 if (imageUrl != null) {
-                    runOnUiThread(() -> sendMessageToUser(imageUrl));
+                    AndroidUtil.showError("UploadImage", "image url isn't null");
+                     sendMessageToUser(imageUrl);
+                } else {
+                    AndroidUtil.showError("UploadImage", "image url is null");
+                    AndroidUtil.showToast(this, "Failed to upload image");
                 }
-                else {
-                    runOnUiThread(() -> Toast.makeText(ChatScreen.this, "Failed to upload image", Toast.LENGTH_SHORT).show());
-                }
-            }).start();
+            });
         }
     }
 
@@ -493,9 +505,11 @@ public class ChatScreen extends AppCompatActivity {
                 String url = response.body().string();
                 return url;
             } else {
+                AndroidUtil.showError("UnexpectedCode", response.message());
                 throw new IOException("Unexpected code " + response);
             }
         } catch (Exception e) {
+            AndroidUtil.showError(e.getMessage());
             e.printStackTrace();
             return null; // Or handle the error appropriately
         }
@@ -584,7 +598,6 @@ public class ChatScreen extends AppCompatActivity {
         showLocationSharedPopup();
     }
 
-
     private void showLocationSharedPopup() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.popup_message, null);
@@ -613,6 +626,7 @@ public class ChatScreen extends AppCompatActivity {
                 .add(chatMessageModel)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
+                        AndroidUtil.showError("SendMessegaToFirebase", "Send is successfully");
                         txtChatMessage.setText("");
                     } else {
                         String m = "\"" + message + "\" isn't send!";
@@ -623,7 +637,7 @@ public class ChatScreen extends AppCompatActivity {
     }
 
     private void setupChatRecyclerView() {
-        AndroidUtil.showError("Firebase", roomId);
+        AndroidUtil.showError("FirebaseRoomId", roomId);
         Query query = FirebaseUtil.getChatroomMessageReference(roomId)
                 .orderBy("timestamp", Query.Direction.DESCENDING);
 
@@ -642,7 +656,7 @@ public class ChatScreen extends AppCompatActivity {
                 .setLifecycleOwner(this)
                 .build();
 
-        adapter = new ChatRecyclerAdapter(options, getApplicationContext(), profiles.get(0).getUser().getId());
+        adapter = new ChatRecyclerAdapter(options, this, profiles.get(0).getUser().getId());
         recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
         recyclerView.setAdapter(adapter);
         adapter.startListening();
